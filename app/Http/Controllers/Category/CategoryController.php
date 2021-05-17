@@ -16,13 +16,6 @@ class CategoryController extends Controller
         $this->middleware('auth');
     }
 
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\View\View
-     */
-
     public function index(Request $request)
     {
         $model = str_slug('category','-');
@@ -49,11 +42,6 @@ class CategoryController extends Controller
 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\View\View
-     */
     public function create()
     {
        
@@ -66,13 +54,6 @@ class CategoryController extends Controller
 
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     */
     public function store(Request $request)
     {
         $model = str_slug('category','-');
@@ -107,13 +88,6 @@ class CategoryController extends Controller
         return response(view('403'), 403);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     *
-     * @return \Illuminate\View\View
-     */
     public function show(Category $category)
     {
         $model = str_slug('category','-');
@@ -126,13 +100,6 @@ class CategoryController extends Controller
         return response(view('403'), 403);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     *
-     * @return \Illuminate\View\View
-     */
     public function edit(Category $category)
     {
         $ACTION = 'EDIT';
@@ -145,14 +112,6 @@ class CategoryController extends Controller
         return response(view('403'), 403);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param  int  $id
-     *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     */
     public function update(Request $request, Category $category)
     {
         $id = $category->id;
@@ -170,7 +129,7 @@ class CategoryController extends Controller
             // $requestData = $request->all();
             if($request->hasFile('banner')){
                 // try{
-                    $image = Storage::disk('website')->put('categories', $request->banner);
+                    $image    = Storage::disk('website')->put('categories', $request->banner);
                     $category = Category::findOrFail($id);
                     $category->update(['category_type_id'   =>$request->category_type_id,
                                         // 'level_name'        =>$request->level_name,
@@ -201,13 +160,6 @@ class CategoryController extends Controller
 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     */
     public function destroy(Category $category)
     {
         $id = $category->id;

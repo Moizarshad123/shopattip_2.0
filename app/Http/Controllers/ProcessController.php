@@ -14,11 +14,7 @@ use Illuminate\View\View;
 
 class ProcessController extends Controller
 {
-    /**
-     * Display generator.
-     *
-     * @return Response
-     */
+  
     public function getGenerator()
     {
         // dd('hello');
@@ -28,11 +24,7 @@ class ProcessController extends Controller
         return view('laravel-admin::generator',compact('roles'));
     }
 
-    /**
-     * Process generator.
-     *
-     * @return Response
-     */
+  
     public function postGenerator(Request $request)
     {
         $this->validate($request,[
@@ -108,18 +100,18 @@ class ProcessController extends Controller
 
             $menus = json_decode(File::get(base_path('resources/laravel-admin/menus.json')));
 
-            $name = $commandArg['name'];
-            $routeName = ($commandArg['--route-group']) ? $commandArg['--route-group'] . '/' . snake_case($name, '-') : snake_case($name, '-');
-           $icon_partials = explode(' ',$request->menu_icon);
-            $icon = array_last($icon_partials);
+            $name          = $commandArg['name'];
+            $routeName     = ($commandArg['--route-group']) ? $commandArg['--route-group'] . '/' . snake_case($name, '-') : snake_case($name, '-');
+            $icon_partials = explode(' ',$request->menu_icon);
+            $icon          = array_last($icon_partials);
 
 
             $menus->menus = array_map(function ($menu) use ($name, $routeName,$icon) {
                 if ($menu->section == 'Modules') {
                     array_push($menu->items, (object) [
                         'title' => $name,
-                        'icon' => $icon,
-                        'url' => '/' . $routeName,
+                        'icon'  => $icon,
+                        'url'   => '/' . $routeName,
                     ]);
                 }
 

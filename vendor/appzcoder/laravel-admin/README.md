@@ -24,7 +24,7 @@ An admin panel for managing users, roles, permissions & crud.
     php artisan laravel-admin:install
     ```
     > Service provider will be discovered automatically.
-3. Make sure your user model's has a ```HasRoles``` trait **app/User.php**.
+3. Make sure your user model's has a ```HasRoles``` trait **app/Models/User.php**.
     ```php
     class User extends Authenticatable
     {
@@ -34,6 +34,8 @@ An admin panel for managing users, roles, permissions & crud.
     ```
 
 4. You can generate CRUD easily through generator tool now.
+
+Note: If you are using Laravel 7+ then scaffold the authentication with bootstrap for a better experience.
 
 
 ## Usage
@@ -48,10 +50,10 @@ An admin panel for managing users, roles, permissions & crud.
 
 5. For checking authenticated user's role see below:
     ```php
-    // Add roles middleware in app/Http/Kernel.php
+    // Add role middleware in app/Http/Kernel.php
     protected $routeMiddleware = [
         ...
-        'roles' => \App\Http\Middleware\CheckRole::class,
+        'role' => \App\Http\Middleware\CheckRole::class,
     ];
     ```
 
@@ -64,7 +66,12 @@ An admin panel for managing users, roles, permissions & crud.
     }
 
     // Check role in route middleware
-    Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['auth', 'roles'], 'roles' => 'admin'], function () {
+    Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['auth', 'role:admin']], function () {
+       Route::get('/', ['uses' => 'AdminController@index']);
+    });
+
+    // Check permission in route middleware
+    Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['auth', 'can:write_user']], function () {
        Route::get('/', ['uses' => 'AdminController@index']);
     });
     ```

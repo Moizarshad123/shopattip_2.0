@@ -73,7 +73,7 @@ class CrudCommand extends Command
         $perPage = intval($this->option('pagination'));
 
         $controllerNamespace = ($this->option('controller-namespace')) ? $this->option('controller-namespace') . '\\' : '';
-        $modelNamespace = ($this->option('model-namespace')) ? trim($this->option('model-namespace')) . '\\' : '';
+        $modelNamespace = ($this->option('model-namespace')) ? trim($this->option('model-namespace')) . '\\' : 'Models\\';
 
         $fields = rtrim($this->option('fields'), ';');
 
@@ -146,7 +146,7 @@ class CrudCommand extends Command
         }
 
         if (file_exists($routeFile) && (strtolower($this->option('route')) === 'yes')) {
-            $this->controller = ($controllerNamespace != '') ? $controllerNamespace . '\\' . $name . 'Controller' : $name . 'Controller';
+            $this->controller = ($controllerNamespace != '') ? $controllerNamespace . $name . 'Controller' : $name . 'Controller';
 
             $isAdded = File::append($routeFile, "\n" . implode("\n", $this->addRoutes()));
 

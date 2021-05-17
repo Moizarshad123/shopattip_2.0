@@ -2,9 +2,11 @@
 
 namespace Appzcoder\LaravelAdmin;
 
+use App;
 use File;
 use Illuminate\Console\Command;
 use Symfony\Component\Process\Process;
+use Illuminate\Database\QueryException;
 
 class LaravelAdminCommand extends Command
 {
@@ -41,13 +43,13 @@ class LaravelAdminCommand extends Command
     {
         try {
             $this->call('migrate');
-        } catch (\Illuminate\Database\QueryException $e) {
+        } catch (QueryException $e) {
             $this->error($e->getMessage());
             exit();
         }
 
-        if (\App::VERSION() >= '5.2' && \App::VERSION() < '6.0') {
-            $this->info("Generating the authentication scaffolding");
+        $this->info("Generating the authentication scaffolding");
+        if (App::VERSION() < '6.0') {
             $this->call('make:auth');
         }
 
@@ -64,22 +66,20 @@ class LaravelAdminCommand extends Command
 
         $this->info("Adding the routes");
 
-        $routeFile = app_path('Http/routes.php');
-        if (\App::VERSION() >= '5.3') {
-            $routeFile = base_path('routes/web.php');
-        }
+        $routeFile = base_path('routes/web.php');
+        $controllerNamespace = App::VERSION() >= '8.0' ? 'App\Http\Controllers\Admin\\' : 'Admin\\';
 
         $routes =
             <<<EOD
-Route::get('admin', 'Admin\\AdminController@index');
-Route::resource('admin/roles', 'Admin\\RolesController');
-Route::resource('admin/permissions', 'Admin\\PermissionsController');
-Route::resource('admin/users', 'Admin\\UsersController');
-Route::resource('admin/pages', 'Admin\\PagesController');
-Route::resource('admin/activitylogs', 'Admin\\ActivityLogsController')->only([
+Route::get('admin', '{$controllerNamespace}AdminController@index');
+Route::resource('admin/roles', '{$controllerNamespace}RolesController');
+Route::resource('admin/permissions', '{$controllerNamespace}PermissionsController');
+Route::resource('admin/users', '{$controllerNamespace}UsersController');
+Route::resource('admin/pages', '{$controllerNamespace}PagesController');
+Route::resource('admin/activitylogs', '{$controllerNamespace}ActivityLogsController')->only([
     'index', 'show', 'destroy'
 ]);
-Route::resource('admin/settings', 'Admin\\SettingsController');
+Route::resource('admin/settings', '{$controllerNamespace}SettingsController');
 Route::get('admin/generator', ['uses' => '\Appzcoder\LaravelAdmin\Controllers\ProcessController@getGenerator']);
 Route::post('admin/generator', ['uses' => '\Appzcoder\LaravelAdmin\Controllers\ProcessController@postGenerator']);
 

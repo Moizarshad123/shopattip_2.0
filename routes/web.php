@@ -20,33 +20,6 @@ Route::group(['middleware' => 'guest'],function (){
 
 Route::group(['middleware' => 'auth'], function () {
 
-    /*routes for blog*/
-//     Route::group(['prefix' => 'blog'], function () {
-//         Route::get('/create', 'BlogController@create');
-//         Route::post('/create', 'BlogController@store');
-//         Route::get('delete/{id}', 'BlogController@destroy')->name('blog.delete');
-//         Route::get('edit/{id}', 'BlogController@edit')->name('blog.edit');
-//         Route::post('edit/{id}', 'BlogController@update');
-//         Route::get('view/{id}', 'BlogController@show');
-// //        Route::get('{blog}/restore', 'BlogController@restore')->name('blog.restore');
-//         Route::post('{id}/storecomment', 'BlogController@storeComment')->name('storeComment');
-       
-//     });
-//     // Route::resource('blog', 'BlogController');
-
-    // /*routes for blog category*/
-    // Route::group(['prefix' => 'blog-category'], function () {
-    //     Route::get('/', 'BlogCategoryController@getIndex');
-    //     Route::get('/create', 'BlogCategoryController@create');
-    //     Route::post('/create', 'BlogCategoryController@save');
-    //     Route::get('/delete/{id}', 'BlogCategoryController@delete');
-    //     Route::get('/edit/{id}', 'BlogCategoryController@edit');
-    //     Route::post('/edit/{id}', 'BlogCategoryController@update');
-    // });
-    // Route::resource('blogcategory', 'BlogCategoryController');
-
-    
-    
 });
 
 Route::group(['middleware' => ['auth', 'roles'],'roles' => 'admin'], function () {
@@ -276,21 +249,6 @@ Route::group(['middleware' => ['auth', 'roles'],'roles' => 'admin'], function ()
     Route::get('permission/edit/{id}', 'PermissionController@edit');
     Route::post('permission/edit/{id}', 'PermissionController@update');
     
-    
-    // Route::get('aboutus','BlogController@AboutUs')->name('aboutus');
-    // Route::get('jobs','BlogController@Jobs')->name('jobs');
-    // Route::get('reviews','BlogController@Reviews')->name('reviews');
-    // Route::get('cs-go','BlogController@CS_GO')->name('cs-go');
-    // Route::get('overwatch','BlogController@OverWatch')->name('overwatch');
-    // Route::get('elo-boost','BlogController@EloBoost')->name('elo-boost');
-    // Route::get('Placement-Games','BlogController@PlacementGames')->name('Placement-Games');
-    // Route::get('FAQ','BlogController@FAQ')->name('FAQ');
-    // Route::get('terms_of_service','BlogController@TermsOfService')->name('terms_of_service');
-    // Route::get('privacy_policy','BlogController@PrivacyPolicy')->name('privacy_policy');
-
-
-    
-    
 
     #Role management
     Route::get('role-management', 'RoleController@getIndex');
@@ -345,3 +303,8 @@ Route::resource('category/category', 'Category\\CategoryController');
 Auth::routes();
 
 Route::resource('sub-category/sub-category', 'SubCategoryController\\SubCategoryController');
+
+Route::resource('brand', 'BrandController\\BrandController');
+Route::resource('brand', 'BrandController\\BrandController');
+Route::resource('brand', 'BrandController\\BrandController');
+Route::resource('brand', 'BrandController\\BrandController');
