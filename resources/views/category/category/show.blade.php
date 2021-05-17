@@ -16,33 +16,37 @@
                     <div class="table-responsive">
                         <table class="table table">
                             <tbody>
-                            <tr>
+                            {{-- <tr>
                                 <th>ID</th>
                                 <td>{{ $category->id??"" }}</td>
-                            </tr>
+                            </tr> --}}
                             <tr>
-                                <th> Category Type Id </th>
-                                <td> {{ $category->category_type_id??"" }} </td>
+                                <th> Category Type </th>
+                                @if($category->category_type_id == 1)
+                                <td>General</td>
+                                @elseif($category->category_type_id == 2)
+                                <td>Grocery</td>
+                                @endif
                             </tr>
-                            <tr>
+                            {{-- <tr>
                                 <th> Level Name </th>
                                 <td> {{ $category->level_name??"" }} </td>
-                            </tr>
+                            </tr> --}}
                             <tr>
                                 <th> Name </th>
                                 <td> {{ $category->name??"" }} </td>
                             </tr>
-                            <tr>
+                            {{-- <tr>
                                 <th> URL Name </th>
                                 <td> {{ $category->url_name??"" }} </td>
                             </tr>
                             <tr>
                                 <th> Description </th>
                                 <td> {{ $category->description??"" }} </td>
-                            </tr>
+                            </tr> --}}
                             <tr>
                                 <th> Banner </th>
-                                @include('includes.image_html',['variable'=>$category->banner])>
+                                @include('includes.image_html',['variable'=>$category->banner])
                             </tr>
                             <tr>
                                 <th> Status </th>

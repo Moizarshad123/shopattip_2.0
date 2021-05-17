@@ -32,10 +32,10 @@ class CategoryController extends Controller
 
             if (!empty($keyword)) {
                 $category = Category::where('category_type_id', 'LIKE', "%$keyword%")
-                ->orWhere('level_name', 'LIKE', "%$keyword%")
+                // ->orWhere('level_name', 'LIKE', "%$keyword%")
                 ->orWhere('name', 'LIKE', "%$keyword%")
-                ->orWhere('url_name', 'LIKE', "%$keyword%")
-                ->orWhere('description', 'LIKE', "%$keyword%")
+                // ->orWhere('url_name', 'LIKE', "%$keyword%")
+                // ->orWhere('description', 'LIKE', "%$keyword%")
                 ->orWhere('banner', 'LIKE', "%$keyword%")
                 ->orWhere('status', 'LIKE', "%$keyword%")
                 ->paginate($perPage);
@@ -79,11 +79,11 @@ class CategoryController extends Controller
         if(auth()->user()->permissions()->where('name','=','add-'.$model)->first()!= null) {
             $this->validate($request, [
 			'category_type_id' => 'required',
-			'level_name' => 'required',
+			// 'level_name' => 'required',
 			'name' => 'required',
-			'url_name' => 'required',
-			'description' => 'required',
-			'banner' => 'required',
+			// 'url_name' => 'required',
+			// 'description' => 'required',
+			// 'banner' => 'required',
 			'status' => 'required'
 		]);
             $requestData = $request->all();
@@ -95,10 +95,10 @@ class CategoryController extends Controller
             // Category::create($requestData);
             $category                       = new Category();
             $category->category_type_id     = $request->category_type_id;
-            $category->level_name           = $request->level_name;
+            // $category->level_name           = $request->level_name;
             $category->name                 = $request->name;
-            $category->url_name             = $request->url_name;
-            $category->description          = $request->description;
+            // $category->url_name             = $request->url_name;
+            // $category->description          = $request->description;
             $category->banner               = $image??"";
             $category->status               = $request->status;
             $category->save();
@@ -160,27 +160,40 @@ class CategoryController extends Controller
         if(auth()->user()->permissions()->where('name','=','edit-'.$model)->first()!= null) {
             $this->validate($request, [
 			'category_type_id' => 'required',
-			'level_name' => 'required',
+			// 'level_name' => 'required',
 			'name' => 'required',
-			'url_name' => 'required',
-			'description' => 'required',
-			'banner' => 'required',
+			// 'url_name' => 'required',
+			// 'description' => 'required',
+			// 'banner' => 'required',
 			'status' => 'required'
 		]);
             // $requestData = $request->all();
-            try{
-                $image = Storage::disk('website')->put('categories', $request->banner);
-            }catch(\Exception $e){}//end trycatch.
-            
+            if($request->hasFile('banner')){
+                // try{
+                    $image = Storage::disk('website')->put('categories', $request->banner);
+                    $category = Category::findOrFail($id);
+                    $category->update(['category_type_id'   =>$request->category_type_id,
+                                        // 'level_name'        =>$request->level_name,
+                                        'name'              =>$request->name,
+                                        // 'url_name'          =>$request->url_name,
+                                        // 'description'       =>$request->description,
+                                        'banner'            =>$image,
+                                        'status'            =>$request->status,
+                    ]);
+                // }catch(\Exception $e){}//end trycatch.
+            }else{
                 $category = Category::findOrFail($id);
                 $category->update(['category_type_id'   =>$request->category_type_id,
-                                    'level_name'        =>$request->level_name,
+                                    // 'level_name'        =>$request->level_name,
                                     'name'              =>$request->name,
-                                    'url_name'          =>$request->url_name,
-                                    'description'       =>$request->description,
-                                    'banner'            =>$image,
+                                    // 'url_name'          =>$request->url_name,
+                                    // 'description'       =>$request->description,
+                                    // 'banner'            =>$image,
                                     'status'            =>$request->status,
                 ]);
+            }
+            
+         
 
              return redirect('category/category')->with('flash_message', 'Category updated!');
         }
