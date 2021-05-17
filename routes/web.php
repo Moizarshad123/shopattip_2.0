@@ -344,5 +344,3 @@ Route::get('logout', 'Auth\LoginController@logout');
 Route::resource('category/category', 'Category\\CategoryController');
 Auth::routes();
 
-
-Route::resource('subcategory/sub-category', 'SubCategory\\SubCategoryController');
