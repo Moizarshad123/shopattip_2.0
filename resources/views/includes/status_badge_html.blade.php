@@ -1,0 +1,1 @@
+<td>{!! $variable == 0 ? "<span class='badge badge-danger'>InActive</span>" : ($variable==1 ? "<span class='badge badge-success'>Active</span>": "")  !!}</td>

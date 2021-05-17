@@ -38,7 +38,7 @@
                    
                 </li>
                 {{-- @if(auth()->user()->isAdmin() == true) --}}
-                @if(auth()->user()->hasRole('developer'))
+                @if(auth()->user()->hasRole('admin'))
 
                 <li><a class="waves-effect" href="{{asset('role-management')}}">
                         <i class=" icon-layers fa-fw"></i><span class="hide-menu"> Roles </span></a>
@@ -52,6 +52,9 @@
                         <li><a href="{{asset('user/deleted')}}">Deleted Users</a></li>
 
                     </ul>
+                </li>
+                <li><a class="waves-effect" href="{{asset('role-management')}}">
+                    <i class=" icon-layers fa-fw"></i><span class="hide-menu"> Category </span></a>
                 </li>
                 <li>
                     <hr />

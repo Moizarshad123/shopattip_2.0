@@ -33,14 +33,14 @@ class RoleController extends Controller
         return back();
     }
 
-    public function delete(Request $request){
+    public function delete(Request $request, $id){
         $role = Role::findOrfail($request->id);
         $role->delete();
         Session::flash('message','Role has been deleted');
         return back();
     }
 
-    public function edit(Request $request){
+    public function edit(Request $request, $id){
         $permissions = Permission::all();
         $blog_permissions = Permission::permissionList('blog');
         $role = Role::findOrfail($request->id);
@@ -48,7 +48,7 @@ class RoleController extends Controller
         return  view('role.edit',compact('role','permissions','role_permissions','blog_permissions'));
     }
 
-    public function update(Request $request){
+    public function update(Request $request, $id){
 
         // dd($request);
         $this->validate($request,[

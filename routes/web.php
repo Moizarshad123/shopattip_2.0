@@ -2,7 +2,7 @@
 
 Route::get('/', 'PagesController@HomePage');
 
-Route::group(['middleware' => ['auth', 'roles'],'roles' => ['admin','user','developer']], function () {
+Route::group(['middleware' => ['auth', 'roles'],'roles' => ['admin','user']], function () {
 // Route::group(['middleware' => ['auth', 'roles'],'roles' => ['admin','user']], function () {
 
     Route::get('/dashboard', function () {
@@ -49,7 +49,7 @@ Route::group(['middleware' => 'auth'], function () {
     
 });
 
-Route::group(['middleware' => ['auth', 'roles'],'roles' => 'admin','roles'=>'developer'], function () {
+Route::group(['middleware' => ['auth', 'roles'],'roles' => 'admin'], function () {
 // Route::group(['middleware' => ['auth', 'roles'],'roles' => 'admin'], function () {
     Route::get('index2', function () {
         return view('dashboard.index2');
@@ -341,5 +341,8 @@ Route::get('blogs/author/{slug}', 'BlogController@getAuthorBlog');
 Route::get('auth/{provider}/', 'Auth\SocialLoginController@redirectToProvider');
 Route::get('{provider}/callback', 'Auth\SocialLoginController@handleProviderCallback');
 Route::get('logout', 'Auth\LoginController@logout');
+Route::resource('category/category', 'Category\\CategoryController');
 Auth::routes();
 
+
+Route::resource('subcategory/sub-category', 'SubCategory\\SubCategoryController');
