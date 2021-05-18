@@ -41,9 +41,10 @@ class BrandController extends Controller
 
     public function create()
     {
+        $ACTION = 'ADD';
         $model = str_slug('brand','-');
         if(auth()->user()->permissions()->where('name','=','add-'.$model)->first()!= null) {
-            return view('brand.brand.create');
+            return view('brand.brand.create',compact('ACTION'));
         }
         return response(view('403'), 403);
 
