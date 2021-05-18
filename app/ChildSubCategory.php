@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class SubCategory extends Model
+class ChildSubCategory extends Model
 {
     use SoftDeletes;
     /**
@@ -13,7 +13,7 @@ class SubCategory extends Model
      *
      * @var string
      */
-    protected $table = 'sub_categories';
+    protected $table = 'child_sub_categories';
 
     /**
     * The database primary key value.
@@ -27,16 +27,12 @@ class SubCategory extends Model
      *
      * @var array
      */
-    protected $fillable = ['category_id', 'name', 'url_name'];
+    protected $fillable = ['sub_category_id', 'name', 'url_name'];
 
-    public function category(){
-
-        return $this->belongsTo(Category::class,'category_id');
+    public function subCategory(){
+    	return $this->belongsTo(SubCategory::class);
     }
 
-    public function childSubcategory(){
-
-        return $this->hasMany(Category::class,'sub_category_id');
-    }
+    
     
 }

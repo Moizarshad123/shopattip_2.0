@@ -310,3 +310,13 @@ Route::resource('brand', 'BrandController\\BrandController');
 Route::resource('brand', 'BrandController\\BrandController');
 
 Route::get('select_category_type/{category_type_id}', 'SubCategoryController\\SubCategoryController@fetchCategoryBaseList');
+
+Route::resource('product/product', 'ProductController\\ProductController');
+Route::get('get_category_by_select_product_type/{product_type_id}', 'ProductController\\ProductController@fetchCategories');
+Route::get('get_subcategory_by_select_category_type/{category_type_id}', 'ProductController\\ProductController@fetchSubCategories');
+Route::get('get_childSubcategory_by_select_subcategory_type/{subcategory_type_id}', 'ProductController\\ProductController@fetchChildSubCategories');
+
+
+
+Route::resource('child-sub-category', 'ChildSubCategory\\ChildSubCategoryController');
+Route::resource('child-sub-category', 'ChildSubCategory\\ChildSubCategoryController');
