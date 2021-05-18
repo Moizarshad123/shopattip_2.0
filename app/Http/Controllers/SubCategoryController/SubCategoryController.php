@@ -4,7 +4,7 @@ namespace App\Http\Controllers\SubCategoryController;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
-
+use App\Category;
 use App\SubCategory;
 use Illuminate\Http\Request;
 
@@ -24,12 +24,13 @@ class SubCategoryController extends Controller
             $perPage = 25;
 
             if (!empty($keyword)) {
-                $subcategory = SubCategory::where('category_id', 'LIKE', "%$keyword%")
+                $subcategory = SubCategory::with('category')->where('category_id', 'LIKE', "%$keyword%")
                 ->orWhere('name', 'LIKE', "%$keyword%")
                 ->orWhere('url_name', 'LIKE', "%$keyword%")
                 ->paginate($perPage);
             } else {
-                $subcategory = SubCategory::paginate($perPage);
+                $subcategory = SubCategory::with('category')->paginate($perPage);
+               
             }
 
             return view('subcategory.sub-category.index', compact('subcategory'));
@@ -40,9 +41,10 @@ class SubCategoryController extends Controller
 
     public function create()
     {
+        $ACTION = 'CREATES';
         $model = str_slug('subcategory','-');
         if(auth()->user()->permissions()->where('name','=','add-'.$model)->first()!= null) {
-            return view('subcategory.sub-category.create');
+            return view('subcategory.sub-category.create',compact('ACTION'));
         }
         return response(view('403'), 403);
 
@@ -70,7 +72,7 @@ class SubCategoryController extends Controller
         $id = $sub_category->id;
         $model = str_slug('subcategory','-');
         if(auth()->user()->permissions()->where('name','=','view-'.$model)->first()!= null) {
-            $subcategory = SubCategory::findOrFail($id);
+            $subcategory = SubCategory::with('category')->findOrFail($id);
             return view('subcategory.sub-category.show', compact('subcategory'));
         }
         return response(view('403'), 403);
@@ -78,11 +80,13 @@ class SubCategoryController extends Controller
 
     public function edit(SubCategory $sub_category)
     {
+        $ACTION = 'EDIT';
         $id = $sub_category->id;
         $model = str_slug('subcategory','-');
         if(auth()->user()->permissions()->where('name','=','edit-'.$model)->first()!= null) {
-            $subcategory = SubCategory::findOrFail($id);
-            return view('subcategory.sub-category.edit', compact('subcategory'));
+            $subcategory = SubCategory::with('category')->findOrFail($id);
+           
+            return view('subcategory.sub-category.edit', compact('subcategory','ACTION'));
         }
         return response(view('403'), 403);
     }
@@ -119,5 +123,11 @@ class SubCategoryController extends Controller
         }
         return response(view('403'), 403);
 
+    }
+
+    public function fetchCategoryBaseList( $category_type_id = null)
+    {
+        $categories = Category::where('category_type_id',$category_type_id)->get();
+        echo $categories ;
     }
 }
