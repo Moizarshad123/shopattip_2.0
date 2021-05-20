@@ -67,6 +67,7 @@
             }
         }
     </style>
+    <script>	var AIZ = AIZ || {}; </script>
 </head>
 
 <body class="@if(session()->get('theme-layout')) {{session()->get('theme-layout')}} @endif">

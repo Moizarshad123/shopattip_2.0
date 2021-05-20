@@ -1,7 +1,7 @@
 @if(count($combinations[0]) > 0)
-	<table class="table table-bordered">
+	<table class="table table-bordered color_table" >
 		<thead>
-			<tr>
+			<tr class="color_table">
 				<td class="text-center">
 					<label for="" class="control-label">Variant</label>
 				</td>
@@ -70,7 +70,7 @@
 						@endphp" min="0" step="1" class="form-control" required>
 					</td>
 					<td>
-						<button type="button" class="btn btn-icon btn-sm btn-danger" onclick="delete_variant(this)"><i class="las la-trash"></i></button>
+						<button type="button" id="delete_variant" class="btn btn-icon btn-sm btn-danger" onclick="delete_variant(this)"><i class="las la-trash"></i></button>
 					</td>
 				</tr>
 			@endif

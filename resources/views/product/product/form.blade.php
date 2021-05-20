@@ -1,9 +1,9 @@
 @push('css')
-{{-- <link rel="stylesheet" href="{{ asset('vendors/css/forms/select/select2.min.css') }}">--}}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tagify/3.22.1/tagify.css" />  
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/css/select2.min.css" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@yaireo/tagify@3.1.0/dist/tagify.css" />
+<link rel="stylesheet" href="{{ asset('vendor/css/forms/select/select2.min.css') }}">
 <style>
     span.select2-selection.select2-selection--single {
     height: 37px;
@@ -309,7 +309,8 @@ opacity: 1;
 <div class="form-group {{ $errors->has('options') ? 'has-error' : ''}}">
     <label for="options" class="col-md-4 control-label">{{ 'Options' }}</label>
     <div class="col-md-6">
-        <select class="form-control attribute-choose" data-selected-text-format="count" data-live-search="true" multiple data-placeholder="Choose Attributes" name="choice_attributes[]" id="choice_attributes" multiple >
+      
+        <select name="choice_attributes[]" id="choice_attributes" class="form-control attribute-choose" data-selected-text-format="count" data-live-search="true" multiple data-placeholder="Choose Attributes"  >
             @foreach (\App\Attribute::all() as $key => $attribute)
             <option value="{{ $attribute->name }}">{{ $attribute->name }}</option>
             @endforeach
@@ -447,53 +448,53 @@ opacity: 1;
 
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify@3.1.0/dist/tagify.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.1.1/tagify.min.js"></script>
 
-{{-- <script src="{{ asset('vendors/js/forms/select/select2.full.min.js') }}"></script>
-<script src="{{ asset('js/scripts/forms/form-select2.js') }}"></script> --}}
+<script src="{{ asset('vendor/js/forms/select/select2.full.min.js') }}"></script>
+<script src="{{ asset('js/script/forms/form-select2.js') }}"></script>
 
 <script>
 
-        function img_pathUrl(input){
-            
-            $('#img_url').show();
-            $('#img_url')[0].src = (window.URL ? URL : webkitURL).createObjectURL(input.files[0]);
-        }
+    function img_pathUrl(input){
+        
+        $('#img_url').show();
+        $('#img_url')[0].src = (window.URL ? URL : webkitURL).createObjectURL(input.files[0]);
+    }
 
-        function readURL(input,id,i){ 
-                if (input.files && input.files[0]) {
-                    var reader = new FileReader();
+    function readURL(input,id,i){ 
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
 
-                    reader.onload = function(e) {
-                    $('#'+id).attr('src', e.target.result).css({"height": "100", "margin-left": "280px","margin-top":"10px"});
-                    }
-
-                    reader.readAsDataURL(input.files[i]); // convert to base64 string
+                reader.onload = function(e) {
+                $('#'+id).attr('src', e.target.result).css({"height": "100", "margin-left": "280px","margin-top":"10px"});
                 }
-        }
 
-        var _URL = window.URL || window.webkitURL;
+                reader.readAsDataURL(input.files[i]); // convert to base64 string
+            }
+    }
+
+    var _URL = window.URL || window.webkitURL;
         $("#thumbnail_img").change(function(e) {
 
-            var file, img;
-            for(let i = 0; i<this.files.length;i++){
-                if ((file = this.files[i])) {
-                    img = new Image();
-                    img.src = _URL.createObjectURL(file);
+        var file, img;
+        for(let i = 0; i<this.files.length;i++){
+            if ((file = this.files[i])) {
+                img = new Image();
+                img.src = _URL.createObjectURL(file);
 
 
-                }
-                readURL(this,'thumbnail'+i,i);
             }
+            readURL(this,'thumbnail'+i,i);
+        }
 
-        });
+    });
 
-        $('#shipping_type_free').click(function(){
-            $('#flat_shipping_cost').hide();
-        })
-        $('#shipping_type_flat_rate').click(function(){
-            $('#flat_shipping_cost').show();
-        })
-
+    $('#shipping_type_free').click(function(){
+        $('#flat_shipping_cost').hide();
+    });
+    $('#shipping_type_flat_rate').click(function(){
+        $('#flat_shipping_cost').show();
+    });
 
         
     $(document).ready(function () {
@@ -633,29 +634,35 @@ opacity: 1;
             }
         });
 
-    function formatState (state) {
-        if (!state.id) { return state.text; }
+        function formatState (state) {
+            if (!state.id) { return state.text; }
 
-        var $state = $('<span><span class="size-15px d-inline-block mr-2 rounded border" style="background:' + state.element.value + ';">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span>' + state.text + '</span></span>');
-        return $state;
+            var $state = $('<span><span class="size-15px d-inline-block mr-2 rounded border" style="background:' + state.element.value + ';">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span>' + state.text + '</span></span>');
+            return $state;
         };
 
         $(".color-choose").select2({
             width: "100%",
-        templateResult: formatState
+            templateResult: formatState
+        });
+
+        $(".attribute-choose").select2({
+
+            width: "100%",
+                
         });
 
         $(".form-control select2").select2({
             width: "100%",
         });
 
-        function add_more_customer_choice_option(i, name){
-            $('#customer_choice_options').append('<div class="form-group row"><div class="col-md-3"><input type="hidden" name="choice_no[]" value="'+i+'"><input type="text" class="form-control" name="choice[]" value="'+name+'" placeholder="Choice Title" readonly></div><div class="col-md-8"><input type="text" class="form-control aiz-tag-input" name="choice_options_'+i+'[]" placeholder="Enter choice values" data-on-change="update_sku"></div></div>');
-            // var input = document.querySelector('#customer_choice_options');
-            // var tagify = new Tagify(input);
-            // tagify.addTags();
-            AIZ.plugins.tagify();
-        }
+        // function add_more_customer_choice_option(i, name){
+        // $('#customer_choice_options').append('<div class="form-group row"><div class="col-md-3"><input type="hidden" name="choice_no[]" value="'+i+'"><input type="text" class="form-control" name="choice[]" value="'+name+'" placeholder="Choice Title" readonly></div><div class="col-md-8"><input type="text" class="form-control aiz-tag-input" name="choice_options_'+i+'[]" placeholder="Enter choice values" data-on-change="update_sku"></div></div>');
+        // AIZ.plugins.tagify();
+
+        // }
+
+
 
         $('input[name="colors_active"]').on('change', function() {
             if(!$('input[name="colors_active"]').is(':checked')){
@@ -671,7 +678,7 @@ opacity: 1;
             update_sku();
         });
 
-        $('input[name="unit_price"]').on('keyup', function() {
+        $('input[name="sale_price"]').on('keyup', function() {
             update_sku();
         });
 
@@ -693,63 +700,98 @@ opacity: 1;
             $(em).closest('.variant').remove();
         }
 
-        function update_sku(){
-            // console.log($('#choice_form').serialize());
-            $.ajax({
-            type:"POST",
-            url:"{{ route('admin.products.sku-combination') }}",
-
-            data:$('#choice_form').serialize(),
-            beforeSend: function(){
-
-                },
-                success: function(data){
-                $('#sku_combination').html(data);
-                if (data.length > 1) {
-                    $('#quantity').hide();
-                }
-                else {
-                        $('#quantity').show();
-                }
-            }
-        });
-        }
 
         $('#choice_attributes').on('change', function() {
+           
             $('#customer_choice_options').html(null);
+            var count = 1;
             $.each($("#choice_attributes option:selected"), function(){
-                add_more_customer_choice_option($(this).val(), $(this).text());
+                var value = $(this).val();
+                var text = $(this).text();
+
+                $('#customer_choice_options').append('<div class="form-group row"><div class="col-md-3"><input type="hidden" name="choice_no[]" value="'+value+'"><input type="text" class="form-control" name="choice[]" value="'+text+'" placeholder="Choice Title" readonly></div><div class="col-md-8"><input type="text" id="option_change" class="form-control aiz-tag-input attribute-values-'+count+'"" name="choice_options_'+value+'[]" data-on-change="update_sku" placeholder="Enter choice values" ></div></div>');
+                count++;
+                
+
+                // $('#customer_choice_options').append('<div class="form-group row"><div class="col-md-3"><input type="hidden" name="choice_no[]" value="'+value+'"><input type="text" class="form-control" name="choice[]" value="'+text+'" placeholder="Choice Title" readonly></div><div class="col-md-8"><input type="text" class="form-control attribute-values-'+count+'" name="choice_options_'+value+'[]" onchange="update_sku()" placeholder="Enter choice values" ></div></div>');
+                // add_more_customer_choice_option($(this).val(), $(this).text());
             });
+           
+                update_sku();
+                var input = document.querySelector('.attribute-values-1');
+                var tagify = new Tagify(input);
+                tagify.addTags();
+            
+
+                setTimeout(function() {
+                    var input = document.querySelector('.attribute-values-2');
+                    var tagify = new Tagify(input);
+                    tagify.addTags();
+                }, 1000);
+
+        }); 
+
+ 
+        $("div").delegate(".attribute-values-1", "change", function(){
             update_sku();
+        });
+        $("div").delegate(".attribute-values-2", "change", function(){
+            update_sku();
+        });
+
+        $(".attribute-values").select2({
+            width: "100%",
+            
+        });
+
+        $(document).on('click','.delete_variant', function(){
+
+            var values = $('.color_table option:selected').text();
+            $(this).closest('.variant').remove();
+
+        });
+                
+        function update_sku(){
+          $.ajax({
+          type:"POST",
+          url:"{{ route('admin.products.sku-combination') }}",
+
+          data:$('#choice_form').serialize(),
+          beforeSend: function(){
+
+            },
+              success: function(data){
+              $('#sku_combination').html(data);
+              if (data.length > 1) {
+                  $('#quantity').hide();
+              }
+              else {
+                    $('#quantity').show();
+              }
+            }
+            });
+        }
+
+        $('input[name="colors_active"]').on('change', function() {
+            if(!$('input[name="colors_active"]').is(':checked')){
+                $('#colors').prop('disabled', true);
+                $('#color_append_table').hide();
+            }
+            else{
+                $('#colors').prop('disabled', false);
+                var length = $('#count').val();
+                if(length > 0){
+                    $('#color_append_table').show();
+                }
+                
+            }
 
         });
 
-                $(".attribute-values").select2({
-                    width: "100%",
-                    
-                });
-                
-
-            $('input[name="colors_active"]').on('change', function() {
-                if(!$('input[name="colors_active"]').is(':checked')){
-                    $('#colors').prop('disabled', true);
-                    $('#color_append_table').hide();
-                }
-                else{
-                    $('#colors').prop('disabled', false);
-                    var length = $('#count').val();
-                    if(length > 0){
-                        $('#color_append_table').show();
-                    }
-                   
-                }
-
-            });
         var input = document.querySelector('#tags');
-            var tagify = new Tagify(input);
-            tagify.addTags();
+        var tagify = new Tagify(input);
+        tagify.addTags();
           
- 
     });
   
 </script>
