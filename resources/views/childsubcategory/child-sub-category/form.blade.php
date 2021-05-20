@@ -12,7 +12,11 @@
         <select  class="form-control" name="sub_category_id" id="sub_category_id" required > 
             <option value="">Select SuCategory</option>
             @foreach ($getSubCategories as $subcategory)
-            <option value="{{ $subcategory->id }}">{{ $subcategory->name }}</option>
+            @if($childsubcategory->sub_category_id == $subcategory->id)
+                <option value="{{ $subcategory->id }}" selected>{{ $subcategory->name }}</option>
+            @else 
+                <option value="{{ $subcategory->id }}">{{ $subcategory->name }}</option>
+            @endif
                 
             @endforeach
         </select>

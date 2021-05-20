@@ -9,6 +9,8 @@ use App\SubCategory;
 use App\ChildSubCategory;
 
 use App\Brand;
+use App\User;
+
 use Storage;
 use App\Product;
 use Illuminate\Http\Request;
@@ -70,8 +72,9 @@ class ProductController extends Controller
     public function create()
     {
         $model = str_slug('product','-');
+        $brands = Brand::all();
         if(auth()->user()->permissions()->where('name','=','add-'.$model)->first()!= null) {
-            return view('product.product.create');
+            return view('product.product.create',compact('brands'));
         }
         return response(view('403'), 403);
 
@@ -86,25 +89,164 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+
+   
         $model = str_slug('product','-');
         if(auth()->user()->permissions()->where('name','=','add-'.$model)->first()!= null) {
-            $this->validate($request, [
-			'product_type_id' => 'required',
-			'category_id' => 'required',
-			'subcategory_id' => 'required',
-			'child_subcategory_id' => 'required',
-			'brand_id' => 'required',
-			'description' => 'required',
-			'front_image' => 'required',
-			'sale_price' => 'required',
-			'perchase_price' => 'required'
-		]);
-            $requestData = $request->all();
+        //     $this->validate($request, [
+		// 	'product_type_id' => 'required',
+		// 	'category_id' => 'required',
+		// 	'subcategory_id' => 'required',
+		// 	'child_subcategory_id' => 'required',
+        //     'name' => 'required',
+		// 	'brand_id' => 'required',
+		// 	'description' => 'required',
+		// 	'front_image' => 'required',
+		// 	'sale_price' => 'required',
+		// 	'perchase_price' => 'required'
+		// ]);
+        $user_id    = auth()->user()->id;
+        $user       = User::findorfail($user_id);
+      
+        $product    = new Product;
+        if( $user_id == 1)
+        {
+            $added_by_id              = $user_id;
+            $added_by_type            = "admin";
+            $product->product_type_id = $request->product_type_id;
+        }
+        else
+        {
+           
+            $vendor_id                = $user->vendor['id'];
+            $vendor_type_id           = $user->vendor['vendor_type_id'];
+            $added_by_id              = $vendor_id;
+            $added_by_type            = "vendor";
+            $product->product_type_id = $vendor_type_id;
+        }
+        $product->added_by_id           = $added_by_id;
+        $product->added_by_type         = $added_by_type;
+        $product->name                  = $request->name;
+        $product->category_id           = $request->category_id;
+        $product->subcategory_id	    = $request->subcategory_id;
+        $product->child_subcategory_id  = $request->child_subcategory_id;
+        $product->brand_id              = $request->brand_id;
+        $product->current_stock         = count($request->variation_quantity);
+        $product->description           = $request->description;
+        $product->sale_price            = $request->commission+intval($request->sale_price);
+        $product->purchase_price        = $request->perchase_price;
+        $product->discount              = $request->discount;
+        $product->discount_type         = $request->discount_type;
+        $tags                           = array();
+        if($request->tags[0] != null){
+            foreach (json_decode($request->tags[0]) as $key => $tag) {
+                array_push($tags, $tag->value);
+            }
+        }
+        $product->tags              = implode(',', $tags);
+        $product->num_of_imgs      = count($request->thumbnail_image) + 1;
+        $product->url_name         = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->name));
+        
+        if($request->has('colors_active') && $request->has('colors') && count($request->colors) > 0){
+            $color_codes = implode(', ', $request->colors);
+            $result_color_ids = \App\ProductColor::select('id')->whereIn('color_code', $request->colors)->get();
+
+            $color_ids =[];
+            foreach ($result_color_ids as $key => $value)
+            {
+                array_push($color_ids,$value->id);
+            }
+
+            $product->colors = json_encode($color_ids);
+        }
+        else {
+            $colors = array();
+            $product->colors = json_encode($colors);
+        }
+
+        $choice_options = array();
+
+        if($request->has('choice_no')){
+            foreach ($request->choice_no as $key => $no) {
+                $str          = 'choice_options_'.$no;
+                $item['id']   = $key+1;
+                $item['name'] = $no;
+
+                $data = array();
+                foreach (json_decode($request[$str][0]) as $key => $eachValue) {
+                    array_push($data, $eachValue->value);
+                }
+                $item['values'] = $data;
+                array_push($choice_options, $item);
+            }
+          }
+      
+        $product->options = json_encode($choice_options);
+
+
+     ########     shipping
+      if ($request->has('shipping_type')) {
+        if($request->shipping_type == 'free'){
+            $product->shipping_cost = 0;
+        }
+        elseif ($request->shipping_type == 'flat_rate') {
+
+            $product->shipping_cost = $request->shipping_cost;
+        }
+    }
+        
+        $product->save();
+            // $requestData = $request->all();
             
-            Product::create($requestData);
+            // Product::create($requestData);
             return redirect('product/product')->with('flash_message', 'Product added!');
         }
         return response(view('403'), 403);
+    }
+
+    public function combinations($arrays) {
+        $result = array(array());
+        foreach ($arrays as $property => $property_values) {
+            $tmp = array();
+            foreach ($result as $result_item) {
+                foreach ($property_values as $property_value) {
+                    $tmp[] = array_merge($result_item, array($property => $property_value));
+                }
+            }
+            $result = $tmp;
+        }
+        return $result;
+      }
+
+    public function sku_combination(Request $request)
+    {
+        $options = array();
+        if($request->has('colors_active') && $request->has('colors') && count($request->colors) > 0){
+            $colors_active = 1;
+            array_push($options, $request->colors);
+        }
+        else {
+            $colors_active = 0;
+        }
+
+        $unit_price = $request->unit_price;
+        $product_name = $request->name;
+
+        if($request->has('choice_no')){
+            foreach ($request->choice_no as $key => $no) {
+                $name = 'choice_options_'.$no;
+                $data = array();
+                foreach (json_decode($request[$name][0]) as $key => $item) {
+                    array_push($data, $item->value);
+                }
+                array_push($options, $data);
+            }
+        }
+
+        $combinations = $this->combinations($options);
+        return view('product.product.sku_combinations', compact('combinations', 'unit_price', 'colors_active', 'product_name'));
+
+//        return view('admin.pages.products.sku_combinations', compact('combinations', 'unit_price', 'colors_active', 'product_name'));
     }
 
     /**
@@ -196,6 +338,7 @@ class ProductController extends Controller
 
     public function fetchCategories($product_type_id = null)
     {
+      
         $getCategories = Category::where('category_type_id',$product_type_id)->get();
         echo $getCategories;
     }

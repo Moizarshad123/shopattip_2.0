@@ -16,11 +16,26 @@
                     <div class="table-responsive">
                         <table class="table table">
                             <tbody>
-                            <tr>
+                            {{-- <tr>
                                 <th>ID</th>
                                 <td>{{ $banner->id }}</td>
+                            </tr> --}}
+                            <tr>
+                                <th> Banner Type </th>
+                                @if($banner->banner_type == 1)
+                                <td>General</td>
+                                @elseif($banner->banner_type == 2)
+                                <td>Grocery</td>
+                                @endif
                             </tr>
-                            <tr><th> Banner Type </th><td> {{ $banner->banner_type }} </td></tr><tr><th> Title </th><td> {{ $banner->title }} </td></tr><tr><th> Banner </th><td> {{ $banner->banner }} </td></tr>
+                            <tr>
+                                <th> Title </th>
+                                <td> {{ $banner->title }} </td>
+                            </tr>
+                            <tr>
+                                <th> Banner </th>
+                                @include('includes.image_html',['variable'=>$banner->banner])
+                            </tr>
                             </tbody>
                         </table>
                     </div>

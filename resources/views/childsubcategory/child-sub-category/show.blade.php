@@ -16,11 +16,22 @@
                     <div class="table-responsive">
                         <table class="table table">
                             <tbody>
-                            <tr>
+                            {{-- <tr>
                                 <th>ID</th>
                                 <td>{{ $childsubcategory->id }}</td>
+                            </tr> --}}
+                            <tr>
+                                <th> Sub Category  </th>
+                                <td> {{ $childsubcategory->subCategory->name }} </td>
                             </tr>
-                            <tr><th> Sub Category Id </th><td> {{ $childsubcategory->sub_category_id }} </td></tr><tr><th> Name </th><td> {{ $childsubcategory->name }} </td></tr><tr><th> Url Name </th><td> {{ $childsubcategory->url_name }} </td></tr>
+                            <tr>
+                                <th> Name </th>
+                                <td> {{ $childsubcategory->name }} </td>
+                            </tr>
+                            <tr>
+                                <th> Url Name </th>
+                                <td> {{ $childsubcategory->url_name }} </td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>

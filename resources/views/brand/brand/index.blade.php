@@ -32,7 +32,7 @@
                             <tbody>
                             @foreach($brand as $item)
                                 <tr>
-                                    <td>{{ $loop->iteration or $item->id }}</td>
+                                    <td>{{ $loop->iteration ?? $item->id }}</td>
                                     <td>{{ $item->name }}</td>
                                    
                                         @include('includes.image_html',['variable'=>$item->logo])

@@ -94,7 +94,7 @@
                     if(category_type != null){
                         $.ajax({
                         type: 'GET',
-                        url: "{{url('select_category_type')}}/" +category_type,
+                        url: "{{url('select-category-type')}}/" +category_type,
                         data:{ 
                             _token:'{{ csrf_token() }}'
                         },
@@ -138,7 +138,7 @@
                     if(category_type != null){
                         $.ajax({
                         type: 'GET',
-                        url: "{{url('select_category_type')}}/" +category_type,
+                        url: "{{url('select-category-type')}}/" +category_type,
                         data:{ 
                             _token:'{{ csrf_token() }}'
                         },

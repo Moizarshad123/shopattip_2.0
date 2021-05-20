@@ -309,13 +309,14 @@ Route::resource('brand', 'BrandController\\BrandController');
 Route::resource('brand', 'BrandController\\BrandController');
 Route::resource('brand', 'BrandController\\BrandController');
 
-Route::get('select_category_type/{category_type_id}', 'SubCategoryController\\SubCategoryController@fetchCategoryBaseList');
+Route::get('select-category-type/{category_type_id}', 'SubCategoryController\\SubCategoryController@fetchCategoryBaseList');
 
 
 Route::resource('product/product', 'ProductController\\ProductController');
-Route::get('get_category_by_select_product_type/{product_type_id}', 'ProductController\\ProductController@fetchCategories');
-Route::get('get_subcategory_by_select_category_type/{category_type_id}', 'ProductController\\ProductController@fetchSubCategories');
-Route::get('get_childSubcategory_by_select_subcategory_type/{subcategory_type_id}', 'ProductController\\ProductController@fetchChildSubCategories');
+Route::get('get-category-by-select-product-type/{product_type_id}', 'ProductController\\ProductController@fetchCategories');
+Route::get('get-subcategory-by-select-category-type/{category_type_id}', 'ProductController\\ProductController@fetchSubCategories');
+Route::get('get-childSubcategory-by-select-subcategory-type/{subcategory_type_id}', 'ProductController\\ProductController@fetchChildSubCategories');
+Route::post('products/sku-combination', 'ProductController\\ProductController@sku_combination')->name('admin.products.sku-combination');;
 
 
 

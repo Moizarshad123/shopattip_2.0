@@ -97,7 +97,7 @@ class ChildSubCategoryController extends Controller
     {
         $model = str_slug('childsubcategory','-');
         if(auth()->user()->permissions()->where('name','=','view-'.$model)->first()!= null) {
-            $childsubcategory = ChildSubCategory::findOrFail($id);
+            $childsubcategory = ChildSubCategory::with('subCategory')->findOrFail($id);
             return view('childsubcategory.child-sub-category.show', compact('childsubcategory'));
         }
         return response(view('403'), 403);
@@ -114,8 +114,9 @@ class ChildSubCategoryController extends Controller
     {
         $model = str_slug('childsubcategory','-');
         if(auth()->user()->permissions()->where('name','=','edit-'.$model)->first()!= null) {
-            $childsubcategory = ChildSubCategory::findOrFail($id);
-            return view('childsubcategory.child-sub-category.edit', compact('childsubcategory'));
+            $childsubcategory = ChildSubCategory::with('subCategory')->findOrFail($id);
+            $getSubCategories = SubCategory::all();
+            return view('childsubcategory.child-sub-category.edit', compact('childsubcategory','getSubCategories'));
         }
         return response(view('403'), 403);
     }

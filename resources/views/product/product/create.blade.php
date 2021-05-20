@@ -20,7 +20,7 @@
                         </ul>
                     @endif
 
-                    <form method="POST" action="{{ url('/product/product') }}" accept-charset="UTF-8"
+                    <form method="POST" action="{{ url('/product/product') }}" id="choice_form" accept-charset="UTF-8"
                           class="form-horizontal" enctype="multipart/form-data">
                         {{ csrf_field() }}
 

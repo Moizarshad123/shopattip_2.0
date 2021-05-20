@@ -16,10 +16,10 @@
                     <div class="table-responsive">
                         <table class="table table">
                             <tbody>
-                            <tr>
+                            {{-- <tr>
                                 <th>ID</th>
                                 <td>{{ $brand->id }}</td>
-                            </tr>
+                            </tr> --}}
                             <tr>
                                 <th> Name </th>
                                 <td> {{ $brand->name }} </td>

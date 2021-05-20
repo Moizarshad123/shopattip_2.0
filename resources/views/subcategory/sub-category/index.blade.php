@@ -39,7 +39,7 @@
                             <tbody>
                             @foreach($subcategory as $item)
                                 <tr>
-                                    <td>{{ $loop->iteration or $item->id }}</td>
+                                    <td>{{ $loop->iteration ?? $item->id }}</td>
                                     <td>{{ $item->category->name??'' }}</td>
                                     <td>{{ $item->name??'' }}</td>
                                     <td>{{ $item->url_name??'' }}</td>
