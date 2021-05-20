@@ -6,7 +6,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Brand;
-use Storage;
+use Storage;  
 
 use Illuminate\Http\Request;
 

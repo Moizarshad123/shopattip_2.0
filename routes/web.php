@@ -326,3 +326,7 @@ Route::resource('child-sub-category', 'ChildSubCategory\\ChildSubCategoryControl
 // Route::resource('banner', 'BannerController\\BannerController');
 Route::resource('banner', 'BannerController\\BannerController');
 
+
+Route::resource('coupon', 'CouponController\\CouponController');
+Route::resource('coupon', 'CouponController\\CouponController');
+Route::resource('discount', 'DiscountController\\DiscountController');
