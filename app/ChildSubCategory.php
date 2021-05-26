@@ -33,6 +33,10 @@ class ChildSubCategory extends Model
     	return $this->belongsTo(SubCategory::class);
     }
 
+    public function product(){
+        return $this->belongTo(Product::class,'child_subcategory_id');
+    }
+
     
     
 }

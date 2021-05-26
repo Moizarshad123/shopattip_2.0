@@ -19,11 +19,13 @@
                         </ul>
                     @endif
 
-                    <form method="POST" action="{{ url('/product/product/' . $product->id) }}" accept-charset="UTF-8" class="form-horizontal" enctype="multipart/form-data">
-                        {{ method_field('PATCH') }}
+                    <form method="POST" id="choice_form" action="{{ url('/product/product/update/' . $product->id) }}" accept-charset="UTF-8" class="form-horizontal" enctype="multipart/form-data">
+                        {{-- {{ method_field('PATCH') }} --}}
                         {{ csrf_field() }}
-
-                        @include ('product.product.form', ['submitButtonText' => 'Update'])
+                        {{-- <input type="hidden" name="_method" id="method" value="PUT"> --}}
+                    <input type="hidden" name="product_id" value="{{ $product->id }}">  
+                      
+                        @include ('product.product.update-form', ['submitButtonText' => 'Update'])
 
                     </form>
                 </div>

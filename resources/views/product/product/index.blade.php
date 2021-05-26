@@ -30,15 +30,31 @@
                             <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Product Type Id</th><th>Category Id</th><th>Subcategory Id</th>
+                                <th>Product Type</th>
+                                <th>Category</th>
+                                <th>Subcategory</th>
+                                <th>Child Subcategory</th>
+
                                 <th>Actions</th>
                             </tr>
                             </thead>
                             <tbody>
+                                {{-- @dd($product) --}}
                             @foreach($product as $item)
+
+                                {{-- @dd($item->subCategory[0]->name) --}}
                                 <tr>
-                                    <td>{{ $loop->iteration or $item->id }}</td>
-                                    <td>{{ $item->product_type_id }}</td><td>{{ $item->category_id }}</td><td>{{ $item->subcategory_id }}</td>
+                                    <td>{{ $loop->iteration?? $item->id }}</td>
+                                    @if($item->product_type_id == 1)
+                                    <td>General</td>
+                                    @elseif($item->product_type_id == 2)
+                                    <td>Grocery</td>
+                                    @endif
+                       
+                                    <td>{{$item->category[0]->name??''}}</td>
+                                    <td>{{ $item->subCategory[0]->name??'' }}</td>
+                                    <td>{{ $item->subChildCategory[0]->name??'' }}</td>
+
                                     <td>
                                         @can('view-'.str_slug('Product'))
                                             <a href="{{ url('/product/product/' . $item->id) }}"

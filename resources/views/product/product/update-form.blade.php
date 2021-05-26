@@ -1,18 +1,47 @@
+@push('css')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tagify/3.22.1/tagify.css" />  
+<link href="{{asset('plugins/components/bootstrap-tagsinput/dist/bootstrap-tagsinput.css')}}" rel="stylesheet" />
 
-@extends('admin/layouts/contentLayoutMaster')
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/css/select2.min.css" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@yaireo/tagify@3.1.0/dist/tagify.css" />
+<link rel="stylesheet" href="{{ asset('vendor/css/forms/select/select2.min.css') }}">
+<style>
+    span.select2-selection.select2-selection--single {
+    height: 37px;
+    }
+    #img_url {
+        background: #ddd;
+        width: 230px;
+        height: 150px;
+        /* text-align: center !important; */
+        margin-left: 320px;
+        margin-top: 50px !important;
+        display: block;
+    }
+    #thumbnail_img_url{
+        background: #ddd;
+        width: 124px;
+        height: 82px;
+        /* text-align: center !important; */
+        margin-left: 320px;
+        margin-top: 50px !important;
+        display: block;
+    }
+    .tagify{
+        --tag-text-color:#fff !important;
+        --tag-hover: #3490dc  !important;
+        --tag-bg: #3490dc !important;
+        
+      
+    }
+    tag.tagify__tag {
+        background-color: #3490dc !important;
+        border-color: #3490dc !important;
+        color: #fff !important;
+      
+    }
 
-@section('vendor-style')
-        {{-- vendor css files --}}
-
-    <link rel="stylesheet" href="{{ asset(mix('vendors/css/forms/select/select2.min.css')) }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tagify/3.22.1/tagify.css" integrity="sha512-91wa7heHLbuVdMrSXbWceVZva6iWDFlkFHnM+9Sc+oXFpTgw1FCqdnuaGBJfDVuNSNl0DwDmeGeJSORB0HyLZQ==" crossorigin="anonymous" />    <!-- <link rel="stylesheet" href="{{ asset('assets/css/aiz-core.css') }}"> -->
-    <!-- <link rel="stylesheet" href="{{ asset(mix('vendors/css/vendors.min.css')) }}" /> -->
-    <!-- <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-rtl.min.css') }}"> -->
-    <style>
-
-        /* product varient custom css */
-
-        .tagify {
+    .tagify {
         --tags-border-color: #e2e5ec;
         --tag-bg: #7367f0;
         --tag-hover: #7367f0;
@@ -127,414 +156,365 @@
         background-color: var(--dark);
         }
 
-    </style>
-@endsection
-
-@section('page-style')
-         {{-- Page Css files --}}
-
-@endsection
-
-@section('content')
 
 
-<!-- // Basic multiple Column Form section start -->
-<section id="multiple-column-form">
-  <div class="row match-height">
-      <div class="col-12">
-          <div class="card">
 
-              <div class="card-content">
-                  <div class="card-body">
-                  <form class="form" method="POST" action="{{route('product.update', $product->id)}}"  enctype="multipart/form-data" id="choice_form">>
-                    <input type="hidden" name="_method" id="method" value="PUT">
-                    @csrf
-                    {{-- @method('PUT') --}}
-                    <input type="hidden" name="id" value="{{ $product->id }}">  
-                    <div class="form-body">
-                            <br>
-                              <div class="row">
+/*tagify tag input*/
 
-                                <div class="col-12">
+.aiz-tag-input {
+height: auto;
+padding: 0.465rem 1rem 0.2rem;
+}
+.aiz-tag-input .tagify__tag,
+.aiz-tag-input .tagify__input {
+margin: 0px 5px 5px 0px;
+}
+.aiz-tag-input .tagify__tag__removeBtn {
+font: 12px Serif;
+line-height: 1.5;
+}
+.aiz-tag-input .tagify__tag__removeBtn:hover + div > span {
+opacity: 1;
+}
+</style>
+@endpush
 
-                                    <fieldset class="form-label-group
-                                    form-group position-relative has-icon-left">
-                                        <div class="demo-inline-spacing">
-                                            <div class="custom-control custom-radio">
-                                                <input type="radio" id="General" value="1" name="product_type_id" class="custom-control-input" {{($product->product_type_id==1) ? "checked" :''}}>
-                                                <label class="custom-control-label" for="General">General</label>
-                                            </div>
-                                            <div class="custom-control custom-control-success custom-radio">
-                                                <input type="radio" id="Groccery" value="2" name="product_type_id" class="custom-control-input" {{($product->product_type_id==2) ? "checked" :''}}>
-                                                <label class="custom-control-label" for="Groccery">Groccery</label>
-                                            </div>
-                                            
-                                        </div>
-                                    @if ($errors->has('product_type_id'))
-                                    <div class="product_type_id">
-                                        {{ $errors->first('product_type_id') }}
-                                    </div>
-                                    @endif
-                                    </fieldset>
+<div class="form-group {{ $errors->has('product_type_id') ? 'has-error' : ''}}">
+    <label for="product_type_id" class="col-md-4 control-label">{{ 'Product Type' }}</label>
+    <div class="col-md-6">
+        <input type="radio" name="product_type_id" id="product_type_id" value="1" {{($product->product_type_id==1) ? "checked" :''}}> GENERAL 
+        <input type="radio" name="product_type_id" id="product_type_id" value="2" style="margin-left: 51px;"  {{($product->product_type_id==2) ? "checked" :''}}> GROCERY
+        {!! $errors->first('product_type_id', '<p class="help-block">:message</p>') !!}
+    </div>
+</div>
+<div class="form-group {{ $errors->has('category_id') ? 'has-error' : ''}}">
+    <label for="category_id" class="col-md-4 control-label">{{ 'Category' }}</label>
+    <div class="col-md-6">
+        <select  class="form-control" name="category_id" id="category_id" required > 
+            @foreach($Categories as $Category)
+            <option value="{{ $Category->id }}" {{(  $Category->category_type_id == $product->category_id) ? 'selected="true"':'' }}>({{$Category->level_name}}) <strong>{{ $Category->name }}</strong></option>
 
-                                </div>
-                                <div class="col-12">
+            @endforeach
+        </select>
+        {!! $errors->first('category_id', '<p class="help-block">:message</p>') !!}
+    </div>
+</div>
+<div class="form-group {{ $errors->has('subcategory_id') ? 'has-error' : ''}}">
+    <label for="subcategory_id" class="col-md-4 control-label">{{ 'Subcategory' }}</label>
+    <div class="col-md-6">
+        <select  class="form-control" name="subcategory_id" id="subcategory_id" required > 
+            @foreach($subCategories as $subCategory)
+            <option value="{{ $subCategory->id }}" {{(  $subCategory->category_id == $product->subcategory_id) ? 'selected="true"':'' }}>(SubCategory) <strong>{{ $subCategory->name }}</strong></option>
 
-                                    <fieldset class="form-label-group
-                                    form-group position-relative has-icon-left">
-                                    <input type="text" class="form-control"
-                                    name="name"
-                                    id="name" placeholder="Name"
-                                    value="{{ $product->name }}" required="">
-                                    <div class="form-control-position">
-                                        <i class="feather icon-user"></i>
-                                    </div>
-                                    <label for="name">Name</label>
-                                    @if ($errors->has('name'))
-                                    <div class="danger">
-                                        {{ $errors->first('name') }}
-                                    </div>
-                                    @endif
-                                </fieldset>
+            @endforeach
+            
+        </select>
+        {!! $errors->first('subcategory_id', '<p class="help-block">:message</p>') !!}
+    </div>
+</div>
+<div class="form-group {{ $errors->has('child_subcategory_id') ? 'has-error' : ''}}">
+    <label for="child_subcategory_id" class="col-md-4 control-label">{{ 'Child Subcategory' }}</label>
+    <div class="col-md-6">
+        <select  class="form-control" name="child_subcategory_id" id="child_subcategory_id" required> 
+            @foreach($childSubCategories as $shildsubCategory)
+            <option value="{{ $shildsubCategory->id }}" {{(  $shildsubCategory->sub_category_id == $product->child_subcategory_id) ? 'selected="true"':'' }}>(Child SubCategory) <strong>{{ $shildsubCategory->name }}</strong></option>
 
-                                </div>
+            @endforeach
+            
+        </select>
+        {!! $errors->first('child_subcategory_id', '<p class="help-block">:message</p>') !!}
+    </div>
+</div>
+<div class="form-group {{ $errors->has('name') ? 'has-error' : ''}}">
+    <label for="name" class="col-md-4 control-label">{{ 'Name' }}</label>
+    <div class="col-md-6">
+        <input class="form-control" name="name" type="text" id="name" value="{{ $product->name?? ''}}" />
+        {!! $errors->first('name', '<p class="help-block">:message</p>') !!}
+    </div>
+</div>
+<div class="form-group {{ $errors->has('brand_id') ? 'has-error' : ''}}">
+    <label for="brand_id" class="col-md-4 control-label">{{ 'Brand' }}</label>
+    <div class="col-md-6">
+        <select  class="form-control" name="brand_id" id="brand_id" required> 
+            <option value="" >Select Brand</option>
+            @foreach ($brands as $brand)
+            <option value="{{ $brand->id }}" {{(  $brand->id == $product->brand_id) ? 'selected="true"':'' }}>{{ $brand->name }}</option>
 
-                                <div class="col-12">
-                                    <fieldset class="form-label-group
-                                    form-group position-relative has-icon-left">
-                                    <label for="name">Parent Category</label>
-                                        <select class="select2 form-control form-control-lg" name="category_id">
+            @endforeach
+       
+        </select>
+        {!! $errors->first('brand_id', '<p class="help-block">:message</p>') !!}
+    </div>
+</div>
+<div class="form-group {{ $errors->has('tags') ? 'has-error' : ''}}">
+    <label for="tags" class="col-md-4 control-label">{{ 'Tags' }}</label>
+    <div class="col-md-6">
+        <input class="form-control " name="tags[]" type="text" id="tags" value="{{ $product->tags?? ''}}" placeholder="Type and hit enter to add a tag" required />
+        {!! $errors->first('tags', '<p class="help-block">:message</p>') !!}
+    </div>
+</div>
+<div class="form-group {{ $errors->has('description') ? 'has-error' : ''}}">
+    <label for="description" class="col-md-4 control-label">{{ 'Description' }}</label>
+    <div class="col-md-6">
+        <textarea class="form-control" rows="5" name="description" type="text" id="description" required>{{ $product->description?? ''}}</textarea>
+        {!! $errors->first('description', '<p class="help-block">:message</p>') !!}
+    </div>
+</div>
+<h4 style="font-weight: bold">Add Images</h4>
+<div class="form-group {{ $errors->has('front_image') ? 'has-error' : ''}}">
+    <label for="front_image" class="col-md-4 control-label custom-file-label" id="imgLabel">{{ 'Front Image' }}</label>
+  
+    <div class="col-md-6">
+        <input class="form-control" name="front_image" type="file" id="img_file" value="{{ $product->front_image?? ''}}" required>
+        {!! $errors->first('front_image', '<p class="help-block">:message</p>') !!}
+    </div>
+    <img id="img_url" src="{{ asset('website/productImages/product_'.$product->id.'_1.jpg') }}" alt="your image" style="display: block !important" />
+  
 
-                                            <option value="0,0,Category">Select Parent Category</option>
-                                            @foreach($Categories as $Category)
-                                                <option value="{{ $Category->id }}" {{(  $Category->id == $product->category_id) ? 'selected="true"':'' }}>({{$Category->level_name}}) <strong>{{ $Category->name }}</strong></option>
-                                                {{-- <option value="{{ $Category->id }}" {{(  $Category->id == $product->category_id) ? 'selected="true"':'' }} {{( $Category->category_level==3) ? '':'disabled' }}>({{$Category->level_name}}) <strong>{{ $Category->name }}</strong></option> --}}
+</div>
+<div class="form-group {{ $errors->has('thumbnail_image') ? 'has-error' : ''}}">
+    <label for="thumbnail_image"  id="imgLabel"class="col-md-4 control-label tom-file-label">{{ 'Thumb-nail Image' }}</label>
+  
 
-                                            @endforeach
-                                        </select>
-                                    @if ($errors->has('category_id'))
-                                    <div class="danger">
-                                        {{ $errors->first('category_id') }}
-                                    </div>
-                                    @endif
-                                    </fieldset>
-                                </div>
+    <div class="col-md-6">
+        <input class="form-control" multiple name="thumbnail_image[]" type="file" id="thumbnail_img" value="{{ $product->front_image?? ''}}" required>
+        {!! $errors->first('thumbnail_image', '<p class="help-block">:message</p>') !!}
+    </div>
+    {{-- <img id="thumbnail_img_url" src="" alt="your image" /> --}}
+    
+    <div class="row col-md-12" style="height:100;margin-left:280px; margin-top:10px">
+    
 
-                                <div class="col-12">
-                                    <fieldset class="form-label-group
-                                    form-group position-relative has-icon-left">
-                                    <label for="name">Select Brand</label>
-                                        <select class="select2 form-control form-control-lg" name="brand_id">
+        <div class="form-group col-md-2" >
+            <img src="{{ asset('website/productImages/product_'.$product->id.'_1.jpg') }}" id="thumbnail0" alt="" width="100" height="">
 
-                                            <option value="">Select brand</option>
-                                            @foreach($Brands as $brand)
-                                                <option value="{{ $brand->id }}" {{(  $brand->id == $product->brand) ? 'selected="true"':'' }}>{{ $brand->name }}</option>
+        </div>
+        <div class="form-group col-md-2">
+            <img src="{{ asset('website/productImages/product_'.$product->id.'_2.jpg') }}" id="thumbnail1" alt="" width="100" height="">
 
-                                            @endforeach
-                                        </select>
-                                    @if ($errors->has('brand_id'))
-                                    <div class="danger">
-                                        {{ $errors->first('brand_id') }}
-                                    </div>
-                                    @endif
-                                    </fieldset>
-                                </div>
+        </div>
+        <div class="form-group col-md-2">
+            <img src="{{ asset('website/productImages/product_'.$product->id.'_3.jpg') }}" id="thumbnail2" alt="" width="100" height="">
 
-                                <div class="col-12">
-                                    <fieldset class="form-label-group
-                                    form-group position-relative has-icon-left">
-                                    <label for="tags">Tags</label>
-                                    <input type="text" class="form-control aiz-tag-input" name="tags[]" value="{{ $product->tag }}" data-role="tagsinput" placeholder="Type and hit enter to add a tag" required>
-                                    <!-- <small class="text-muted">This is used for search. Input those words by which cutomer can find this product.</small> -->
-                                    @if ($errors->has('tags'))
-                                    <div class="danger">
-                                        {{ $errors->first('tags') }}
-                                    </div>
-                                    @endif
-                                    </fieldset>
-                                </div>
-                                  
-                                  <div class="col-12">
+        </div>
+        <div class="form-group col-md-2">
+            <img src="{{ asset('website/productImages/product_'.$product->id.'_4.jpg') }}" id="thumbnail3" alt="" width="100" height="">
 
-                                    <fieldset class="form-label-group
-                                        form-group position-relative has-icon-left">
-                                      <textarea type="text" class="form-control"
-                                      name="description"
-                                      id="description" placeholder="Description" required="">{{ $product->description }}</textarea>
-                                      <div class="form-control-position">
-                                          <i class="feather icon-map"></i>
-                                      </div>
-                                      <label for="description">Description</label>
-                                      @if ($errors->has('description'))
-                                      <div class="danger">
-                                          {{ $errors->first('description') }}
-                                      </div>
-                                      @endif
-                                     </fieldset>
+        </div>
+        <div class="form-group col-md-2">
+            <img src="{{ asset('website/productImages/product_'.$product->id.'_5.jpg')??"" }}" id="thumbnail4" alt="" width="100" height="">
 
-                                  </div>
+        </div>
+    </div>
+</div>
+<h4 style="font-weight: bold">Add Variation</h4>
+<div class="form-group {{ $errors->has('size') ? 'has-error' : ''}}">
+    <label for="size" class="col-md-4 control-label">{{ 'Size' }}</label>
+    <div class="col-md-6">
+        <input class="form-control " name="size[]" type="text" id="size" value="{{ $product->size?? ''}}" placeholder="Type and hit enter to add Size" required />
+        {!! $errors->first('size', '<p class="help-block">:message</p>') !!}
+    </div>
+</div>
 
-                                  
-                                    <div class="row conatiner">
-                                            <h4 class="card-title col-12" >Add Images</h4>
-                                        <div class="col-lg-6 col-md-12">
-                                            <div class="form-group pl-1">
-                                                <label for="customFile">Main Image</label>
-                                                <div class="custom-file">
-                                                    <input type="file" name="logo" class="custom-file-input" id="imgInp">
-                                                    <label class="custom-file-label" for="customFile" id="imgLabel"></label>
-                                                </div>
-                                            </div>
-                                        </div>
+<div class="form-group {{ $errors->has('fabric') ? 'has-error' : ''}}">
+    <label for="fabric" class="col-md-4 control-label">{{ 'Fabric' }}</label>
+    <div class="col-md-6">
+        <input class="form-control " name="fabric[]" type="text" id="fabric" value="{{ $product->fabric?? ''}}" placeholder="Type and hit enter to add Fabric" required />
+        {!! $errors->first('fabric', '<p class="help-block">:message</p>') !!}
+    </div>
+</div>
 
-                                        <div class="col-lg-6 col-md-12">
-                                            <div class="form-group">
-                                                <img src="{{ asset('uploads/product_image/product_'.$product->id.'_1.jpg') }}" id="displayHere" alt="" width="250" height="">
-                                            </div>
-                                        </div>
+<div class="form-group {{ $errors->has('colors') ? 'has-error' : ''}}">
+    <label for="colors" class="col-md-4 control-label">{{ 'Colors' }}</label>
+    <div class="col-md-6">
+        {{-- <input type="text" name="colors" id="colors" class="form-control"> --}}
+        <select class="color-choose color_table" data-live-search="true" data-selected-text-format="count" name="colors[]" id="colors" multiple >
+            @foreach (\App\ProductColor::orderBy('name', 'asc')->where('active',1)->get() as $key => $color)
+            <option  value="{{ $color->color_code }}">{{' ' .$color->name }}</option> 
+            @if($product->is_static == 1)
+            <option
 
-                                        <!-- </div> -->
+                value="{{ $color->color_code }}"
+                <?php if(in_array($color->id, json_decode($product->colors))) echo 'selected'?>
+            >
+            {{$color->name}}
+            </option>
+            @endif
+            @endforeach
+        </select>
 
-                                        <div class="col-lg-6 col-md-12">
-                                            <div class="form-group pl-1">
-                                                <label for="customFile">Thumbnail Images(Upload 5 files)</label>
-                                                <div class="custom-file">
-                                                    <input type="file" name="thumbnail_images[]" class="custom-file-input" id="thumImg" multiple>
-                                                    <label class="custom-file-label" for="customFile" id="imgLabel"></label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+        {{-- <textarea class="form-control" rows="5" name="colors" type="textarea" id="colors" >{{ $product->colors?? ''}}</textarea> --}}
+        {!! $errors->first('colors', '<p class="help-block">:message</p>') !!}
+    </div>
+    <div class="col-md-1">
+        <label class="aiz-switch aiz-switch-success mb-0">
+            @if($product->is_static == 1)
+            <input value="1" type="checkbox" name="colors_active" <?php if(count(json_decode($product->colors)) > 0) echo "checked";?>>
+            @else
+            <input value="1" type="checkbox" name="colors_active" checked>
+            @endif
+            <span></span>
+        </label>
+    </div>
+</div>
+<br>
 
-                                    <div class="row col-md-12">
-                                        <div class="form-group col-md-2">
-                                            <img src="{{ asset('uploads/product_image/product_'.$product->id.'_1.jpg') }}" id="thumbnail0" alt="" width="100" height="">
-                                        </div>
-                                        <div class="form-group col-md-2">
-                                            <img src="{{ asset('uploads/product_image/product_'.$product->id.'_2.jpg') }}" id="thumbnail1" alt="" width="100" height="">
-                                        </div>
-                                        <div class="form-group col-md-2">
-                                            <img src="{{ asset('uploads/product_image/product_'.$product->id.'_3.jpg') }}" id="thumbnail2" alt="" width="100" height="">
-                                        </div>
-                                        <div class="form-group col-md-2">
-                                            <img src="{{ asset('uploads/product_image/product_'.$product->id.'_4.PNG') }}" id="thumbnail3" alt="" width="100" height="">
-                                        </div>
-                                        <div class="form-group col-md-2">
-                                            <img src="{{ asset('uploads/product_image/product_'.$product->id.'_5.jpg') }}" id="thumbnail4" alt="" width="100" height="">
-                                        </div>
-                                    </div>
+<div class="sku_combination" id="sku_combination"  style="margin-left: 262px !important;margin-right: 120px !important;">
+    <table class="table table-bordered " >
+		<thead>
+			<tr >
+				<th class="text-center">
+					<label for="" class="control-label">Color</label>
+				</th>
+				{{-- <td class="text-center">
+					<label for="" class="control-label">Variant Price</label>
+				</td> --}}
 
-                                    <div class="card-header">
-                                        <h1 class="mb-0 h6"><strong>Add Variation</strong></h1>
-                                    </div>
-                                    <div class="container">
+				<th class="text-center">
+					<label for="" class="control-label">Quantity</label>
+				</th>
+				<th>Action</th>
+			</tr>
+		</thead>
+		<tbody>
+            @if(sizeof($variations))
+                @foreach ($variations as  $variation)
+                <tr class="variant">
+                    <td>
+                        <label for="" class="control-label">{{ $variation->color }}</label>
+                    </td>
+                    {{-- <td>
+                        <input type="number" name="price_{{ $str }}" value="{{ $unit_price }}" min="0" step="0.01" class="form-control" required="">
+                    </td> --}}
+                    <td>
+                        <input type="number" lang="en" name="qty[]" value="{{ $variation->stock }}"  min="0" step="1" class="form-control" required>
+                    </td>
 
-                                        <div class="form-group row">
-                                            <div class="col-md-3">
-                                                <input type="text" class="form-control" value="Colors" disabled>
-                                            </div>
-                                            <div class="col-md-8">
-                                                <select class="color-choose" data-live-search="true" data-selected-text-format="count" name="colors[]" id="colors" multiple >
-                                                    @foreach (\App\ProductColor::orderBy('name', 'asc')->where('active',1)->get() as $key => $color)
-                                                        <option  value="{{ $color->color_code }}">{{ $color->name }}</option> 
-                                                        @if($product->is_static == 1)
-                                                        <option
-                                                            value="{{ $color->color_code }}"
-                                                            <?php if(in_array($color->id, json_decode($product->color))) echo 'selected'?>
-                                                        >
-                                                        {{$color->name}}
-                                                        </option>
-                                                        @endif
-                                                        
+                    <td>
+                        <button type="button" id="delete_variant" class="btn btn-icon btn-sm btn-danger delete_variant" ><i class="fa fa-trash"></i></button>
+                    </td>
+                </tr>
+                @endforeach
+           @endif
+	</tbody>
+</table>
+</div>
 
-                                                       
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="col-md-1">
-                                                <label class="aiz-switch aiz-switch-success mb-0">
-                                                    @if($product->is_static == 1)
-                                                    <input value="1" type="checkbox" name="colors_active" <?php if(count(json_decode($product->color)) > 0) echo "checked";?>>
-                                                    @else
-                                                    <input value="1" type="checkbox" name="colors_active" checked>
-                                                    @endif
-                                                    <span></span>
-                                                </label>
-                                            </div>
-                                        </div>
+<div class="form-group {{ $errors->has('sale_price') ? 'has-error' : ''}}">
+    <label for="sale_price" class="col-md-4 control-label">{{ 'Sale Price' }}</label>
+    <div class="col-md-6">
+        <input class="form-control" name="sale_price" type="number" id="sale_price" placeholder="0" value="{{ $product->sale_price?? ''}}" required>
+        {!! $errors->first('sale_price', '<p class="help-block">:message</p>') !!}
+    </div>
+</div>
+<div class="form-group {{ $errors->has('perchase_price') ? 'has-error' : ''}}">
+    <label for="perchase_price" class="col-md-4 control-label">{{ 'Perchase Price' }}</label>
+    <div class="col-md-6">
+        <input class="form-control" name="perchase_price" type="number" id="perchase_price" placeholder="0" value="{{ $product->purchase_price?? ''}}" required>
+        {!! $errors->first('perchase_price', '<p class="help-block">:message</p>') !!}
+    </div>
+</div>
+<div class="form-group {{ $errors->has('discount') ? 'has-error' : ''}}">
+    <label for="discount" class="col-md-4 control-label">{{ 'Discount' }}</label>
+    <div class="col-md-6">
+        <input class="form-control" name="discount" type="text" id="discount" placeholder="0" value="{{ $product->discount?? ''}}" >
+        {!! $errors->first('discount', '<p class="help-block">:message</p>') !!}
+    </div>
+</div>
+<div class="form-group {{ $errors->has('discount_type') ? 'has-error' : ''}}">
+    <label for="discount_type" class="col-md-4 control-label">{{ 'Discount Type' }}</label>
+    <div class="col-md-6">
+        {{-- <input class="form-control" name="discount_type" type="text" id="discount_type" value="{{ $product->discount_type?? ''}}" > --}}
+        <select class="form-control select2" name="discount_type" id="discount_type">
+            <option>Select Discount Type</option>
+            @if($product->discount_type == 'amount')
+                <option value="amount" selected>Flat</option>
+                <option value="percent">Percent</option>
+            @else 
+                <option value="amount" >Flat</option>
+                <option value="percent" selected>Percent</option>
+            @endif
+          
+        </select>
+        {!! $errors->first('discount_type', '<p class="help-block">:message</p>') !!}
+    </div>
+</div>
 
-                                        <div class="form-group row">
-                                            <div class="col-md-3">
-                                                <input type="text" class="form-control" value="Attributes" disabled>
-                                            </div>
-                                            <div class="col-md-8">
-                                                <select name="choice_attributes[]" id="choice_attributes" class="select2 form-control" data-selected-text-format="count" data-live-search="true" multiple data-placeholder="Choose Attributes">
-                                                    @foreach (\App\Attribute::all() as $key => $attribute)
-                                                        @if($product->is_static == 1)
-                                                            <option value="{{ $attribute->name }}" @if($product->attributes != null && in_array($attribute->name, json_decode($product->attributes, true))) selected @endif>{{ $attribute->name }}</option>
-                                                        @else 
-                                                            <option value="{{ $attribute->name }}">{{ $attribute->name }}</option>
-                                                        @endif
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <p>Choose the attributes of this product and then input values of each attribute</p>
-                                            <br>
-                                        </div>
-
-                                        <div class="customer_choice_options" id="customer_choice_options">
-                                            @if($product->is_static == 1)
-                                            @foreach (json_decode($product->options) as $key => $option)
-                                                <div class="form-group row">
-                                                    <div class="col-lg-3">
-                                                        <input type="hidden" name="choice_no[]" value="{{ $option->id }}">
-                                                        <input type="text" class="form-control" name="choice[]" value="" placeholder="Choice Title" disabled>
-                                                    </div>
-                                                    <div class="col-lg-8">
-                                                        <input type="text" class="form-control aiz-tag-input" name="choice_options_{{ $option->id }}[]" placeholder="Enter choice values" value="{{ implode(',', $option->values) }}" data-on-change="update_sku">
-                                                    </div>
-                                                </div>
-                                            @endforeach
-                                            @endif
-                                        </div>
-{{-- 
-                                        <div class="customer_choice_options" id="customer_choice_options">
-
-                                        </div> --}}
-
-                                    </div>
-
-                                    <!-- varient -->
-
-                                    <div class="container">
-
-                                        <div class="form-group row">
-                                            <label class="col-md-3 col-from-label">Unit price <span class="text-danger">*</span></label>
-                                            <div class="col-md-6">
-                                                <input type="number" min="0" value="{{$product->actual_price}}" step="0.01" placeholder="Unit price" name="unit_price" class="form-control" required>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-md-3 col-from-label">Purchase price<span class="text-danger">*</span></label>
-                                            <div class="col-md-6">
-                                                <input type="number" min="0" value="{{$product->purchase_price}}" step="0.01" placeholder="Purchase price" name="purchase_price" class="form-control" required>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <label class="col-md-3 col-from-label">Discount<span class="text-danger">*</span></label>
-                                            <div class="col-md-6">
-                                                <input type="number" min="0" value="{{$product->discount}}" step="0.01" placeholder="Discount" name="discount" class="form-control" required>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <select class="form-control select2" name="discount_type">
-                                                    <option value="amount">Flat</option>
-                                                    <option value="percent">Percent</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row" id="quantity">
-                                            <label class="col-md-3 col-from-label">Quantity <span class="text-danger">*</span></label>
-                                            <div class="col-md-6">
-                                                <input type="number" min="0" value="{{$product->current_stock}}" step="1" placeholder="Quantity" name="current_stock" class="form-control" required>
-                                            </div>
-                                        </div>
-                                        <br>
-                                        <div class="sku_combination" id="sku_combination">
-
-                                        </div>
-
-
-                                    </div>
-
-                                    <div class="card-header">
-                                        <h1 class="mb-0 h6"><strong>Product Shipping Cost</strong></h1>
-                                    </div>
-                                    <div class="container">
-                                        <div class="form-group row">
-                                            <div class="col-md-3">
-                                                <h5 class="mb-0 h6">Free Shipping</h5>
-                                            </div>
-                                            <div class="col-md-9">
-                                                <div class="form-group row">
-                                                    <label class="col-md-3 col-from-label">Status</label>
-                                                    <div class="col-md-8">
-                                                        <label class="aiz-switch aiz-switch-success mb-0">
-                                                            <input type="radio" name="shipping_type" value="free" checked>
-                                                            <span></span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-md-3">
-                                                <h5 class="mb-0 h6">Flat Rate</h5>
-                                            </div>
-                                            <div class="col-md-9">
-                                                <div class="form-group row">
-                                                    <label class="col-md-3 col-from-label">Status</label>
-                                                    <div class="col-md-8">
-                                                        <label class="aiz-switch aiz-switch-success mb-0">
-                                                            <input type="radio" name="shipping_type" value="flat_rate" checked>
-                                                            <span></span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label class="col-md-3 col-from-label">Shipping cost</label>
-                                                    <div class="col-md-8">
-                                                        <input type="number" min="0" value="{{$product->shipping_cost}}" step="0.01" placeholder="Shipping cost" name="flat_shipping_cost" class="form-control" required>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                 
-                                  <div class="col-12">
-                                    <input type="submit" class="btn btn-primary mr-1 mb-1 float-right" value="Submit">
-                                  </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+{{-- <div class="card-header">
+    <h1 class="mb-0 h6"><strong>Product Shipping Cost</strong></h1>
+</div>
+<div class="container">
+    <div class="form-group row">
+        <div class="col-md-2">
+            <h5 class="mb-0 h6">Free Shipping</h5>
+        </div>
+        <div class="col-md-10">
+            <div class="form-group row">
+                <label class="col-md-2 col-from-label">Status</label>
+                <div class="col-md-10">
+                    <label class="aiz-switch aiz-switch-success mb-0">
+                        <input type="radio" name="shipping_type" id="shipping_type_free" value="free" checked>
+                        <span></span>
+                    </label>
                 </div>
-          </div>
-      </div>
-  </div>
-</section>
-<!-- // Basic Floating Label Form section end -->
-@endsection
+            </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-2">
+            <h5 class="mb-0 h6">Flat Rate</h5>
+        </div>
+        <div class="col-md-10">
+            <div class="form-group row">
+                <label class="col-md-2 col-from-label">Status</label>
+                <div class="col-md-10">
+                    <label class="aiz-switch aiz-switch-success mb-0">
+                        <input type="radio" name="shipping_type" id="shipping_type_flat_rate" value="flat_rate" checked>
+                        <span></span>
+                    </label>
+                </div>
+            </div>
+          
+        </div>
 
-@section('vendor-script')
-<script src="{{ asset(mix('vendors/js/forms/select/select2.full.min.js')) }}"></script>
-<script src="{{ asset(mix('js/scripts/forms/form-select2.js')) }}"></script>
+    </div>
+</div> --}}
+<div class="form-group {{ $errors->has('shipping_cost') ? 'has-error' : ''}}" id="flat_shipping_cost">
+    <label for="shipping_cost" class="col-md-4 control-label">{{ 'Shipping Cost' }}</label>
+    <div class="col-md-6">
+        <input class="form-control" name="shipping_cost" type="number" id="shipping_cost" placeholder="0" value="{{ $product->shipping_cost?? ''}}" >
+        {!! $errors->first('shipping_cost', '<p class="help-block">:message</p>') !!}
+    </div>
+</div>
+
+<div class="form-group {{$errors->has('commission') ? 'has-error' : ''}}" >
+    <label for="commission" class="col-md-4 control-label">{{ 'Commission' }}</label>
+    <div class="col-md-6">
+        <input class="form-control"  name="commission" type="number" value="{{ $product->commission?? ''}}" id="commission" placeholder="0"  >
+        {!! $errors->first('commission', '<p class="help-block">:message</p>') !!}
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-md-offset-4 col-md-4">
+        <input class="btn btn-primary" type="submit" value="{{ $submitButtonText?? 'Create' }}">
+    </div>
+</div>
+
+@push('js')
+
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify@3.1.0/dist/tagify.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.1.1/tagify.min.js"></script>
+
+<script src="{{ asset('vendor/js/forms/select/select2.full.min.js') }}"></script>
+<script src="{{ asset('js/script/forms/form-select2.js') }}"></script>
+<script src="{{asset('plugins/components/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js')}}"></script>
 
 
 <script>
 
-    function formatState (state) {
-      if (!state.id) { return state.text; }
-      var $state = $('<span><span class="size-15px d-inline-block mr-2 rounded border" style="background:' + state.element.value + ';">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span>' + state.text + '</span></span>');
-
-     
-      return $state;
-    };
-
-    $(".color-choose").select2({
-        width: "100%",
-        templateResult: formatState
-    });
-
-    $(".form-control select2").select2({
-        width: "100%",
-    });
-
-    // function readURL(input) {
-    function readURL(input,id,i) {
+function readURL(input,id,i) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
 
@@ -546,13 +526,17 @@
          }
       }
     var _URL = window.URL || window.webkitURL;
-    $("#imgInp").change(function(e) {
+    $("#img_file").change(function(e) {
+      
         var file, img;
         if ((file = this.files[0])) {
             img = new Image();
             img.onload = function() {
+              
                 if(this.width >= 1200 && this.height >= 1200){
-                    var $el = $('#imgInp');
+                    alert();
+                    var $el = $('#img_file');
+                  
                     $el.wrap('<form>').closest('form').get(0).reset();
                     $el.unwrap();
                     $('#imgLabel').text('');
@@ -567,29 +551,16 @@
 
 
         }
-      readURL(this,'displayHere',0);
+      readURL(this,'img_url',0);
     });
 
     var _URL = window.URL || window.webkitURL;
-    $("#thumImg").change(function(e) {
+    $("#thumbnail_img").change(function(e) {
         var file, img;
         for(let i = 0; i<this.files.length;i++){
             if ((file = this.files[i])) {
                 img = new Image();
-                //alert('x');
-                // img.onload = function() {
-                //     if(this.width >= 1200 && this.height >= 1200){
-                //         var $el = $('#thumImg');
-                //         $el.wrap('<form>').closest('form').get(0).reset();
-                //         $el.unwrap();
-                //         $('#imgLabel').text('');
-                //         imgLabel
-                //         alert(this.width + " " + this.height);
-                //     }
-                // };
-                // img.onerror = function() {
-                //     alert( "not a valid file: " + file.type);
-                // };
+
                 img.src = _URL.createObjectURL(file);
 
 
@@ -599,100 +570,328 @@
 
     });
 
-    function add_more_customer_choice_option(i, name){
 
-        $('#customer_choice_options').append('<div class="form-group row"><div class="col-md-3"><input type="hidden" name="choice_no[]" value="'+i+'"><input type="text" class="form-control" name="choice[]" value="'+name+'" placeholder="Choice Title" readonly></div><div class="col-md-8"><input type="text" class="form-control aiz-tag-input" name="choice_options_'+i+'[]" placeholder="Enter choice values" data-on-change="update_sku"  ></div></div>');
 
-       
-
-        AIZ.plugins.tagify();
-    }
-
-	$('input[name="colors_active"]').on('change', function() {
-	    if(!$('input[name="colors_active"]').is(':checked')){
-			$('#colors').prop('disabled', true);
-		}
-		else{
-			$('#colors').prop('disabled', false);
-		}
-
-	});
-
-	$('#colors').on('change', function() {
-        update_sku();
-	});
-
-	$('input[name="unit_price"]').on('keyup', function() {
-	    update_sku();
-	});
-
-    $(document).on("keyup", ".aiz-tag-input ajax", function(){
-        alert("here");
-
+    $('#shipping_type_free').click(function(){
+        $('#flat_shipping_cost').hide();
+    });
+    $('#shipping_type_flat_rate').click(function(){
+        $('#flat_shipping_cost').show();
     });
 
-	$('input[name="name"]').on('keyup', function() {
-	    update_sku();
-	});
 
-	function delete_row(em){
-		$(em).closest('.form-group row').remove();
-        update_sku();
-	}
 
-    function delete_variant(em){
-		$(em).closest('.variant').remove();
-	}
+        
+    $(document).ready(function () {
 
-	function update_sku(){
-        // console.log($('#choice_form').serialize());
-            $('#method').val('POST');
-        $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            $.ajax({
-            type:"POST",
-            url:"{{ route('admin.products.sku_combination_edit') }}",
-            data:$('#choice_form').serialize(),
-                beforeSend: function(){
+        
+
+        // $('#img_url').hide();
+        $("#category_id,#subcategory_id,#child_subcategory_id,#brand_id,#discount_type").select2();
+      
+
+        $(document).on('change','#product_type_id',function(){
+            var product_type_id = $(this).val();
+            var option = '';
+            if(product_type_id != null){
+                $.ajax({
+                type: 'GET',
+                url: "{{url('get-category-by-select-product-type')}}/" +product_type_id,
+                data:{ 
+                    _token:'{{ csrf_token() }}'
                 },
-                success: function(data){
-                $('#sku_combination').html(data);
-                if (data.length > 1) {
-                    $('#quantity').hide();
-                }
-                else {
-                        $('#quantity').show();
-                }
-                $('#method').val('PUT');
+                cache: false,
+                dataType: 'json',
+
+                beforeSend: function() {
+                    // setting a timeout
+                    
+                },
+                success: function(response) {
+                    console.log(response);
+                    $("#category_id").prop('disabled', false);
+                    console.log(response);
+                    var option = '<option> Select Category</option>';
+                    $.each(response,function(index,row){
+                        
+
+                        option += `<option value=`+row['id']+`>`+row['name']+`</option>`;
+                    
+                    })
+                
+                    $("#category_id").empty();
+                    $("#category_id").append(option);
+                    
+                    
+                
+                },
+                error: function(xhr) { // if error occured
+                
+                },
+
+                });
+            }else{
+                alert('Select any type');
             }
         });
-	}
 
-    $(document).ready(function(){
-		update_sku();
+        $(document).on('change','#category_id',function(){
+            var category_type_id = $(this).val();
+            var option = '';
+            if(product_type_id != null){
+                $.ajax({
+                type: 'GET',
+                url: "{{url('get-subcategory-by-select-category-type')}}/" +category_type_id,
+                data:{ 
+                    _token:'{{ csrf_token() }}'
+                },
+                cache: false,
+                dataType: 'json',
 
-		$('.remove-files').on('click', function(){
-            $(this).parents(".col-md-4").remove();
+                beforeSend: function() {
+                    // setting a timeout
+                    
+                },
+                success: function(response) {
+                    $("#subcategory_id").prop('disabled', false);
+                    console.log(response);
+                    var option = '<option> Select SubCategory</option>';
+                    $.each(response,function(index,row){
+                        
+
+                        option += `<option value=`+row['id']+`>`+row['name']+`</option>`;
+                    
+                    })
+                
+                    $("#subcategory_id").empty();
+                    $("#subcategory_id").append(option);
+                    
+                    
+                
+                },
+                error: function(xhr) { // if error occured
+                
+                },
+
+                });
+            }else{
+                alert('Select any category');
+            }
         });
-	});
 
-	$('#choice_attributes').on('change', function() {
-		$('#customer_choice_options').html(null);
-		$.each($("#choice_attributes option:selected"), function(){
-            add_more_customer_choice_option($(this).val(), $(this).text());
+        $(document).on('change','#subcategory_id',function(){
+            var subcategory_type_id = $(this).val();
+            var option = '';
+            if(subcategory_type_id != null){
+                $.ajax({
+                type: 'GET',
+                url: "{{url('get-childSubcategory-by-select-subcategory-type')}}/" +subcategory_type_id,
+                data:{ 
+                    _token:'{{ csrf_token() }}'
+                },
+                cache: false,
+                dataType: 'json',
+
+                beforeSend: function() {
+                    // setting a timeout
+                    
+                },
+                success: function(response) {
+                    $("#child_subcategory_id").prop('disabled', false);
+                    console.log(response);
+                    var option = '<option value="null"> Select Child SubCategory</option>';
+                    $.each(response,function(index,row){
+                        
+
+                        option += `<option value=`+row['id']+`>`+row['name']+`</option>`;
+                    
+                    })
+                
+                    $("#child_subcategory_id").empty();
+                    $("#child_subcategory_id").append(option);
+                    
+                    
+                
+                },
+                error: function(xhr) { // if error occured
+                
+                },
+
+                });
+            }else{
+                alert('Select any category');
+            }
         });
-        update_sku();
 
-	});
+        function formatState (state) {
+            if (!state.id) { return state.text; }
+
+            var $state = $('<span><span class="size-15px d-inline-block mr-2 rounded border" style="background:' + state.element.value + ';">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span>' + state.text + '</span></span>');
+            return $state;
+        };
+
+        $(".color-choose").select2({
+            width: "100%",
+            templateResult: formatState
+        });
+
+        $(".attribute-choose").select2({
+
+            width: "100%",
+                
+        });
 
 
- </script>
+
+        $(".form-control select2").select2({
+            width: "100%",
+        });
+
+        // function add_more_customer_choice_option(i, name){
+        // $('#customer_choice_options').append('<div class="form-group row"><div class="col-md-3"><input type="hidden" name="choice_no[]" value="'+i+'"><input type="text" class="form-control" name="choice[]" value="'+name+'" placeholder="Choice Title" readonly></div><div class="col-md-8"><input type="text" class="form-control aiz-tag-input" name="choice_options_'+i+'[]" placeholder="Enter choice values" data-on-change="update_sku"></div></div>');
+        // AIZ.plugins.tagify();
+
+        // }
 
 
 
-{{-- vendor files --}}
-@endsection
+        $('input[name="colors_active"]').on('change', function() {
+            if(!$('input[name="colors_active"]').is(':checked')){
+                $('#colors').prop('disabled', true);
+            }
+            else{
+                $('#colors').prop('disabled', false);
+            }
+
+        });
+
+        $('#colors').on('change', function() {
+            update_sku();
+        });
+
+        // $('input[name="sale_price"]').on('keyup', function() {
+        //     update_sku();
+        // });
+
+        $(document).on("keyup", ".aiz-tag-input ajax", function(){
+            alert("here");
+
+        });
+
+        $('input[name="name"]').on('keyup', function() {
+            update_sku();
+        });
+
+        function delete_row(em){
+            $(em).closest('.form-group row').remove();
+            update_sku();
+        }
+
+        function delete_variant(em){
+            $(em).closest('.variant').remove();
+        }
+
+
+        $('#choice_attributes').on('change', function() {
+           
+            $('#customer_choice_options').html(null);
+            var count = 1;
+            $.each($("#choice_attributes option:selected"), function(){
+                var value = $(this).val();
+                var text = $(this).text();
+
+                $('#customer_choice_options').append('<div class="form-group row"><div class="col-md-3"><input type="hidden" name="choice_no[]" value="'+value+'"><input type="text" class="form-control" name="choice[]" value="'+text+'" placeholder="Choice Title" readonly></div><div class="col-md-8"><input type="text" id="option_change" class="form-control aiz-tag-input attribute-values-'+count+'"" name="choice_options_'+value+'[]" data-on-change="update_sku" placeholder="Enter choice values" ></div></div>');
+                count++;
+                
+
+                // $('#customer_choice_options').append('<div class="form-group row"><div class="col-md-3"><input type="hidden" name="choice_no[]" value="'+value+'"><input type="text" class="form-control" name="choice[]" value="'+text+'" placeholder="Choice Title" readonly></div><div class="col-md-8"><input type="text" class="form-control attribute-values-'+count+'" name="choice_options_'+value+'[]" onchange="update_sku()" placeholder="Enter choice values" ></div></div>');
+                // add_more_customer_choice_option($(this).val(), $(this).text());
+            });
+           
+                update_sku();
+                var input = document.querySelector('.attribute-values-1');
+                var tagify = new Tagify(input);
+                tagify.addTags();
+            
+
+                setTimeout(function() {
+                    var input = document.querySelector('.attribute-values-2');
+                    var tagify = new Tagify(input);
+                    tagify.addTags();
+                }, 1000);
+
+        }); 
+
+ 
+        $("div").delegate(".attribute-values-1", "change", function(){
+            update_sku();
+        });
+        $("div").delegate(".attribute-values-2", "change", function(){
+            update_sku();
+        });
+
+        $(".attribute-values").select2({
+            width: "100%",
+            
+        });
+
+        $(document).on('click','.delete_variant', function(){
+
+            var values = $('.color_table option:selected').text();
+            $(this).closest('.variant').remove();
+
+        });
+                
+        function update_sku(){
+          $.ajax({
+          type:"POST",
+          url:"{{ route('admin.products.sku-combination') }}",
+
+          data:$('#choice_form').serialize(),
+          beforeSend: function(){
+
+            },
+              success: function(data){
+              $('#sku_combination').html(data);
+              if (data.length > 1) {
+                  $('#quantity').hide();
+              }
+              else {
+                    $('#quantity').show();
+              }
+            }
+            });
+        }
+
+        $('input[name="colors_active"]').on('change', function() {
+            if(!$('input[name="colors_active"]').is(':checked')){
+                $('#colors').prop('disabled', true);
+                $('#color_append_table').hide();
+            }
+            else{
+                $('#colors').prop('disabled', false);
+                var length = $('#count').val();
+                if(length > 0){
+                    $('#color_append_table').show();
+                }
+                
+            }
+
+        });
+
+        var input = document.querySelector('#tags');
+        var tagify = new Tagify(input);
+        tagify.addTags();
+        var input = document.querySelector('#size');
+        var tagify = new Tagify(input);
+        tagify.addTags();
+        var input = document.querySelector('#fabric');
+        var tagify = new Tagify(input);
+        tagify.addTags();
+          
+    });
+  
+</script>
+
+@endpush
 

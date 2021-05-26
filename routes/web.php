@@ -2,6 +2,8 @@
 
 Route::get('/', 'PagesController@HomePage');
 
+
+
 Route::group(['middleware' => ['auth', 'roles'],'roles' => ['admin','user']], function () {
 // Route::group(['middleware' => ['auth', 'roles'],'roles' => ['admin','user']], function () {
 
@@ -316,7 +318,13 @@ Route::resource('product/product', 'ProductController\\ProductController');
 Route::get('get-category-by-select-product-type/{product_type_id}', 'ProductController\\ProductController@fetchCategories');
 Route::get('get-subcategory-by-select-category-type/{category_type_id}', 'ProductController\\ProductController@fetchSubCategories');
 Route::get('get-childSubcategory-by-select-subcategory-type/{subcategory_type_id}', 'ProductController\\ProductController@fetchChildSubCategories');
-Route::post('products/sku-combination', 'ProductController\\ProductController@sku_combination')->name('admin.products.sku-combination');;
+Route::post('products/sku-combination', 'ProductController\\ProductController@sku_combination')->name('admin.products.sku-combination');
+Route::post('products/sku_combination_edit', 'ProductController\\ProductController@sku_combination_edit')->name('admin.products.sku_combination_edit');
+Route::post('products/get-color-codes', 'ProductController\\ProductController@getColorCodes');
+Route::post('product/product/update/{id}', 'ProductController\\ProductController@update');
+
+
+
 
 
 

@@ -8,28 +8,17 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Category extends Model
 {
     use SoftDeletes;
-    /**
-     * The database table used by the model.
-     *
-     * @var string
-     */
-    protected $table = 'categories';
-
-    /**
-    * The database primary key value.
-    *
-    * @var string
-    */
+    protected $table      = 'categories';
     protected $primaryKey = 'id';
-
-    /**
-     * Attributes that should be mass-assignable.
-     *
-     * @var array
-     */
-    protected $fillable = ['category_type_id', 'level_name', 'name', 'url_name', 'description', 'banner', 'status'];
+    protected $fillable   = ['category_type_id', 'level_name', 'name', 'url_name', 'description', 'banner', 'status'];
 
     public function subCategory(){
     	return $this->hasMany(SubCategory::class);
+    }
+
+    public function product(){
+        // return $this->belongTo(Product::class,'category_id');
+    	// return $this->hasMany(Product::class);
+
     }
 }

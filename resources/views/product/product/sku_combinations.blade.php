@@ -1,18 +1,19 @@
 @if(count($combinations[0]) > 0)
-	<table class="table table-bordered">
+
+	<table class="table table-bordered " >
 		<thead>
 			<tr >
-				<td class="text-center">
-					<label for="" class="control-label">Variant</label>
-				</td>
-				<td class="text-center">
+				<th class="text-center">
+					<label for="" class="control-label">Color</label>
+				</th>
+				{{-- <td class="text-center">
 					<label for="" class="control-label">Variant Price</label>
-				</td>
+				</td> --}}
 
-				<td class="text-center">
+				<th class="text-center">
 					<label for="" class="control-label">Quantity</label>
-				</td>
-				<td></td>
+				</th>
+				<th>Action</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -49,15 +50,15 @@
 				<td>
 					<label for="" class="control-label">{{ $str }}</label>
 				</td>
-				<td>
+				{{-- <td>
 					<input type="number" name="price_{{ $str }}" value="{{ $unit_price }}" min="0" step="0.01" class="form-control" required="">
-				</td>
+				</td> --}}
 				<td>
-					<input type="number" lang="en" name="qty_{{ $str }}" value="99" min="0" step="1" class="form-control" required>
+					<input type="number" lang="en" name="qty[]"  min="0" step="1" class="form-control" required>
 				</td>
 
 				<td>
-					<button type="button" id="delete_variant" class="btn btn-icon btn-sm btn-danger delete_variant" ><i class="las la-trash"></i></button>
+					<button type="button" id="delete_variant" class="btn btn-icon btn-sm btn-danger delete_variant" ><i class="fa fa-trash"></i></button>
 				</td>
 			</tr>
 	@endif

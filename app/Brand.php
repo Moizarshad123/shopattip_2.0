@@ -27,5 +27,8 @@ class Brand extends Model
      */
     protected $fillable = ['name', 'logo'];
 
-    
+    public function brand(){
+        return $this->belongTo(Product::class,'brand_id');
+    }
+
 }

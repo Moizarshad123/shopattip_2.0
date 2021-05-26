@@ -1,18 +1,21 @@
 @if(count($combinations[0]) > 0)
-	<table class="table table-bordered color_table" >
+
+	<table class="table table-bordered color_table form-control" >
 		<thead>
 			<tr class="color_table">
-				<td class="text-center">
-					<label for="" class="control-label">Variant</label>
-				</td>
-				<td class="text-center">
-					<label for="" class="control-label">Variant Price</label>
-				</td>
-				
-				<td class="text-center">
-					<label for="" class="control-label">Quantity</label>
-				</td>
-				<td></td>
+				<tr >
+					<th class="text-center">
+						<label for="" class="control-label">Color</label>
+					</th>
+					{{-- <td class="text-center">
+						<label for="" class="control-label">Variant Price</label>
+					</td> --}}
+	
+					<th class="text-center">
+						<label for="" class="control-label">Quantity</label>
+					</th>
+					<th>Action</th>
+				</tr>
 			</tr>
 		</thead>
 		<tbody>
@@ -30,25 +33,29 @@
 						$str .= '-'.str_replace(' ', '', $item);
 						$sku .='-'.str_replace(' ', '', $item);
 					}
+					
 					else{
 						if($colors_active == 1){
 							$color_name = \App\ProductColor::where('color_code', $item)->first()->name;
+							
 							$str .= $color_name;
-							$sku .='-'.$color_name;
+							$sku .=$color_name;
+							
 						}
 						else{
-							$str .= str_replace(' ', '', $item);
-							$sku .='-'.str_replace(' ', '', $item);
+							$str .= $item;
+							$sku .=$item;
 						}
 					}
 				}
+			
 			@endphp
 			@if(strlen($str) > 0)
 				<tr class="variant">
 					<td>
 						<label for="" class="control-label">{{ $str }}</label>
 					</td>
-					<td>
+					{{-- <td>
 						<input type="number" name="price_{{ $str }}" value="@php
 								if(($stock = $product->variation->where('variation', $str)->first()) != null){
 									echo $stock->price;
@@ -57,12 +64,14 @@
 									echo $unit_price;
 								}
 						@endphp" min="0" step="0.01" class="form-control" required>
-					</td>
+					</td> --}}
 		
 					<td>
-						<input type="number" name="qty_{{ $str }}" value="@php
-							if(($stock = $product->variation->where('variation', $str)->first()) != null){
-								echo $stock->stock;
+						<input type="number" name="qty[]" value="@php
+							$qty = \App\ProductVariation::where('product_id',$product->id)->first();
+						
+							if(($qty ) != null){
+								echo $qty->stock;
 							}
 							else{
 								echo '10';
@@ -70,7 +79,7 @@
 						@endphp" min="0" step="1" class="form-control" required>
 					</td>
 					<td>
-						<button type="button" id="delete_variant" class="btn btn-icon btn-sm btn-danger" onclick="delete_variant(this)"><i class="las la-trash"></i></button>
+						<button type="button" id="delete_variant" class="btn btn-icon btn-sm btn-danger" ><i class="fa fa-trash"></i></button>
 					</td>
 				</tr>
 			@endif
