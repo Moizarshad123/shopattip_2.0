@@ -6,32 +6,60 @@
 </style>
 @endpush
 
+<div class="form-group {{ $errors->has('category_type') ? 'has-error' : ''}}">
+    <label for="category_type" class="col-md-4 control-label">{{ 'Category Type' }}</label>
+    <div class="col-md-6">
+        <select  class="form-control" name="category_type" id="category_type" required > 
+            <option value="">Select Category Type</option>
+            <option value="1">General</option>
+            <option value="2">Grocery</option>
+        </select>
+        {!! $errors->first('category_type', '<p class="help-block">:message</p>') !!}
+    </div>
+</div>
+
+<div class="form-group {{ $errors->has('category_id') ? 'has-error' : ''}}">
+    <label for="category_id" class="col-md-4 control-label">{{ 'Category' }}</label>
+    <div class="col-md-6">
+        <select  class="form-control" name="category_id" id="select_category" required > 
+            {{-- <option value="">Select Category</option>
+            @foreach ($getCategories as $category)
+                <option value="{{ $category->id }}">{{ $category->name }}</option>
+            @endforeach --}}
+        </select>
+        {!! $errors->first('category_id', '<p class="help-block">:message</p>') !!}
+    </div>
+</div>
+
 <div class="form-group {{ $errors->has('sub_category_id') ? 'has-error' : ''}}">
-    <label for="sub_category_id" class="col-md-4 control-label">{{ 'Sub Category Id' }}</label>
+    <label for="sub_category_id" class="col-md-4 control-label">{{ 'Sub Category' }}</label>
     <div class="col-md-6">
         <select  class="form-control" name="sub_category_id" id="sub_category_id" required > 
-            <option value="">Select SuCategory</option>
+            {{-- <option value="">Select Sub Category</option>
             @foreach ($getSubCategories as $subcategory)
-            @if($childsubcategory->sub_category_id == $subcategory->id)
-                <option value="{{ $subcategory->id }}" selected>{{ $subcategory->name }}</option>
-            @else 
-                <option value="{{ $subcategory->id }}">{{ $subcategory->name }}</option>
-            @endif
-                
-            @endforeach
+                @if(@$childsubcategory->sub_category_id == $subcategory->id)
+                    <option value="{{ $subcategory->id }}" selected>{{ $subcategory->name }}</option>
+                @else 
+                    <option value="{{ $subcategory->id }}">{{ $subcategory->name }}</option>
+                @endif
+            @endforeach --}}
         </select>
         {!! $errors->first('sub_category_id', '<p class="help-block">:message</p>') !!}
     </div>
-</div><div class="form-group {{ $errors->has('name') ? 'has-error' : ''}}">
+</div>
+{{--  --}}
+
+
+<div class="form-group {{ $errors->has('name') ? 'has-error' : ''}}">
     <label for="name" class="col-md-4 control-label">{{ 'Name' }}</label>
     <div class="col-md-6">
-        <input class="form-control" name="name" type="text" id="name" value="{{ $childsubcategory->name?? ''}}" required>
+        <input class="form-control" name="name" type="text" id="name" value="{{ @$childsubcategory->name?? ''}}" required>
         {!! $errors->first('name', '<p class="help-block">:message</p>') !!}
     </div>
 </div><div class="form-group {{ $errors->has('url_name') ? 'has-error' : ''}}">
     <label for="url_name" class="col-md-4 control-label">{{ 'Url Name' }}</label>
     <div class="col-md-6">
-        <input class="form-control" name="url_name" type="text" id="url_name" value="{{ $childsubcategory->url_name?? ''}}" required>
+        <input class="form-control" name="url_name" type="text" id="url_name" value="{{ @$childsubcategory->url_name?? ''}}" required>
         {!! $errors->first('url_name', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -52,6 +80,44 @@
         $("#sub_category_id").select2();
         // $("#subcategory_id").select2();
    
+    });
+
+    $('#category_type').change(function(){
+
+        var type = $(this).val();
+        var option = '<option value="">Select Category</option>';
+        $.ajax({
+                type: 'GET',
+                url: "{{url('getcategoryforchildsubcat')}}/" +type,
+                dataType: 'json',
+                success: function(response) {
+                    $.each(response,function(index,row){
+                        option += `<option value=`+row['id']+`>`+row['name']+`</option>`;
+                    })
+                    $("#select_category").empty();
+                    $("#select_category").append(option);
+                }
+            });
+    });
+
+    $('#select_category').change(function(){
+        var cat = $(this).val();
+        var option = '<option value="">Select Sub Category</option>';
+        $.ajax({
+                type: 'GET',
+                url: "{{url('getsubcategoryforchildsubcat')}}/" +cat,
+                dataType: 'json',
+                success: function(response) {
+                    $.each(response,function(index,row){
+                        option += `<option value=`+row['id']+`>`+row['name']+`</option>`;
+                    })
+                    $("#sub_category_id").empty();
+                    $("#sub_category_id").append(option);
+                }
+            });
+
+
+
     });
 
 </script>
