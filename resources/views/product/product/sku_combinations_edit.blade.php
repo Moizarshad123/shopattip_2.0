@@ -74,9 +74,9 @@
 								echo $qty->stock;
 							}
 							else{
-								echo '10';
+								echo '0';
 							}
-						@endphp" min="0" step="1" class="form-control" required>
+						@endphp" min="0" step="1" class="form-control" required maxlength="10" oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);'>
 					</td>
 					<td>
 						<button type="button" id="delete_variant" class="btn btn-icon btn-sm btn-danger" ><i class="fa fa-trash"></i></button>

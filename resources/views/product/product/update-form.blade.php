@@ -192,7 +192,8 @@ opacity: 1;
     <div class="col-md-6">
         <select  class="form-control" name="category_id" id="category_id" required > 
             @foreach($Categories as $Category)
-            <option value="{{ $Category->id }}" {{(  $Category->category_type_id == $product->category_id) ? 'selected="true"':'' }}>({{$Category->level_name}}) <strong>{{ $Category->name }}</strong></option>
+
+            <option value="{{ $Category->id }}" {{(  $Category->id == $product->category_id) ? 'selected="true"':'' }}>(Category) <strong>{{ $Category->name }}</strong></option>
 
             @endforeach
         </select>
@@ -204,7 +205,7 @@ opacity: 1;
     <div class="col-md-6">
         <select  class="form-control" name="subcategory_id" id="subcategory_id" required > 
             @foreach($subCategories as $subCategory)
-            <option value="{{ $subCategory->id }}" {{(  $subCategory->category_id == $product->subcategory_id) ? 'selected="true"':'' }}>(SubCategory) <strong>{{ $subCategory->name }}</strong></option>
+            <option value="{{ $subCategory->id }}" {{(  $subCategory->id == $product->subcategory_id) ? 'selected="true"':'' }}>(SubCategory) <strong>{{ $subCategory->name }}</strong></option>
 
             @endforeach
             
@@ -217,7 +218,7 @@ opacity: 1;
     <div class="col-md-6">
         <select  class="form-control" name="child_subcategory_id" id="child_subcategory_id" required> 
             @foreach($childSubCategories as $shildsubCategory)
-            <option value="{{ $shildsubCategory->id }}" {{(  $shildsubCategory->sub_category_id == $product->child_subcategory_id) ? 'selected="true"':'' }}>(Child SubCategory) <strong>{{ $shildsubCategory->name }}</strong></option>
+            <option value="{{ $shildsubCategory->id }}" {{(  $shildsubCategory->id == $product->child_subcategory_id) ? 'selected="true"':'' }}>(Child SubCategory) <strong>{{ $shildsubCategory->name }}</strong></option>
 
             @endforeach
             
@@ -249,14 +250,14 @@ opacity: 1;
 <div class="form-group {{ $errors->has('tags') ? 'has-error' : ''}}">
     <label for="tags" class="col-md-4 control-label">{{ 'Tags' }}</label>
     <div class="col-md-6">
-        <input class="form-control " name="tags[]" type="text" id="tags" value="{{ $product->tags?? ''}}" placeholder="Type and hit enter to add a tag" required />
+        <input  name="tags[]" type="text" id="tags" value="{{ $product->tags?? ''}}" placeholder="Type and hit enter to add a tag"  />
         {!! $errors->first('tags', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
 <div class="form-group {{ $errors->has('description') ? 'has-error' : ''}}">
     <label for="description" class="col-md-4 control-label">{{ 'Description' }}</label>
     <div class="col-md-6">
-        <textarea class="form-control" rows="5" name="description" type="text" id="description" required>{{ $product->description?? ''}}</textarea>
+        <textarea class="form-control" rows="5" name="description" type="text" id="description" required maxlength="300">{{ $product->description?? ''}}</textarea>
         {!! $errors->first('description', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -283,9 +284,16 @@ opacity: 1;
     {{-- <img id="thumbnail_img_url" src="" alt="your image" /> --}}
     
     <div class="row col-md-12" style="height:100;margin-left:280px; margin-top:10px">
-    
-
+        @php  $number = 0; @endphp
+        @for ($i =1; $i <= $product->num_of_imgs; $i++)
+       
         <div class="form-group col-md-2" >
+            <img src="{{ asset('website/productImages/product_'.$product->id.'_'.$i.'.jpg') }}" id='thumbnail{{ $number }}' alt="" width="100" height="100">
+
+        </div>
+        @php  $number++ @endphp
+        @endfor
+        {{-- <div class="form-group col-md-2" >
             <img src="{{ asset('website/productImages/product_'.$product->id.'_1.jpg') }}" id="thumbnail0" alt="" width="100" height="">
 
         </div>
@@ -304,14 +312,14 @@ opacity: 1;
         <div class="form-group col-md-2">
             <img src="{{ asset('website/productImages/product_'.$product->id.'_5.jpg')??"" }}" id="thumbnail4" alt="" width="100" height="">
 
-        </div>
+        </div> --}}
     </div>
 </div>
 <h4 style="font-weight: bold">Add Variation</h4>
 <div class="form-group {{ $errors->has('size') ? 'has-error' : ''}}">
     <label for="size" class="col-md-4 control-label">{{ 'Size' }}</label>
     <div class="col-md-6">
-        <input class="form-control " name="size[]" type="text" id="size" value="{{ $product->size?? ''}}" placeholder="Type and hit enter to add Size" required />
+        <input  name="size[]" type="text" id="size" value="{{ $product->size?? ''}}" placeholder="Type and hit enter to add Size"  />
         {!! $errors->first('size', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -319,7 +327,7 @@ opacity: 1;
 <div class="form-group {{ $errors->has('fabric') ? 'has-error' : ''}}">
     <label for="fabric" class="col-md-4 control-label">{{ 'Fabric' }}</label>
     <div class="col-md-6">
-        <input class="form-control " name="fabric[]" type="text" id="fabric" value="{{ $product->fabric?? ''}}" placeholder="Type and hit enter to add Fabric" required />
+        <input  name="fabric[]" type="text" id="fabric" value="{{ $product->fabric?? ''}}" placeholder="Type and hit enter to add Fabric"  />
         {!! $errors->first('fabric', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -328,7 +336,7 @@ opacity: 1;
     <label for="colors" class="col-md-4 control-label">{{ 'Colors' }}</label>
     <div class="col-md-6">
         {{-- <input type="text" name="colors" id="colors" class="form-control"> --}}
-        <select class="color-choose color_table" data-live-search="true" data-selected-text-format="count" name="colors[]" id="colors" multiple >
+        <select class="color-choose color_table" data-live-search="true" data-selected-text-format="count" name="colors[]" id="colors" multiple required>
             @foreach (\App\ProductColor::orderBy('name', 'asc')->where('active',1)->get() as $key => $color)
             <option  value="{{ $color->color_code }}">{{' ' .$color->name }}</option> 
             @if($product->is_static == 1)
@@ -403,21 +411,50 @@ opacity: 1;
 <div class="form-group {{ $errors->has('sale_price') ? 'has-error' : ''}}">
     <label for="sale_price" class="col-md-4 control-label">{{ 'Sale Price' }}</label>
     <div class="col-md-6">
-        <input class="form-control" name="sale_price" type="number" id="sale_price" placeholder="0" value="{{ $product->sale_price?? ''}}" required>
+        <input class="form-control" name="sale_price" type="number" id="sale_price" placeholder="0" value="{{ $product->sale_price?? ''}}" required maxlength="10" oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);'>
         {!! $errors->first('sale_price', '<p class="help-block">:message</p>') !!}
+    </div>
+</div>
+<div class="form-group {{ $errors->has('dollor') ? 'has-error' : ''}}">
+    <label for="dollor" class="col-md-4 control-label">{{ 'Dollor' }}</label>
+    <div class="col-md-6">
+        <input class="form-control dollor" name="dollor" type="number" id="dollor" placeholder="0" value="{{ $product->dollor?? ''}}"   readonly>
+        {!! $errors->first('dollor', '<p class="help-block">:message</p>') !!}
+    </div>
+</div>
+
+<div class="form-group {{ $errors->has('riyal') ? 'has-error' : ''}}">
+    <label for="riyal" class="col-md-4 control-label">{{ 'Riyal' }}</label>
+    <div class="col-md-6">
+        <input class="form-control riyal" name="riyal" type="number" id="riyal" placeholder="0" value="{{ $product->riyal?? ''}}"   readonly>
+        {!! $errors->first('riyal', '<p class="help-block">:message</p>') !!}
+    </div>
+</div>
+<div class="form-group {{ $errors->has('dinar') ? 'has-error' : ''}}">
+    <label for="dinar" class="col-md-4 control-label">{{ 'Dinar' }}</label>
+    <div class="col-md-6">
+        <input class="form-control dinar" name="dinar" type="number" id="dinar" placeholder="0"  value="{{ $product->dinar?? ''}}"  readonly>
+        {!! $errors->first('dinar', '<p class="help-block">:message</p>') !!}
+    </div>
+</div>
+<div class="form-group {{ $errors->has('euro') ? 'has-error' : ''}}">
+    <label for="euro" class="col-md-4 control-label">{{ 'Euro' }}</label>
+    <div class="col-md-6">
+        <input class="form-control euro" name="euro" type="number" id="euro" placeholder="0" value="{{ $product->euro?? ''}}"   readonly>
+        {!! $errors->first('euro', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
 <div class="form-group {{ $errors->has('perchase_price') ? 'has-error' : ''}}">
     <label for="perchase_price" class="col-md-4 control-label">{{ 'Perchase Price' }}</label>
     <div class="col-md-6">
-        <input class="form-control" name="perchase_price" type="number" id="perchase_price" placeholder="0" value="{{ $product->purchase_price?? ''}}" required>
+        <input class="form-control" name="perchase_price" type="number" id="perchase_price" placeholder="0" value="{{ $product->purchase_price?? ''}}" required maxlength="10" oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);'>
         {!! $errors->first('perchase_price', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
 <div class="form-group {{ $errors->has('discount') ? 'has-error' : ''}}">
     <label for="discount" class="col-md-4 control-label">{{ 'Discount' }}</label>
     <div class="col-md-6">
-        <input class="form-control" name="discount" type="text" id="discount" placeholder="0" value="{{ $product->discount?? ''}}" >
+        <input class="form-control" name="discount" type="text" id="discount" placeholder="0" value="{{ $product->discount?? ''}}" maxlength="10" oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);' >
         {!! $errors->first('discount', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -482,7 +519,7 @@ opacity: 1;
 <div class="form-group {{ $errors->has('shipping_cost') ? 'has-error' : ''}}" id="flat_shipping_cost">
     <label for="shipping_cost" class="col-md-4 control-label">{{ 'Shipping Cost' }}</label>
     <div class="col-md-6">
-        <input class="form-control" name="shipping_cost" type="number" id="shipping_cost" placeholder="0" value="{{ $product->shipping_cost?? ''}}" >
+        <input class="form-control" name="shipping_cost" type="number" id="shipping_cost" placeholder="0" value="{{ $product->shipping_cost?? ''}}" maxlength="10" oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);'>
         {!! $errors->first('shipping_cost', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -490,7 +527,7 @@ opacity: 1;
 <div class="form-group {{$errors->has('commission') ? 'has-error' : ''}}" >
     <label for="commission" class="col-md-4 control-label">{{ 'Commission' }}</label>
     <div class="col-md-6">
-        <input class="form-control"  name="commission" type="number" value="{{ $product->commission?? ''}}" id="commission" placeholder="0"  >
+        <input class="form-control"  name="commission" type="number" value="{{ $product->commission?? ''}}" id="commission" placeholder="0" maxlength="10" oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);' >
         {!! $errors->first('commission', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -534,7 +571,7 @@ function readURL(input,id,i) {
             img.onload = function() {
               
                 if(this.width >= 1200 && this.height >= 1200){
-                    alert();
+                   
                     var $el = $('#img_file');
                   
                     $el.wrap('<form>').closest('form').get(0).reset();
@@ -542,6 +579,7 @@ function readURL(input,id,i) {
                     $('#imgLabel').text('');
                     imgLabel
                     alert(this.width + " " + this.height);
+                    alert('image hight and with should be 1200 ')
                 }
             };
             img.onerror = function() {
@@ -558,6 +596,7 @@ function readURL(input,id,i) {
     $("#thumbnail_img").change(function(e) {
         var file, img;
         for(let i = 0; i<this.files.length;i++){
+            console.log(i);
             if ((file = this.files[i])) {
                 img = new Image();
 
@@ -583,8 +622,23 @@ function readURL(input,id,i) {
 
         
     $(document).ready(function () {
+        update_sku();
+        $('#sale_price').keyup(function(){
+            var sale_price      = $('#sale_price').val();
+            var dollor          = 160 ;
+            var dinar           = 515 ;
+            var riyal           = 42 ;
+            var euro            = 190;
+            var prk_to_dollor   = (sale_price/dollor);
+            var prk_to_dinar    = (sale_price/dinar);
+            var prk_to_riyal    = (sale_price/riyal);
+            var prk_to_euro     = (sale_price/euro);
+            $('#dollor').val(prk_to_dollor.toFixed(2));
+            $('#dinar').val(prk_to_dinar.toFixed(2));
+            $('#riyal').val(prk_to_riyal.toFixed(2));
+            $('#euro').val(prk_to_euro.toFixed(2));
 
-        
+        });
 
         // $('#img_url').hide();
         $("#category_id,#subcategory_id,#child_subcategory_id,#brand_id,#discount_type").select2();
@@ -741,19 +795,9 @@ function readURL(input,id,i) {
                 
         });
 
-
-
         $(".form-control select2").select2({
             width: "100%",
         });
-
-        // function add_more_customer_choice_option(i, name){
-        // $('#customer_choice_options').append('<div class="form-group row"><div class="col-md-3"><input type="hidden" name="choice_no[]" value="'+i+'"><input type="text" class="form-control" name="choice[]" value="'+name+'" placeholder="Choice Title" readonly></div><div class="col-md-8"><input type="text" class="form-control aiz-tag-input" name="choice_options_'+i+'[]" placeholder="Enter choice values" data-on-change="update_sku"></div></div>');
-        // AIZ.plugins.tagify();
-
-        // }
-
-
 
         $('input[name="colors_active"]').on('change', function() {
             if(!$('input[name="colors_active"]').is(':checked')){
@@ -854,7 +898,7 @@ function readURL(input,id,i) {
               success: function(data){
               $('#sku_combination').html(data);
               if (data.length > 1) {
-                  $('#quantity').hide();
+                  $('#quantity').show();
               }
               else {
                     $('#quantity').show();
@@ -879,15 +923,51 @@ function readURL(input,id,i) {
 
         });
 
-        var input = document.querySelector('#tags');
-        var tagify = new Tagify(input);
-        tagify.addTags();
-        var input = document.querySelector('#size');
-        var tagify = new Tagify(input);
-        tagify.addTags();
-        var input = document.querySelector('#fabric');
-        var tagify = new Tagify(input);
-        tagify.addTags();
+        var tags = document.querySelector('#tags');
+        var size = document.querySelector('#size');
+        var fabric = document.querySelector('#fabric');
+        // create a Tagify component
+        var tagify = new Tagify(tags, {
+            whitelist: [],
+            maxTags: 15,
+            dropdown: {
+                maxItems: 5,           
+                classname: "tags-look",
+                enabled: 0,            
+                closeOnSelect: true,   
+                required:true
+            }
+        });
+        var tagify = new Tagify(size, {
+            whitelist: [],
+            maxTags: 15,
+            dropdown: {
+                maxItems: 5,           
+                classname: "tags-look", 
+                enabled: 0,           
+                closeOnSelect: true    
+            }
+        });
+        var tagify = new Tagify(fabric, {
+            whitelist: [],
+            maxTags: 15,
+            dropdown: {
+                maxItems: 5,           
+                classname: "tags-look", 
+                enabled: 0,             
+                closeOnSelect: true   
+            }
+        });
+
+        // var input = document.querySelector('#tags');
+        // var tagify = new Tagify(input);
+        // tagify.addTags();
+        // var input = document.querySelector('#size');
+        // var tagify = new Tagify(input);
+        // tagify.addTags();
+        // var input = document.querySelector('#fabric');
+        // var tagify = new Tagify(input);
+        // tagify.addTags();
           
     });
   

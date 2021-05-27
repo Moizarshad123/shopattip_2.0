@@ -639,6 +639,7 @@ class ComposerStaticInit156477468a3eef1d458196188105a7ba
         'App\\Permission' => __DIR__ . '/../..' . '/app/Permission.php',
         'App\\Product' => __DIR__ . '/../..' . '/app/Product.php',
         'App\\ProductColor' => __DIR__ . '/../..' . '/app/ProductColor.php',
+        'App\\ProductImage' => __DIR__ . '/../..' . '/app/ProductImage.php',
         'App\\ProductVariation' => __DIR__ . '/../..' . '/app/ProductVariation.php',
         'App\\Profile' => __DIR__ . '/../..' . '/app/Profile.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',

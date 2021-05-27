@@ -9,7 +9,14 @@
 @section('content')
     <div class="container-fluid">
         <!-- .row -->
+        @if ($message = Session::get('flash_message'))
+        <div class="alert alert-success alert-block">
+            <button type="button" class="close" data-dismiss="alert">×</button>    
+            <strong>{{ $message }}</strong>
+        </div>
+        @endif
         <div class="row">
+
             <div class="col-sm-12">
                 <div class="white-box">
                     <h3 class="box-title pull-left">Brand</h3>

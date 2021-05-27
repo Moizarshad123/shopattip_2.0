@@ -12,13 +12,13 @@
 
                     <div class="clearfix"></div>
                     <hr>
-                    @if ($errors->any())
+                    {{-- @if ($errors->any())
                         <ul class="alert alert-danger">
                             @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>
                             @endforeach
                         </ul>
-                    @endif
+                    @endif --}}
 
                     <form method="POST" action="{{ url('/product/product') }}" id="choice_form" accept-charset="UTF-8"
                           class="form-horizontal" enctype="multipart/form-data">

@@ -28,14 +28,7 @@ class ProductController extends Controller
     }
 
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\View\View
-     */
-
-    public function index(Request $request)
-    {
+    public function index(Request $request){
         $model = str_slug('product','-');
         if(auth()->user()->permissions()->where('name','=','view-'.$model)->first()!= null) {
             $keyword = $request->get('search');
@@ -60,8 +53,6 @@ class ProductController extends Controller
                 ->paginate($perPage);
             } else {
                 $product = Product::with('category','subCategory','subChildCategory')->paginate($perPage);
-            //    $product = Product::with('category')->get();
-            //    dd($product);
             }
 
             return view('product.product.index', compact('product'));
@@ -70,9 +61,7 @@ class ProductController extends Controller
 
     }
 
-
-    public function create()
-    {
+    public function create(){
         $model = str_slug('product','-');
         $brands = Brand::all();
         if(auth()->user()->permissions()->where('name','=','add-'.$model)->first()!= null) {
@@ -82,15 +71,14 @@ class ProductController extends Controller
 
     }
 
-    public function store(Request $request)
-    {
+    public function store(Request $request){
        
-      
-
-  
-  
         $model = str_slug('product','-');
         if(auth()->user()->permissions()->where('name','=','add-'.$model)->first()!= null) {
+            $this->validate($request, [
+            
+            ]);
+       
         $user_id    = auth()->user()->id;
         $user       = User::findorfail($user_id);
       
@@ -118,6 +106,10 @@ class ProductController extends Controller
         $product->brand_id              = $request->brand_id;
         $product->description           = $request->description;
         $product->sale_price            = $request->commission+intval($request->sale_price);
+        $product->dollor                = $request->dollor;
+        $product->riyal                 = $request->riyal;
+        $product->dinar                 = $request->dinar;
+        $product->euro                  = $request->euro;
         $product->purchase_price        = $request->perchase_price;
         $product->discount              = $request->discount;
         $product->discount_type         = $request->discount_type;
@@ -144,8 +136,6 @@ class ProductController extends Controller
             }
         }
         $product->fabric                  = implode(',', $fabrics);
-        
-        
 
         $product->num_of_imgs           = count($request->thumbnail_image) + 1;
         $product->url_name              = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->name));
@@ -182,131 +172,10 @@ class ProductController extends Controller
             
              $product_stock->color = $str[$i];
              $product_stock->stock = $request->qty[$i];
-
-            
              $product_stock->save();
 
         }
 
-
-        // $choice_options = array();
-
-        // if($request->has('choice_no')){
-        //     foreach ($request->choice_no as $key => $no) {
-        //         $str          = 'choice_options_'.$no;
-        //         $item['id']   = $key+1;
-        //         $item['name'] = $no;
-
-        //         $data = array();
-        //         foreach (json_decode($request[$str][0]) as $key => $eachValue) {
-        //             array_push($data, $eachValue->value);
-        //         }
-        //         $item['values'] = $data;
-        //         array_push($choice_options, $item);
-        //     }
-        //   }
-      
-        // $product->options = json_encode($choice_options);
-
-
-    //  ########     shipping
-    // if ($request->has('shipping_type')) {
-    //     if($request->shipping_type == 'free'){
-    //         $product->shipping_cost = 0;
-    //     }
-    //     elseif ($request->shipping_type == 'flat_rate') {
-
-    //     }
-    // }
-
-    // $product->shipping_cost = $request->shipping_cost;
-
-    //   //combinations start
-    //   $options = array();
-    //   if($request->has('colors_active') && $request->has('colors') && count($request->colors) > 0){
-    //       $colors_active = 1;
-    //       array_push($options, $request->colors);
-    //   }
-
-    //   if($request->has('choice_no')){
-    //       foreach ($request->choice_no as $key => $no) {
-    //           $name = 'choice_options_'.$no;
-    //           $data = array();
-           
-    //           foreach (json_decode($request[$name][0]) as $key => $item) {
-    //               array_push($data, $item->value);
-    //           }
-    //           array_push($options, $data);
-    //       }
-    //   }
-
-     //Generates the combinations of customer choice options
-    //  $combinations = $this->combinations($options);
-    //  if(count($combinations[0]) > 0){
-    //      $product->is_static = 1;
-    //      $product->save();
-
-    //      $product->variant_product = 1;
-    //      $count1=0;
-    //      $count2=1;
-    //      $count3=2;
-    //      foreach ($combinations as $key => $combination){
-
-        
-    //          $price = 0;
-    //          $str   = '';
-    //          foreach ($combination as $key => $item){
-    //              if($key > 0 ){
-    //                  $str .= '-'.str_replace(' ', '', $item);
-    //              }else{
-    //                     if($request->has('colors_active') && $request->has('colors') && count($request->colors) > 0){
-    //                         $color_name = \App\ProductColor::where('color_code', $item)->first()->name;
-    //                         $str .= $color_name;
-    //                     }else{
-    //                         $str .= str_replace(' ', '', $item);
-    //                     }
-    //              }
-    //          }
-           
-
-            //  $product_stock = ProductVariation::where('product_id', $product->id)->where('variation', $str)->first();
-            //  if($product_stock == null){
-            //      $product_stock             = new ProductVariation;
-            //      $product_stock->product_id = $product->id;
-            //  }
-
-    //          $product_stock             = new ProductVariation;
-    //          $product_stock->product_id = $product->id;
-              
-    //          if($request->commission != null){
-    //              $price = $request->commission + $request['price_'.str_replace('.', '_', $str)];
-    //          }else{
-    //              $price = 0;
-    //          }
-    //          $product_stock->variation      = $str;
-    //          $expload                       = (explode("-",$str));
-           
-    //          if(sizeof($expload)){
-    //             foreach( $expload as $item){
-    //                 $product_stock->color          = @$expload[$count1];
-    //                 $product_stock->size           = @$expload[$count2];
-    //                 $product_stock->fabric         = @$expload[$count3];
-    //              }
-    //          }
-     
-             
-    //          $product_stock->actual_price   = $request['price_'.str_replace('.', '_', $str)];
-    //          $product_stock->price          = $request->commission+intval($request['price_'.str_replace('.', '_', $str)]);
-        
-    //          // $product_stock->sku         = $request['sku_'.str_replace('.', '_', $str)];
-    //          $product_stock->stock          = $request['qty_'.str_replace('.', '_', $str)];
-    //          $product_stock->save();
-    //      }
-    //  }else{
-    //         $product->is_static             = 0;
-    //         $product->current_stock         = $request->current_stock;
-    //         $product->save();
-    //  }
             $logo =  "product_".$product->id."_1.".$request->front_image->extension();
             $request->front_image->move(public_path('website/productImages'), $logo);
             $this->addImages($request->thumbnail_image,$product->id);
@@ -314,8 +183,8 @@ class ProductController extends Controller
         }
         return response(view('403'), 403);
     }
-    function addImages($imgArray,$product_id)
-    {
+
+    function addImages($imgArray,$product_id){
         $pro_num = 1;
         for ($i = 0; $i < count($imgArray); $i++)
         {
@@ -340,11 +209,10 @@ class ProductController extends Controller
             $result = $tmp;
         }
         return $result;
-      }
+    }
 
-    public function sku_combination(Request $request)
-    {
-       
+    public function sku_combination(Request $request){
+      
         $options = array();
         if($request->has('colors_active') && $request->has('colors') && count($request->colors) > 0){
             $colors_active = 1;
@@ -365,7 +233,7 @@ class ProductController extends Controller
                 $name = 'choice_options_'.$no;
                
                 $data = array();
-                // dd(json_decode($request[$name][0]));
+          
                 foreach (json_decode($request[$name][0]) as $key => $item) {
                  
                     array_push($data, $item->value);
@@ -376,15 +244,24 @@ class ProductController extends Controller
           
 
         }
- 
+        $str = array();
+        for($i=0; $i<count($request->colors); $i++){
+  
+            if($request->has('colors_active') && $request->has('colors') && count($request->colors) > 0){
+                $color_name = \App\ProductColor::where('color_code', $request->colors[$i])->first()->name;
+                array_push($str, $color_name);
+        
+            }
+        }
+        $product_id = $request->product_id;
+        $product_stock   = ProductVariation::where('product_id',$request->product_id)->get();
+        // dd($product_stock);
         $combinations = $this->combinations($options);
-        return view('product.product.sku_combinations', compact('combinations', 'unit_price', 'colors_active', 'product_name'));
+        return view('product.product.sku_combinations', compact('combinations', 'unit_price', 'colors_active','product_id','str', 'product_name','product_stock'));
 
-//        return view('admin.pages.products.sku_combinations', compact('combinations', 'unit_price', 'colors_active', 'product_name'));
     }
 
-    public function sku_combination_edit(Request $request)
-    {
+    public function sku_combination_edit(Request $request){
         $product = Product::findOrFail($request->id);
         $options = array();
         if($request->has('colors_active') && $request->has('colors') && count($request->colors) > 0){
@@ -413,50 +290,26 @@ class ProductController extends Controller
         $combinations =  $this->combinations($options);
         return view('product.product.sku_combinations_edit', compact('combinations', 'unit_price', 'colors_active', 'product_name', 'product'));
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     *
-     * @return \Illuminate\View\View
-     */
-    public function show($id)
-    {
+   
+    public function show($id){
         $model = str_slug('product','-');
         if(auth()->user()->permissions()->where('name','=','view-'.$model)->first()!= null) {
             $product = Product::with('category','subCategory','subChildCategory','productVariaction','brand')->findOrFail($id);
-           dd($product['subChildCategory']);
-            // foreach($product['productVariaction'] as $item){
-               
-            // }
-
-           
-            // $product = Product::with('category','subCategory','subChildCategory')->paginate($perPage);
 
             return view('product.product.show', compact('product'));
         }
         return response(view('403'), 403);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     *
-     * @return \Illuminate\View\View
-     */
-    public function edit($id)
-    {
+    public function edit($id){
         $model = str_slug('product','-');
         if(auth()->user()->permissions()->where('name','=','edit-'.$model)->first()!= null) {
             $product = Product::findOrFail($id);
-
             $user_id = auth()->user()->id;
             $user    = User::findorfail($user_id);
             if( $user_id ==1)
             {
-                $Categories         = Category::select('id','name','url_name','category_type_id','level_name')->where('status',1)->get();
+                $Categories         = Category::select('id','name','url_name','category_type_id')->where('status',1)->get();
                 $subCategories      = SubCategory::select('id','name','url_name','category_id')->where('status',1)->get();
                 $childSubCategories = ChildSubCategory::select('id','name','url_name','sub_category_id')->where('status',1)->get();
                
@@ -479,23 +332,6 @@ class ProductController extends Controller
             $size     = json_decode($product->size);
             $fabric     = explode(',',$product->fabric);
             $variations = ProductVariation::where('product_id',$id)->get();
-          
-           
-            // dd(json_decode($product->options));
-            // foreach (Attribute::all() as $key => $attribute){
-            //     if($product->is_static == 1){
-            //         // dd($product->attributes);
-            //         // `<option value="{{ $attribute->name }}" @if($product->attributes != null && in_array($attribute->name, json_decode($product->attributes, true))) selected @endif>{{ $attribute->name }}</option>`
-            //     }
-            
-            //     else {
-            //         // `<option value="{{ $attribute->name }}">{{ $attribute->name }}</option>`
-
-            //     }
-            // }
-                
-        
-      
 
             return view('product.product.edit', compact('product','brands','Categories','subCategories','childSubCategories','tag','size','fabric','variations'));
          
@@ -503,27 +339,15 @@ class ProductController extends Controller
         return response(view('403'), 403);
     }
 
+    public function update(Request $request, $id){
     
-    public function update(Request $request, $id)
-    {
-     
+       
         $model = str_slug('product','-');
         if(auth()->user()->permissions()->where('name','=','edit-'.$model)->first()!= null) {
             $this->validate($request, [
-			'product_type_id' => 'required',
-			'category_id' => 'required',
-			'subcategory_id' => 'required',
-			'child_subcategory_id' => 'required',
-			'brand_id' => 'required',
-			'description' => 'required',
-			'front_image' => 'required',
-			'sale_price' => 'required',
-			'perchase_price' => 'required'
+
 		]);
-            // $requestData = $request->all();
-            
-            // $product = Product::findOrFail($id);
-            //  $product->update($requestData);
+
 
             $user_id    = auth()->user()->id;
             $user       = User::findorfail($user_id);
@@ -551,6 +375,10 @@ class ProductController extends Controller
              $product->brand_id                 = $request->brand_id;
              $product->description              = $request->description;
              $product->sale_price               = $request->commission+intval($request->sale_price);
+             $product->dollor                   = $request->dollor;
+             $product->riyal                    = $request->riyal;
+             $product->dinar                    = $request->dinar;
+             $product->euro                     = $request->euro;
              $product->purchase_price           = $request->perchase_price;
              $product->discount                 = $request->discount;
              $product->discount_type            = $request->discount_type;
@@ -579,9 +407,7 @@ class ProductController extends Controller
                  }
              }
              $product->fabric               = implode(',', $fabrics);
-             
-             
-     
+          
              $product->num_of_imgs          = count($request->thumbnail_image) + 1;
              $product->url_name             = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->name));
              
@@ -604,73 +430,26 @@ class ProductController extends Controller
              $product->save();
      
              $str   = array();
-               
-             $product_stock             = ProductVariation::where('product_id',$id)->get();
-               
-                if(!sizeof($product_stock) ){
-                    for($i=0; $i<count($request->colors); $i++){
-                      
-                        $product_stock = new ProductVariation;
-                        $product_stock->product_id = $product->id;
-                        if($request->has('colors_active') && $request->has('colors') && count($request->colors) > 0){
-                            $color_name = \App\ProductColor::where('color_code', $request->colors[$i])->first()->name;
-                        
-                            array_push($str, $color_name);
-                    
-                        }
+
+             $product_stock   = ProductVariation::where('product_id',$id)->delete();
+      
+            for($i=0; $i<count($request->colors); $i++){
                 
-                            $product_stock->color = $str[$i];
-                            $product_stock->stock = $request->qty[$i];
+                $product_stock = new ProductVariation;
+                $product_stock->product_id = $product->id;
+                if($request->has('colors_active') && $request->has('colors') && count($request->colors) > 0){
+                    $color_name = \App\ProductColor::where('color_code', $request->colors[$i])->first()->name;
+                    array_push($str, $color_name);
             
-                        
-                            $product_stock->save();
-                    }
-                }else{
-                   
-                    for($i=0; $i<count($request->colors); $i++){
-                        $product_stocks             = ProductVariation::where('product_id',$id)->first();
-                        if($product_stocks == null){
-                            for($i=0; $i<count($request->colors); $i++){
-                      
-                                $product_stock = new ProductVariation;
-                                $product_stock->product_id = $product->id;
-                                if($request->has('colors_active') && $request->has('colors') && count($request->colors) > 0){
-                                    $color_name = \App\ProductColor::where('color_code', $request->colors[$i])->first()->name;
-                                
-                                    array_push($str, $color_name);
-                            
-                                }
-                        
-                                    $product_stock->color = $str[$i];
-                                    $product_stock->stock = $request->qty[$i];
-                    
-                                
-                                    $product_stock->save();
-                            }
-                        }else{
-
-                            if($request->has('colors_active') && $request->has('colors') && count($request->colors) > 0){
-                                $color_name = \App\ProductColor::where('color_code', $request->colors[$i])->first()->name;
-                            
-                                array_push($str, $color_name);
-                        
-                            }
-                    
-                        //     ProductVariation::where('product_id',$id)->update([
-                        //         'color' => $str[$i],
-                        //         'stock' => $request->qty[$i]
-                        //   ]);
-                                $product_stocks->color = $str[$i];
-                                $product_stocks->stock = $request->qty[$i];
-                                $product_stocks->save();
-                        }
-                      
-                       
-                    }
-                   
                 }
-
-          
+        
+                    $product_stock->color = $str[$i];
+                    $product_stock->stock = $request->qty[$i];
+    
+                
+                    $product_stock->save();
+            }
+               
             $logo =  "product_".$product->id."_1.".$request->front_image->extension();
             $request->front_image->move(public_path('website/productImages'), $logo);
             $this->addImages($request->thumbnail_image,$product->id);
@@ -679,16 +458,8 @@ class ProductController extends Controller
         return response(view('403'), 403);
 
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     */
-    public function destroy($id)
-    {
+  
+    public function destroy($id) {
         $model = str_slug('product','-');
         if(auth()->user()->permissions()->where('name','=','delete-'.$model)->first()!= null) {
             Product::destroy($id);
@@ -699,32 +470,26 @@ class ProductController extends Controller
 
     }
 
-    public function fetchCategories($product_type_id = null)
-    {
+    public function fetchCategories($product_type_id = null){
       
         $getCategories = Category::where('category_type_id',$product_type_id)->get();
         echo $getCategories;
     }
-    public function fetchSubCategories($category_type_id = null)
-    {
+
+    public function fetchSubCategories($category_type_id = null){
         $getSubCategories = SubCategory::where('category_id',$category_type_id)->get();
         echo $getSubCategories;
     }
 
-    public function fetchChildSubCategories($subcategory_type_id = null)
-    {
+    public function fetchChildSubCategories($subcategory_type_id = null){
         $getSubCategories = ChildSubCategory::where('sub_category_id',$subcategory_type_id)->get();
         echo $getSubCategories;
     }
 
-    public function getColorCodes()
-    {
-      
+    public function getColorCodes(){
         $colors = ProductColor::orderBy('name', 'asc')->where('active',1)->get();
        echo $colors;
        
     }
 
-    
-    
 }

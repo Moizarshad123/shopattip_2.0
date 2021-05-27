@@ -1,6 +1,13 @@
 @push('css')
+{{-- <link rel="stylesheet" href="{{ asset('vendor/css/forms/select/select2.min.css') }}"> --}}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/css/select2.min.css" rel="stylesheet"/>
+
+
 <style>
-    span.select2-selection.select2-selection--single{
+    .select2-container .select2-selection--single {
+        height: 38px !important;
+    }
+    /* span.select2-selection.select2-selection--single{
         height: 39px !important;
         border: 0.5px solid #e5ebec !important;
         margin-right: 10px !important;
@@ -8,7 +15,8 @@
     }
     .select2-container--default .select2-selection--single .select2-selection__arrow b{
         left: 10% !important;
-    }
+    } */
+
 </style>
 @endpush
 <div class="form-group {{ $errors->has('category_type_id') ? 'has-error' : ''}}">
@@ -58,13 +66,13 @@
 <div class="form-group {{ $errors->has('name') ? 'has-error' : ''}}">
     <label for="name" class="col-md-4 control-label">{{ 'Name' }}</label>
     <div class="col-md-6">
-        <input class="form-control" name="name" type="text" id="name" value="{{ $subcategory->name?? ''}}" required>
+        <input class="form-control" name="name" type="text" id="name" value="{{ $subcategory->name?? ''}}" required maxlength="70">
         {!! $errors->first('name', '<p class="help-block">:message</p>') !!}
     </div>
 </div><div class="form-group {{ $errors->has('url_name') ? 'has-error' : ''}}">
     <label for="url_name" class="col-md-4 control-label">{{ 'Url Name' }}</label>
     <div class="col-md-6">
-        <input class="form-control" name="url_name" type="text" id="url_name" value="{{ $subcategory->url_name?? ''}}" required>
+        <input class="form-control" name="url_name" type="text" id="url_name" value="{{ $subcategory->url_name?? ''}}" required maxlength="70">
         {!! $errors->first('url_name', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -81,8 +89,8 @@
 
 @push('js')
 
-<link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 <script>
             $(document).ready(function () {
             //change selectboxes to selectize mode to be searchable

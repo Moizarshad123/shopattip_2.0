@@ -68,6 +68,7 @@ return array(
     'App\\Permission' => $baseDir . '/app/Permission.php',
     'App\\Product' => $baseDir . '/app/Product.php',
     'App\\ProductColor' => $baseDir . '/app/ProductColor.php',
+    'App\\ProductImage' => $baseDir . '/app/ProductImage.php',
     'App\\ProductVariation' => $baseDir . '/app/ProductVariation.php',
     'App\\Profile' => $baseDir . '/app/Profile.php',
     'App\\Providers\\AppServiceProvider' => $baseDir . '/app/Providers/AppServiceProvider.php',

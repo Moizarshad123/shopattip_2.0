@@ -169,6 +169,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         Cartalyst\Stripe\Laravel\StripeServiceProvider::class,
         Stevebauman\Location\LocationServiceProvider::class,
+        
 
     ],
 

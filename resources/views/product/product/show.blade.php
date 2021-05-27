@@ -221,6 +221,7 @@ opacity: 1;
                                 <th> Name </th>
                                 <td> {{ $product->name??'null' }} </td>
                             </tr>
+                        
                             <tr>
                                 <th> Brand </th>
                                 <td> {{ $product['brand'][0]->name??'null' }} </td>
@@ -261,14 +262,31 @@ opacity: 1;
                                 <td> <input type="text" id="fabric" value="{{ $product->fabric??'null' }} " readonly></td>
                             </tr>
                           
-                            <tr>
-                                <th> Stock </th>
-                                <td> {{  $product->stock ??'null'}}</td>
-                            </tr>
+
                             <tr>
                                 
                                 <th> Sale Price </th>
                                 <td> {{ $product->sale_price??'0' }} </td>
+                            </tr>
+                            <tr>
+                                
+                                <th> Dollor </th>
+                                <td> {{ $product->dollor??'0' }} </td>
+                            </tr>
+                            <tr>
+                                
+                                <th> Riyal </th>
+                                <td> {{ $product->riyal??'0' }} </td>
+                            </tr>
+                            <tr>
+                                
+                                <th> Dinar </th>
+                                <td> {{ $product->dinar??'0' }} </td>
+                            </tr>
+                            <tr>
+                                
+                                <th> Euro </th>
+                                <td> {{ $product->euro??'0' }} </td>
                             </tr>
                             <tr>
                                 <th> Perchase Price </th>

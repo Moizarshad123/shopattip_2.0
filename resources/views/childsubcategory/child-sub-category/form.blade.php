@@ -53,13 +53,13 @@
 <div class="form-group {{ $errors->has('name') ? 'has-error' : ''}}">
     <label for="name" class="col-md-4 control-label">{{ 'Name' }}</label>
     <div class="col-md-6">
-        <input class="form-control" name="name" type="text" id="name" value="{{ @$childsubcategory->name?? ''}}" required>
+        <input class="form-control" name="name" type="text" id="name" value="{{ @$childsubcategory->name?? ''}}" required maxlength="70">
         {!! $errors->first('name', '<p class="help-block">:message</p>') !!}
     </div>
 </div><div class="form-group {{ $errors->has('url_name') ? 'has-error' : ''}}">
     <label for="url_name" class="col-md-4 control-label">{{ 'Url Name' }}</label>
     <div class="col-md-6">
-        <input class="form-control" name="url_name" type="text" id="url_name" value="{{ @$childsubcategory->url_name?? ''}}" required>
+        <input class="form-control" name="url_name" type="text" id="url_name" value="{{ @$childsubcategory->url_name?? ''}}" required maxlength="70">
         {!! $errors->first('url_name', '<p class="help-block">:message</p>') !!}
     </div>
 </div>

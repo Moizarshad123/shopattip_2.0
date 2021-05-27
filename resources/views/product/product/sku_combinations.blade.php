@@ -54,7 +54,16 @@
 					<input type="number" name="price_{{ $str }}" value="{{ $unit_price }}" min="0" step="0.01" class="form-control" required="">
 				</td> --}}
 				<td>
-					<input type="number" lang="en" name="qty[]"  min="0" step="1" class="form-control" required>
+					<input type="number" lang="en" name="qty[]" value="@php
+					$qty = \App\ProductVariation::where('product_id',$product_id)->where('color',$str)->first();
+				
+					if(($qty ) != null){
+						echo $qty->stock;
+					}
+					else{
+						echo '0';
+					}
+				@endphp" min="0" step="1" class="form-control" required maxlength="10" oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);'>
 				</td>
 
 				<td>

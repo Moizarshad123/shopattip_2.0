@@ -36,7 +36,7 @@
 </div><div class="form-group {{ $errors->has('coupon_amount') ? 'has-error' : ''}}">
     {!! Form::label('coupon_amount', 'Coupon Amount', ['class' => 'col-md-4 control-label']) !!}
     <div class="col-md-6">
-        {!! Form::number('coupon_amount', null, ('required' == 'required') ? ['maxlength'=>'5','class' => 'form-control', 'required' => 'required'] : ['class' => 'form-control']) !!}
+        {!! Form::number('coupon_amount', null, ('required' == 'required') ? ['maxlength'=>'5','class' => 'form-control', 'required' => 'required'] : ['class' => 'form-control'])  !!}
         {!! $errors->first('coupon_amount', '<p class="help-block">:message</p>') !!}
     </div>
 </div><div class="form-group {{ $errors->has('start_date') ? 'has-error' : ''}}">

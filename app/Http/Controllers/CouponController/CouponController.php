@@ -59,7 +59,7 @@ class CouponController extends Controller
             $this->validate($request, [
 			'coupon' => 'required',
 			'coupon_type' => 'required',
-			'coupon_amount' => 'required',
+			'coupon_amount' => 'required|max:5',
 			'start_date' => 'required',
 			'end_date' => 'required'
 		]);
@@ -99,7 +99,7 @@ class CouponController extends Controller
             $this->validate($request, [
 			'coupon' => 'required',
 			'coupon_type' => 'required',
-			'coupon_amount' => 'required',
+			'coupon_amount' => 'required|max:5',
 			'start_date' => 'required',
 			'end_date' => 'required'
 		]);

@@ -183,8 +183,8 @@ opacity: 1;
 <div class="form-group {{ $errors->has('product_type_id') ? 'has-error' : ''}}">
     <label for="product_type_id" class="col-md-4 control-label">{{ 'Product Type' }}</label>
     <div class="col-md-6">
-        <input type="radio" name="product_type_id"  id="product_type_id" value="1" required> GENERAL 
-        <input type="radio" name="product_type_id" id="product_type_id" value="2" style="margin-left: 51px;" required> GROCERY
+        <input type="radio" name="product_type_id"  id="product_type_id" value="1" @if(old('product_type_id') == 1) checked @endif required> GENERAL 
+        <input type="radio" name="product_type_id" id="product_type_id" value="2" @if(old('product_type_id') == 2) checked @endif style="margin-left: 51px;" required> GROCERY
         {!! $errors->first('product_type_id', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -220,7 +220,7 @@ opacity: 1;
 <div class="form-group {{ $errors->has('name') ? 'has-error' : ''}}">
     <label for="name" class="col-md-4 control-label">{{ 'Name' }}</label>
     <div class="col-md-6">
-        <input class="form-control" name="name" type="text" id="name"  required maxlength="50"/>
+        <input class="form-control" name="name" type="text" id="name" value="{{ old('name')}}" required maxlength="50"/>
         {!! $errors->first('name', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -230,7 +230,7 @@ opacity: 1;
         <select  class="form-control" name="brand_id" id="brand_id" required > 
             <option value="" >Select Brand</option>
             @foreach ($brands as $brand)
-            <option value="{{ $brand->id }}"  >{{ $brand->name }}</option>
+            <option value="{{ $brand->id }}" {{ (old("brand_id") == $brand->id ? "selected":"") }} >{{ $brand->name }}</option>
             @endforeach
        
         </select>
@@ -247,7 +247,7 @@ opacity: 1;
 <div class="form-group {{ $errors->has('description') ? 'has-error' : ''}}">
     <label for="description" class="col-md-4 control-label">{{ 'Description' }}</label>
     <div class="col-md-6">
-        <textarea class="form-control" rows="5" name="description" type="text" id="description" required maxlength="300" ></textarea>
+        <textarea class="form-control" rows="5" name="description" type="text" id="description" required>{{ old('description')}}</textarea>
         {!! $errors->first('description', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -255,7 +255,7 @@ opacity: 1;
 <div class="form-group {{ $errors->has('front_image') ? 'has-error' : ''}}">
     <label for="front_image" class="col-md-4 control-label">{{ 'Front Image' }}</label>
     <div class="col-md-6">
-        <input class="form-control" name="front_image" type="file" id="img_file" onChange="img_pathUrl(this);"   required>
+        <input class="form-control" name="front_image" type="file" id="img_file" onChange="img_pathUrl(this);" value="{{ old('front_image')}}"  required>
         {!! $errors->first('front_image', '<p class="help-block">:message</p>') !!}
     </div>
     <img id="img_url" src="" alt="your image" />
@@ -263,7 +263,7 @@ opacity: 1;
 <div class="form-group {{ $errors->has('thumbnail_image') ? 'has-error' : ''}}">
     <label for="thumbnail_image" class="col-md-4 control-label">{{ 'Thumb-nail Image' }}</label>
     <div class="col-md-6">
-        <input class="form-control" multiple name="thumbnail_image[]" type="file" id="thumbnail_img"   required>
+        <input class="form-control" multiple name="thumbnail_image[]" type="file" id="thumbnail_img" value="{{ old('thumbnail_images')}}"  required>
         {!! $errors->first('thumbnail_image', '<p class="help-block">:message</p>') !!}
     </div>
     {{-- <img id="thumbnail_img_url" src="" alt="your image" /> --}}
@@ -360,14 +360,14 @@ opacity: 1;
 <div class="form-group {{ $errors->has('size') ? 'has-error' : ''}}">
     <label for="size" class="col-md-4 control-label">{{ 'Size' }}</label>
     <div class="col-md-6">
-        <input class=" " name="size[]" type="text" id="size"   placeholder="Type and hit enter to add Size"   />
+        <input class=" " name="size[]" type="text" id="size" value="{{ old('size[]')}}"  placeholder="Type and hit enter to add Size"  maxlength="10" />
         {!! $errors->first('size', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
 <div class="form-group {{ $errors->has('fabric') ? 'has-error' : ''}}">
     <label for="fabric" class="col-md-4 control-label">{{ 'Fabric' }}</label>
     <div class="col-md-6">
-        <input class=" " name="fabric[]" type="text" id="fabric"  placeholder="Type and hit enter to add Fabric"    />
+        <input class=" " name="fabric[]" type="text" id="fabric" value="{{ old('fabric[]')}}"  placeholder="Type and hit enter to add Fabric"  maxlength="10"  />
         {!! $errors->first('fabric', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -422,7 +422,7 @@ margin-right: 120px !important;">
 <div class="form-group {{ $errors->has('sale_price') ? 'has-error' : ''}}">
     <label for="sale_price" class="col-md-4 control-label">{{ 'Sale Price' }}</label>
     <div class="col-md-6">
-        <input class="form-control sale_price" name="sale_price"  type="number" id="sale_price" placeholder="0"   required maxlength="10" oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);'>
+        <input class="form-control sale_price" name="sale_price"  type="number" id="sale_price" placeholder="0" value="{{ old('sale_price')}}"  required maxlength="10" oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);'>
         {!! $errors->first('sale_price', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -430,7 +430,7 @@ margin-right: 120px !important;">
 <div class="form-group {{ $errors->has('dollor') ? 'has-error' : ''}}">
     <label for="dollor" class="col-md-4 control-label">{{ 'Dollor' }}</label>
     <div class="col-md-6">
-        <input class="form-control dollor" name="dollor" type="number" id="dollor" placeholder="0"   readonly>
+        <input class="form-control dollor" name="dollor" type="number" id="dollor" placeholder="0" value="{{ old('dollor')}}"  readonly>
         {!! $errors->first('dollor', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -438,36 +438,29 @@ margin-right: 120px !important;">
 <div class="form-group {{ $errors->has('riyal') ? 'has-error' : ''}}">
     <label for="riyal" class="col-md-4 control-label">{{ 'Riyal' }}</label>
     <div class="col-md-6">
-        <input class="form-control riyal" name="riyal" type="number" id="riyal" placeholder="0"   readonly>
+        <input class="form-control riyal" name="riyal" type="number" id="riyal" placeholder="0" value="{{ old('riyal')}}"  readonly>
         {!! $errors->first('riyal', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
 <div class="form-group {{ $errors->has('dinar') ? 'has-error' : ''}}">
     <label for="dinar" class="col-md-4 control-label">{{ 'Dinar' }}</label>
     <div class="col-md-6">
-        <input class="form-control dinar" name="dinar" type="number" id="dinar" placeholder="0"   readonly>
+        <input class="form-control dinar" name="dinar" type="number" id="dinar" placeholder="0" value="{{ old('dinar')}}"  readonly>
         {!! $errors->first('dinar', '<p class="help-block">:message</p>') !!}
-    </div>
-</div>
-<div class="form-group {{ $errors->has('euro') ? 'has-error' : ''}}">
-    <label for="euro" class="col-md-4 control-label">{{ 'Euro' }}</label>
-    <div class="col-md-6">
-        <input class="form-control euro" name="euro" type="number" id="euro" placeholder="0"   readonly>
-        {!! $errors->first('euro', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
 
 <div class="form-group {{ $errors->has('perchase_price') ? 'has-error' : ''}}">
     <label for="perchase_price" class="col-md-4 control-label">{{ 'Perchase Price' }}</label>
     <div class="col-md-6">
-        <input class="form-control" name="perchase_price" type="number" id="perchase_price" placeholder="0"   required maxlength="10" oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);'>
+        <input class="form-control" name="perchase_price" type="number" id="perchase_price" placeholder="0" value="{{ old('perchase_price')}}"  required maxlength="10" oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);'>
         {!! $errors->first('perchase_price', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
 <div class="form-group {{ $errors->has('discount') ? 'has-error' : ''}}">
     <label for="discount" class="col-md-4 control-label">{{ 'Discount' }}</label>
     <div class="col-md-6">
-        <input class="form-control" name="discount" type="text" id="discount" placeholder="0"   required maxlength="10" oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);' >
+        <input class="form-control" name="discount" type="text" id="discount" placeholder="0" value="{{ old('discount')}}"  required maxlength="10" oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);' >
         {!! $errors->first('discount', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -476,8 +469,8 @@ margin-right: 120px !important;">
     <div class="col-md-6">
         <select class="form-control select2" name="discount_type" id="discount_type" >
             <option value=""> Select Discount Type</option>
-            <option value="flat" >Flat</option>
-            <option value="percent" >Percent</option>
+            <option value="flat" @if (old('discount_type') == 'flat') selected="selected" @endif>Flat</option>
+            <option value="percent" @if (old('discount_type') == 'percent') selected="selected" @endif>Percent</option>
         </select>
         {!! $errors->first('discount_type', '<p class="help-block">:message</p>') !!}
     </div>
@@ -525,7 +518,7 @@ margin-right: 120px !important;">
 <div class="form-group {{ $errors->has('shipping_cost') ? 'has-error' : ''}}" id="flat_shipping_cost">
     <label for="shipping_cost" class="col-md-4 control-label">{{ 'Shipping Cost' }}</label>
     <div class="col-md-6">
-        <input class="form-control" name="shipping_cost" type="number" id="shipping_cost" placeholder="0"  maxlength="10" required oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);'>
+        <input class="form-control" name="shipping_cost" type="number" id="shipping_cost" placeholder="0" value="{{ old('shipping_cost')}}"  maxlength="10" required oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);'>
         {!! $errors->first('shipping_cost', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -533,7 +526,7 @@ margin-right: 120px !important;">
 <div class="form-group {{$errors->has('commission') ? 'has-error' : ''}}" >
     <label for="commission" class="col-md-4 control-label">{{ 'Commission' }}</label>
     <div class="col-md-6">
-        <input class="form-control"  name="commission" type="number" id="commission" placeholder="0"   maxlength="10" required oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);' >
+        <input class="form-control"  name="commission" type="number" id="commission" placeholder="0" value="{{ old('commission')}}"  maxlength="10" required oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);' >
         {!! $errors->first('commission', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -608,19 +601,16 @@ margin-right: 120px !important;">
         $('#sale_price').keyup(function(){
 
            
-            var sale_price      = $('#sale_price').val();
-            var dollor          = 160 ;
-            var dinar           = 515 ;
-            var riyal           = 42 ;
-            var euro            = 190;
-            var prk_to_dollor   = (sale_price/dollor);
-            var prk_to_dinar    = (sale_price/dinar);
-            var prk_to_riyal    = (sale_price/riyal);
-            var prk_to_euro     = (sale_price/euro);
+            var sale_price = $('#sale_price').val();
+            var dollor = 160 ;
+            var dinar = 515 ;
+            var riyal = 42 ;
+            var prk_to_dollor = (sale_price/dollor);
+            var prk_to_dinar = (sale_price/dinar);
+            var prk_to_riyal = (sale_price/riyal);
             $('#dollor').val(prk_to_dollor.toFixed(2));
             $('#dinar').val(prk_to_dinar.toFixed(2));
             $('#riyal').val(prk_to_riyal.toFixed(2));
-            $('#euro').val(prk_to_euro.toFixed(2));
 
         });
         
