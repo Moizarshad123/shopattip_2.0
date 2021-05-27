@@ -141,12 +141,12 @@
                         </ul>
                     </li>
                     @endcan --}}
-                    <li>
+                    {{-- <li>
                         <a class="waves-effect" href="{{ url('account-settings') }}">
                             <i class="fa fa-gear fa-fw"></i>
                             <span class="hide-menu"> Account Settings</span>
                         </a>
-                    </li>
+                    </li> --}}
                     @if(auth()->user()->isAdmin() == true)
                     <li>
                         <hr />

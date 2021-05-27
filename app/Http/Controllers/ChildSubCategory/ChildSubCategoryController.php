@@ -5,6 +5,8 @@ namespace App\Http\Controllers\ChildSubCategory;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\SubCategory;
+use App\Category;
+
 use App\ChildSubCategory;
 use Illuminate\Http\Request;
 
@@ -15,13 +17,6 @@ class ChildSubCategoryController extends Controller
     {
         $this->middleware('auth');
     }
-
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\View\View
-     */
 
     public function index(Request $request)
     {
@@ -44,31 +39,19 @@ class ChildSubCategoryController extends Controller
         return response(view('403'), 403);
 
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\View\View
-     */
     public function create()
     {
         
         $model = str_slug('childsubcategory','-');
         if(auth()->user()->permissions()->where('name','=','add-'.$model)->first()!= null) {
             $getSubCategories = SubCategory::all();
+            // $getCategories    = Category::all();
             return view('childsubcategory.child-sub-category.create', compact('getSubCategories'));
         }
         return response(view('403'), 403);
 
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     */
     public function store(Request $request)
     {
         $model = str_slug('childsubcategory','-');
@@ -86,13 +69,6 @@ class ChildSubCategoryController extends Controller
         return response(view('403'), 403);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     *
-     * @return \Illuminate\View\View
-     */
     public function show($id)
     {
         $model = str_slug('childsubcategory','-');
@@ -103,13 +79,7 @@ class ChildSubCategoryController extends Controller
         return response(view('403'), 403);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     *
-     * @return \Illuminate\View\View
-     */
+  
     public function edit($id)
     {
         $model = str_slug('childsubcategory','-');
@@ -121,14 +91,6 @@ class ChildSubCategoryController extends Controller
         return response(view('403'), 403);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param  int  $id
-     *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     */
     public function update(Request $request, $id)
     {
         $model = str_slug('childsubcategory','-');
@@ -149,13 +111,6 @@ class ChildSubCategoryController extends Controller
 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     */
     public function destroy($id)
     {
         $model = str_slug('childsubcategory','-');
@@ -165,6 +120,20 @@ class ChildSubCategoryController extends Controller
             return redirect('child-sub-category')->with('flash_message', 'ChildSubCategory deleted!');
         }
         return response(view('403'), 403);
+
+    }
+
+    public function GetCategoryForChildSubCategory($id){
+
+        $getCategories    = Category::where('category_type_id',$id)->get();
+        return response()->json($getCategories);
+    }
+
+    public function GetSubCategoryForChildSubCategory($id){
+
+        
+        $getSubCategories  = SubCategory::where('category_id',$id)->get();
+        return response()->json($getSubCategories);
 
     }
 }

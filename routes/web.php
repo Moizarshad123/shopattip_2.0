@@ -1,5 +1,14 @@
 <?php
 
+use Stevebauman\Location\Facades\Location;
+
+Route::get('get-location-from-ip',function(){
+    $ip = '87.231.45.33';
+ 
+    $data = \Location::get($ip);
+    dd($data);
+    
+});
 Route::get('/', 'PagesController@HomePage');
 
 Route::group(['middleware' => ['auth', 'roles'],'roles' => ['admin','user']], function () {
@@ -12,14 +21,10 @@ Route::group(['middleware' => ['auth', 'roles'],'roles' => ['admin','user']], fu
     Route::post('account-settings', 'UsersController@saveSettings');
     
 });
+
 Route::group(['middleware' => 'guest'],function (){   
 });
-
-
-
-
 Route::group(['middleware' => 'auth'], function () {
-
 });
 
 Route::group(['middleware' => ['auth', 'roles'],'roles' => 'admin'], function () {
@@ -303,11 +308,10 @@ Route::resource('category/category', 'Category\\CategoryController');
 Auth::routes();
 
 Route::resource('sub-category/sub-category', 'SubCategoryController\\SubCategoryController');
-
 Route::resource('brand', 'BrandController\\BrandController');
-Route::resource('brand', 'BrandController\\BrandController');
-Route::resource('brand', 'BrandController\\BrandController');
-Route::resource('brand', 'BrandController\\BrandController');
+// Route::resource('brand', 'BrandController\\BrandController');
+// Route::resource('brand', 'BrandController\\BrandController');
+// Route::resource('brand', 'BrandController\\BrandController');
 
 Route::get('select-category-type/{category_type_id}', 'SubCategoryController\\SubCategoryController@fetchCategoryBaseList');
 
@@ -321,12 +325,15 @@ Route::post('products/sku-combination', 'ProductController\\ProductController@sk
 
 
 Route::resource('child-sub-category', 'ChildSubCategory\\ChildSubCategoryController');
-// Route::resource('child-sub-category', 'ChildSubCategory\\ChildSubCategoryController');
-// Route::resource('banner', 'BannerController\\BannerController');
-// Route::resource('banner', 'BannerController\\BannerController');
 Route::resource('banner', 'BannerController\\BannerController');
-
-
 Route::resource('coupon', 'CouponController\\CouponController');
-Route::resource('coupon', 'CouponController\\CouponController');
+// Route::resource('coupon', 'CouponController\\CouponController');
 Route::resource('discount', 'DiscountController\\DiscountController');
+
+// New Routes 26-05
+
+Route::get('getcategoryforchildsubcat/{id}','ChildSubCategory\\ChildSubCategoryController@GetCategoryForChildSubCategory');
+Route::get('getsubcategoryforchildsubcat/{id}','ChildSubCategory\\ChildSubCategoryController@GetSubCategoryForChildSubCategory');
+
+
+// 
