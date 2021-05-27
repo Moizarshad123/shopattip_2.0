@@ -7,6 +7,12 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@yaireo/tagify@3.1.0/dist/tagify.css" />
 <link rel="stylesheet" href="{{ asset('vendor/css/forms/select/select2.min.css') }}">
 <style>
+    .aiz-switch-success input:checked ~ span:after{
+        background-color: #07ed19 !important;
+    }
+    .aiz-switch input:empty ~ span {
+        margin-top: 3px !important;
+    }
     span.select2-selection.select2-selection--single {
     height: 37px;
     }
@@ -464,13 +470,6 @@ margin-right: 120px !important;">
         {!! $errors->first('perchase_price', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
-<div class="form-group {{ $errors->has('discount') ? 'has-error' : ''}}">
-    <label for="discount" class="col-md-4 control-label">{{ 'Discount' }}</label>
-    <div class="col-md-6">
-        <input class="form-control" name="discount" type="text" id="discount" placeholder="0"   required maxlength="10" oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);' >
-        {!! $errors->first('discount', '<p class="help-block">:message</p>') !!}
-    </div>
-</div>
 <div class="form-group {{ $errors->has('discount_type') ? 'has-error' : ''}}">
     <label for="discount_type" class="col-md-4 control-label">{{ 'Discount Type' }}</label>
     <div class="col-md-6">
@@ -482,6 +481,14 @@ margin-right: 120px !important;">
         {!! $errors->first('discount_type', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
+<div class="form-group {{ $errors->has('discount') ? 'has-error' : ''}}">
+    <label for="discount" class="col-md-4 control-label">{{ 'Discount' }}</label>
+    <div class="col-md-6">
+        <input class="form-control" name="discount" type="text" id="discount" placeholder="0"   required maxlength="10" oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);' >
+        {!! $errors->first('discount', '<p class="help-block">:message</p>') !!}
+    </div>
+</div>
+
 
 {{-- <div class="card-header">
     <h1 class="mb-0 h6"><strong>Product Shipping Cost</strong></h1>
