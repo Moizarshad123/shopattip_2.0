@@ -266,7 +266,7 @@ opacity: 1;
                             <tr>
                                 
                                 <th> Sale Price </th>
-                                <td> {{ $product->sale_price??'0' }} </td>
+                                <td> {{ @$product->sale_price - @$product->commission }} </td>
                             </tr>
                             <tr>
                                 

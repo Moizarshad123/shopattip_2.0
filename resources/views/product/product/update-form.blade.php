@@ -435,7 +435,7 @@ opacity: 1;
 <div class="form-group {{ $errors->has('sale_price') ? 'has-error' : ''}}">
     <label for="sale_price" class="col-md-4 control-label">{{ 'Sale Price' }}</label>
     <div class="col-md-6">
-        <input class="form-control" name="sale_price" type="number" id="sale_price" placeholder="0" value="{{ $product->sale_price?? ''}}" required maxlength="10" oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);'>
+        <input class="form-control" name="sale_price" type="number" id="sale_price" placeholder="0" value="{{ @$product->sale_price - @$product->commission}}" required maxlength="10" oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);'>
         {!! $errors->first('sale_price', '<p class="help-block">:message</p>') !!}
     </div>
 </div>

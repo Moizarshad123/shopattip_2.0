@@ -53,9 +53,9 @@
 
                     </ul>
                 </li>
-                <li><a class="waves-effect" href="{{asset('role-management')}}">
+                {{-- <li><a class="waves-effect" href="{{asset('role-management')}}">
                     <i class=" icon-layers fa-fw"></i><span class="hide-menu"> Category </span></a>
-                </li>
+                </li> --}}
                 <li>
                     <hr />
                 </li>
