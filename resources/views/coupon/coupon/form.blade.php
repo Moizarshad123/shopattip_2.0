@@ -68,6 +68,21 @@ $('#getit').click(function() {
     $wrap.val('SAT'+Math.ceil(Math.random() * max));
 });
 
+    $(document).ready(function(){
+
+        var obj = {
+            name:  "saqlain",
+                getName: function(){
+                console.log(this.name);
+            }
+        }
+
+        var getName = obj.getName;
+        var obj2 = {name:"raza", getName };
+        obj2.getName();
+    
+    })
+
 </script>
 
 @endsection

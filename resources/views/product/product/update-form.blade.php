@@ -341,11 +341,12 @@ opacity: 1;
 <div class="form-group {{ $errors->has('colors') ? 'has-error' : ''}}">
     <label for="colors" class="col-md-4 control-label">{{ 'Colors' }}</label>
     <div class="col-md-6">
+        @if(@$product->colors != null )
         {{-- <input type="text" name="colors" id="colors" class="form-control"> --}}
         <select class="color-choose color_table" data-live-search="true" data-selected-text-format="count" name="colors[]" id="colors" multiple required>
             @foreach (\App\ProductColor::orderBy('name', 'asc')->where('active',1)->get() as $key => $color)
-            <option  value="{{ $color->color_code }}">{{' ' .$color->name }}</option> 
-            @if($product->is_static == 1)
+            {{-- <option  value="{{ $color->color_code }}">{{' ' .$color->name }}</option>  --}}
+            @if(@$product->is_static == 1 && @$product->colors != null)
             <option
 
                 value="{{ $color->color_code }}"
@@ -356,13 +357,29 @@ opacity: 1;
             @endif
             @endforeach
         </select>
+        @else
+        <select class="color-choose color_table" data-live-search="true" data-selected-text-format="count" name="colors[]" id="colors" multiple required disabled>
+            @foreach (\App\ProductColor::orderBy('name', 'asc')->where('active',1)->get() as $key => $color)
+            <option  value="{{ $color->color_code }}">{{' ' .$color->name }}</option> 
+           
+            @endforeach
+        </select>
+        @endif
 
         {{-- <textarea class="form-control" rows="5" name="colors" type="textarea" id="colors" >{{ $product->colors?? ''}}</textarea> --}}
         {!! $errors->first('colors', '<p class="help-block">:message</p>') !!}
     </div>
+    @if(@$product->colors == null )
+    <div class="col-md-0">
+        <label class="aiz-switch aiz-switch-success mb-0">
+            <input value="1" type="checkbox" name="colors_active" >
+            <span></span>
+        </label>
+    </div>
+    @else
     <div class="col-md-1">
         <label class="aiz-switch aiz-switch-success mb-0">
-            @if($product->is_static == 1)
+            @if(@$product->is_static == 1 && @$product->colors != null)
             <input value="1" type="checkbox" name="colors_active" <?php if(count(json_decode($product->colors)) > 0) echo "checked";?>>
             @else
             <input value="1" type="checkbox" name="colors_active" checked>
@@ -370,6 +387,7 @@ opacity: 1;
             <span></span>
         </label>
     </div>
+    @endif
 </div>
 <br>
 

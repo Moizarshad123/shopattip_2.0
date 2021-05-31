@@ -59,9 +59,14 @@ class SubCategoryController extends Controller
 			'name' => 'required',
 			'url_name' => 'required'
 		]);
-            $requestData = $request->all();
+            // $requestData = $request->all();
+            $subCategory = new SubCategory();
+            $subCategory->category_id = $request->category_id;
+            $subCategory->name = $request->name;
+            $subCategory->url_name = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->url_name));
+            $subCategory->save();
             
-            SubCategory::create($requestData);
+            // SubCategory::create($requestData);
             return redirect('sub-category/sub-category')->with('flash_message', 'SubCategory added!');
         }
         return response(view('403'), 403);
@@ -80,13 +85,15 @@ class SubCategoryController extends Controller
 
     public function edit(SubCategory $sub_category)
     {
+        // dd($sub_category);
         $ACTION = 'EDIT';
         $id = $sub_category->id;
         $model = str_slug('subcategory','-');
         if(auth()->user()->permissions()->where('name','=','edit-'.$model)->first()!= null) {
             $subcategory = SubCategory::with('category')->findOrFail($id);
-           
-            return view('subcategory.sub-category.edit', compact('subcategory','ACTION'));
+            // dd($subcategory->category_id);
+            $getCategories = Category::all();
+            return view('subcategory.sub-category.edit', compact('subcategory','ACTION','getCategories'));
         }
         return response(view('403'), 403);
     }
@@ -102,8 +109,13 @@ class SubCategoryController extends Controller
 		]);
             $requestData = $request->all();
             
-            $subcategory = SubCategory::findOrFail($id);
-             $subcategory->update($requestData);
+            // $subcategory = SubCategory::findOrFail($id);
+            $subCategory = SubCategory::findOrFail($id);
+            $subCategory->category_id = $request->category_id;
+            $subCategory->name = $request->name;
+            $subCategory->url_name = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->url_name));
+            $subCategory->save();
+            //  $subcategory->update($requestData);
 
              return redirect('sub-category/sub-category')->with('flash_message', 'SubCategory updated!');
         }

@@ -3,8 +3,8 @@
     <div class="col-md-6">
         <select name="banner_type" class="form-control">
             <option value="">Select Banner Type</option>
-            <option value="1">General</option>
-            <option value="2">Grocery</option>
+            <option @if(isset($banner->banner_type) && $banner->banner_type == '1') selected @endif value="1">General</option>
+            <option @if(isset($banner->banner_type) && $banner->banner_type == '2') selected @endif value="2">Grocery</option>
         </select>
         {{-- {!! Form::text('banner_type', null, ('required' == 'required') ? ['class' => 'form-control', 'required' => 'required'] : ['class' => 'form-control']) !!} --}}
         {!! $errors->first('banner_type', '<p class="help-block">:message</p>') !!}

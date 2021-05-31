@@ -16,12 +16,15 @@
     span.select2-selection.select2-selection--single {
     height: 37px;
     }
+    .form-horizontal .form-group {
+        margin-left: -12.5px;
+    }
     #img_url {
         background: #ddd;
-        width: 230px;
+        width: 150px;
         height: 150px;
-        /* text-align: center !important; */
-        margin-left: 320px;
+        text-align: center !important;
+        margin-left: 301px;
         margin-top: 50px !important;
         display: block;
     }
@@ -163,26 +166,30 @@
         background-color: var(--dark);
         }
 
+        /*tagify tag input*/
 
+        .aiz-tag-input {
+        height: auto;
+        padding: 0.465rem 1rem 0.2rem;
+        }
+        .aiz-tag-input .tagify__tag,
+        .aiz-tag-input .tagify__input {
+        margin: 0px 5px 5px 0px;
+        }
+        .aiz-tag-input .tagify__tag__removeBtn {
+        font: 12px Serif;
+        line-height: 1.5;
+        }
+        .aiz-tag-input .tagify__tag__removeBtn:hover + div > span {
+        opacity: 1;
+        }
+        .previewTrash:hover{
+   
+            color: red;
+            cursor: pointer;
 
+        }
 
-/*tagify tag input*/
-
-.aiz-tag-input {
-height: auto;
-padding: 0.465rem 1rem 0.2rem;
-}
-.aiz-tag-input .tagify__tag,
-.aiz-tag-input .tagify__input {
-margin: 0px 5px 5px 0px;
-}
-.aiz-tag-input .tagify__tag__removeBtn {
-font: 12px Serif;
-line-height: 1.5;
-}
-.aiz-tag-input .tagify__tag__removeBtn:hover + div > span {
-opacity: 1;
-}
 </style>
 @endpush
 
@@ -268,17 +275,18 @@ opacity: 1;
 </div>
 <div class="form-group {{ $errors->has('thumbnail_image') ? 'has-error' : ''}}">
     <label for="thumbnail_image" class="col-md-4 control-label">{{ 'Thumb-nail Image' }}</label>
-    <div class="col-md-6">
+    <div class="col-md-6" id="imageDiv">
         <input class="form-control" multiple name="thumbnail_image[]" type="file" id="thumbnail_img"   required>
         {!! $errors->first('thumbnail_image', '<p class="help-block">:message</p>') !!}
     </div>
     {{-- <img id="thumbnail_img_url" src="" alt="your image" /> --}}
-    
-    <div class="row col-md-12 imgPreview" >
-
+    <input type="hidden" id="count_no_of_imgs" name="count_no_of_imgs">
+    <div class="row col-md-12 imgPreview"  >
+        
 
         <div class="form-group col-md-2">
             <img src="" id="thumbnail0" alt="" width="100" height="">
+            
         </div>
         <div class="form-group col-md-2">
             <img src="" id="thumbnail1" alt="" width="100" height="">
@@ -420,7 +428,7 @@ opacity: 1;
 
 </div>
 <br>
-<div class="sku_combination" id="sku_combination"  style="    margin-left: 262px !important;
+<div class="sku_combination" id="sku_combination"  style=" margin-left: 262px !important;
 margin-right: 120px !important;">
 
 </div>
@@ -484,7 +492,7 @@ margin-right: 120px !important;">
 <div class="form-group {{ $errors->has('discount') ? 'has-error' : ''}}">
     <label for="discount" class="col-md-4 control-label">{{ 'Discount' }}</label>
     <div class="col-md-6">
-        <input class="form-control" name="discount" type="text" id="discount" placeholder="0"   required maxlength="10" oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);' >
+        <input class="form-control" name="discount" type="text" id="discount" placeholder="0"    maxlength="10" oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);' >
         {!! $errors->first('discount', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -532,7 +540,7 @@ margin-right: 120px !important;">
 <div class="form-group {{ $errors->has('shipping_cost') ? 'has-error' : ''}}" id="flat_shipping_cost">
     <label for="shipping_cost" class="col-md-4 control-label">{{ 'Shipping Cost' }}</label>
     <div class="col-md-6">
-        <input class="form-control" name="shipping_cost" type="number" id="shipping_cost" placeholder="0"  maxlength="10" required oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);'>
+        <input class="form-control" name="shipping_cost" type="number" id="shipping_cost" placeholder="0"  maxlength="10"  oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);'>
         {!! $errors->first('shipping_cost', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -540,7 +548,7 @@ margin-right: 120px !important;">
 <div class="form-group {{$errors->has('commission') ? 'has-error' : ''}}" >
     <label for="commission" class="col-md-4 control-label">{{ 'Commission' }}</label>
     <div class="col-md-6">
-        <input class="form-control"  name="commission" type="number" id="commission" placeholder="0"   maxlength="10" required oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);' >
+        <input class="form-control"  name="commission" type="number" id="commission" placeholder="0"   maxlength="10"  oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);' >
         {!! $errors->first('commission', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -550,7 +558,9 @@ margin-right: 120px !important;">
         <input class="btn btn-primary" type="submit" value="{{ $submitButtonText?? 'Create' }}">
     </div>
 </div>
-<div id="hnb">
+
+      
+<p id="feedback"></p>
 @push('js')
 
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
@@ -565,24 +575,26 @@ margin-right: 120px !important;">
 {{-- <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> --}}
 
 <script>
-
+   
     function img_pathUrl(input){
         
         $('#img_url').show();
         $('#img_url')[0].src = (window.URL ? URL : webkitURL).createObjectURL(input.files[0]);
     }
-
+    var count = 0;
+    var htmlTag = '';
     function readURL(input,id,i){ 
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
 
                 reader.onload = function(e) {
-                $('#'+id).attr('src', e.target.result).css({"height": "100", "margin-left": "280px","margin-top":"10px"});
+                var img = $('#'+id).attr('src', e.target.result).css({"height": "100", "margin-left": "300px","margin-top":"10px"});
                 }
 
                 reader.readAsDataURL(input.files[i]); // convert to base64 string
-            }
+            }     
     }
+
 
     var _URL = window.URL || window.webkitURL;
         $("#thumbnail_img").change(function(e) {
@@ -590,15 +602,65 @@ margin-right: 120px !important;">
         var file, img;
         for(let i = 0; i<this.files.length;i++){
             if ((file = this.files[i])) {
+                count++;
                 img = new Image();
                 img.src = _URL.createObjectURL(file);
 
 
             }
             readURL(this,'thumbnail'+i,i);
+           console.log(i);
+           $('#count_no_of_imgs').val(i);
+         
         }
-
+       
     });
+
+    // $(function() {
+    
+    //     var imagesPreview = function(input, placeToInsertImagePreview) {
+
+    //         if (input.files) {
+    //             var filesAmount = input.files.length;
+
+    //             for (i = 0; i < filesAmount; i++) {
+    //                 var reader = new FileReader();
+    //                 count++;
+    //                 reader.onload = function(event) {
+    //                     // $($.parseHTML('<i>')).addClass('fa fa-trash previewTrash', event.target.result).appendTo(placeToInsertImagePreview).css({"height": "100", "margin-left": "5px","margin-top":"10px"});
+    //                     $($.parseHTML('<img>')).addClass('previewImg').attr('src', event.target.result).appendTo(placeToInsertImagePreview).css({"height": "150","width":"110", "margin-left": "5px","margin-top":"10px"});
+
+    //                 }
+
+    //                 reader.readAsDataURL(input.files[i]);
+    //             }
+    //             var vall = $('#thumbnail_img').val();
+                
+    //         }
+
+    //     };
+    //     $("div").delegate(".previewTrash", "click", function(){
+    //         // confirm("Are you sure, You want to delete!");
+    //     //    $(this).closest('.imgPreview').remove();
+    //         $(this).next('img').remove();
+    //         $(this).remove();
+    //         var vall = $('#thumbnail_img').val();
+    //         // $("#imageDiv").load(location.href + " #imageDiv");
+    //         // imagesRemove(vall, 'div.imgPreview');
+            
+    //     });
+
+    //     $('#thumbnail_img').on('change', function() {
+    //         imagesPreview(this, 'div.imgPreview');
+
+    //     });
+
+       
+    // });
+
+
+ 
+    
 
     $('#shipping_type_free').click(function(){
         $('#flat_shipping_cost').hide();
@@ -607,10 +669,9 @@ margin-right: 120px !important;">
         $('#flat_shipping_cost').show();
     });
 
-
-
         
     $(document).ready(function () {
+        
 
         $('#sale_price').keyup(function(){
 
@@ -959,6 +1020,7 @@ margin-right: 120px !important;">
         // var tagify = new Tagify(input);
         // tagify.addTags();
           
+    
     });
   
 </script>

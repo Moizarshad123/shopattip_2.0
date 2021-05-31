@@ -55,8 +55,8 @@
 				</td> --}}
 				<td>
 					<input type="number" lang="en" name="qty[]" value="@php
-					$qty = \App\ProductVariation::where('product_id',$product_id)->where('color',$str)->first();
-				
+					$qty = \App\ProductVariation::where('product_id',$product_id??'0')->where('color',$str)->first();
+					
 					if(($qty ) != null){
 						echo $qty->stock;
 					}

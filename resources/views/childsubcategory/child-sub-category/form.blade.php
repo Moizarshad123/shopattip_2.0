@@ -11,13 +11,13 @@
     <div class="col-md-6">
         <select  class="form-control" name="category_type" id="category_type" required > 
             <option value="">Select Category Type</option>
-            <option value="1">General</option>
-            <option value="2">Grocery</option>
+            <option @if(isset($getCategoryType->category_type_id) && $getCategoryType->category_type_id == '1') selected @endif value="1">General</option>
+            <option @if(isset($getCategoryType->category_type_id) && $getCategoryType->category_type_id == '2') selected @endif value="2">Grocery</option>
         </select>
         {!! $errors->first('category_type', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
-
+@if($ACTION == 'CREATES')
 <div class="form-group {{ $errors->has('category_id') ? 'has-error' : ''}}">
     <label for="category_id" class="col-md-4 control-label">{{ 'Category' }}</label>
     <div class="col-md-6">
@@ -30,7 +30,22 @@
         {!! $errors->first('category_id', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
+@elseif($ACTION == 'EDIT')
+<div class="form-group {{ $errors->has('category_id') ? 'has-error' : ''}}">
+    <label for="category_id" class="col-md-4 control-label">{{ 'Category' }}</label>
+    <div class="col-md-6">
+        <select  class="form-control" name="category_id" id="select_category" required > 
+            <option value="">Select Category</option>
+            @foreach ($getCategories as $category)
+            <option value="{{ $category->id }}" {{(  $category->id == $childsubcategory['subCategory']->category_id) ? 'selected="true"':'' }}>(Category) <strong>{{ $category->name }}</strong></option>
 
+            @endforeach
+        </select>
+        {!! $errors->first('category_id', '<p class="help-block">:message</p>') !!}
+    </div>
+</div>
+@endif
+@if($ACTION == 'CREATES')
 <div class="form-group {{ $errors->has('sub_category_id') ? 'has-error' : ''}}">
     <label for="sub_category_id" class="col-md-4 control-label">{{ 'Sub Category' }}</label>
     <div class="col-md-6">
@@ -47,9 +62,20 @@
         {!! $errors->first('sub_category_id', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
-{{--  --}}
-
-
+@elseif($ACTION == 'EDIT')
+<div class="form-group {{ $errors->has('sub_category_id') ? 'has-error' : ''}}">
+    <label for="sub_category_id" class="col-md-4 control-label">{{ 'Sub Category' }}</label>
+    <div class="col-md-6">
+        <select  class="form-control" name="sub_category_id" id="sub_category_id" required > 
+            <option value="">Select Sub Category</option>
+            @foreach ($getSubCategories as $subcategory)
+            <option value="{{ $subcategory->id }}" {{(  $subcategory->id == @$childsubcategory->sub_category_id) ? 'selected="true"':'' }}>(SubCategory) <strong>{{ $subcategory->name }}</strong></option>
+            @endforeach
+        </select>
+        {!! $errors->first('sub_category_id', '<p class="help-block">:message</p>') !!}
+    </div>
+</div>
+@endif
 <div class="form-group {{ $errors->has('name') ? 'has-error' : ''}}">
     <label for="name" class="col-md-4 control-label">{{ 'Name' }}</label>
     <div class="col-md-6">
@@ -78,7 +104,7 @@
     $(document).ready(function () {
     //change selectboxes to selectize mode to be searchable
         $("#sub_category_id").select2();
-        // $("#subcategory_id").select2();
+        $("#select_category").select2();
    
     });
 

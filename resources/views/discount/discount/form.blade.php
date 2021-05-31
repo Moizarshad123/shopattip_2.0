@@ -1,8 +1,20 @@
+@push('css')
+<style>
+    span.select2-selection.select2-selection--single {
+    height: 37px !important;
+    width: 420px !important;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow b{
+    margin-left: -15px !important;
+}
+</style>
+@endpush
+
 <div class="form-group {{ $errors->has('category_type') ? 'has-error' : ''}}">
     {!! Form::label('category_type', 'Category Type', ['class' => 'col-md-4 control-label']) !!}
     <div class="col-md-6">
 
-        <select name="category_type" required class="form-control">
+        <select name="category_type" required class="form-control" id="category_type">
             @if($action == "add")
                 <option value="">Select Category</option>
                 @foreach($categories as $category)
@@ -77,3 +89,18 @@
         {!! Form::submit(isset($submitButtonText) ? $submitButtonText : 'Create', ['class' => 'btn btn-primary']) !!}
     </div>
 </div>
+@push('js')
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/css/select2.min.css" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+    //change selectboxes to selectize mode to be searchable
+        $("#category_type").select2();
+   
+    });
+
+</script>
+
+@endpush
