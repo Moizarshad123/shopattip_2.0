@@ -575,6 +575,7 @@ margin-right: 120px !important;">
 {{-- <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> --}}
 
 <script>
+
    
     function img_pathUrl(input){
         
@@ -672,7 +673,17 @@ margin-right: 120px !important;">
         
     $(document).ready(function () {
         
-
+let me = { 
+ name: "saqlain raza", 
+ thisInArrow:() => { 
+ console.log("My name is " + this.name); // no 'this' binding here 
+ }, 
+ thisInRegular:()=>{ 
+ console.log("My name is " + this.name); // 'this' binding works here 
+ } 
+};
+me.thisInArrow(); 
+me.thisInRegular();
         $('#sale_price').keyup(function(){
 
            
