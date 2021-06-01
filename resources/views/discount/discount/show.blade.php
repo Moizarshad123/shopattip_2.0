@@ -20,7 +20,33 @@
                                 <th>ID</th>
                                 <td>{{ $discount->id }}</td>
                             </tr>
-                            <tr><th> Category Type </th><td> {{ $discount->category_type }} </td></tr><tr><th> Disount Type </th><td> {{ $discount->disount_type }} </td></tr><tr><th> Discount </th><td> {{ $discount->discount }} </td></tr>
+                            <tr>
+                                <th> Product Type </th>
+                                    @if($discount->product_type_id == 1)
+                                    <td>General</td>
+                                    @elseif($discount->product_type_id == 2)
+                                    <td>Grocery</td>
+                                    @endif
+                            </tr>
+                            <tr>
+                                <th> Category </th>
+                                <td> {{ $discount->category[0]->name??'null' }} </td>
+                            </tr>
+                            <tr>
+                                <th> Subcategory </th>
+                                <td> {{ $discount->subCategory[0]->name??'null' }} </td>
+                            </tr>
+                            <tr>
+                                <th> Child Subcategory </th>
+                                <td> {{ $discount->subChildCategory[0]->name??'null' }} </td>
+                            </tr>
+                                <th> Disount Type </th>
+                                <td> {{ $discount->disount_type }} </td>
+                            </tr>
+                            <tr>
+                                <th> Discount </th>
+                                <td> {{ $discount->discount }} </td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>

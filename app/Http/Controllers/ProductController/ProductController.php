@@ -29,6 +29,7 @@ class ProductController extends Controller
 
 
     public function index(Request $request){
+       
         $model = str_slug('product','-');
         if(auth()->user()->permissions()->where('name','=','view-'.$model)->first()!= null) {
             $keyword = $request->get('search');
@@ -105,14 +106,14 @@ class ProductController extends Controller
         $product->subcategory_id	    = $request->subcategory_id;
         $product->child_subcategory_id  = $request->child_subcategory_id;
         $product->brand_id              = $request->brand_id;
-        $product->description           = $request->description;
+        $product->description           = @$request->description;
         // $product->current_stock         = @$request->qty;
         $product->sale_price            = @$request->commission+intval($request->sale_price);
-        $product->dollor                = $request->dollor;
-        $product->riyal                 = $request->riyal;
-        $product->dinar                 = $request->dinar;
-        $product->euro                  = $request->euro;
-        $product->purchase_price        = $request->perchase_price;
+        $product->dollor                = @$request->dollor;
+        $product->riyal                 = @$request->riyal;
+        $product->dinar                 = @$request->dinar;
+        $product->euro                  = @$request->euro;
+        $product->purchase_price        = @$request->perchase_price;
         $product->discount              = @$request->discount;
         $product->discount_type         = @$request->discount_type;
         $product->commission            = @$request->commission;

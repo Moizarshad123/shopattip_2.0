@@ -43,7 +43,7 @@
                             @foreach($discount as $item)
                                 <tr>
                                     <td style="text-align: center;">{{ ++$count }}</td>
-                                    <td style="text-align: center;">{{ $item->category_type }}</td>
+                                    <td style="text-align: center;">{{ $item->category[0]->name??'' }}</td>
                                     <td style="text-align: center;">{{ $item->disount_type }}</td>
                                     <td style="text-align: center;">{{ $item->discount }}</td>
                                     <td style="text-align: center;">{{ date('d-m-Y',strtotime($item->start_date)) }}</td>

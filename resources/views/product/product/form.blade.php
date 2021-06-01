@@ -673,17 +673,7 @@ margin-right: 120px !important;">
         
     $(document).ready(function () {
         
-let me = { 
- name: "saqlain raza", 
- thisInArrow:() => { 
- console.log("My name is " + this.name); // no 'this' binding here 
- }, 
- thisInRegular:()=>{ 
- console.log("My name is " + this.name); // 'this' binding works here 
- } 
-};
-me.thisInArrow(); 
-me.thisInRegular();
+
         $('#sale_price').keyup(function(){
 
            
@@ -854,9 +844,7 @@ me.thisInRegular();
         });
 
         $(".attribute-choose").select2({
-
             width: "100%",
-                
         });
 
 

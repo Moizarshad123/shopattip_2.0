@@ -61,7 +61,7 @@ class BrandController extends Controller
             $brand       = new Brand();
             $brand->name = $request->name;
             if($request->hasFile('logo')){
-                $image       = Storage::disk('website')->put('banners', $request->logo);
+                $image       = Storage::disk('website')->put('brands', $request->logo);
                 $brand->logo = $image;
             }
             $brand->save();
@@ -104,7 +104,7 @@ class BrandController extends Controller
             $brand       = Brand::find($id);
             $brand->name = $request->name;
             if($request->hasFile('logo')){
-                $image       = Storage::disk('website')->put('banners', $request->logo);
+                $image       = Storage::disk('website')->put('brands', $request->logo);
                 $brand->logo = $image;
             }
             $brand->save();
