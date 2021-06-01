@@ -439,7 +439,7 @@ opacity: 1;
         {!! $errors->first('sale_price', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
-<div class="form-group {{ $errors->has('dollor') ? 'has-error' : ''}}">
+{{-- <div class="form-group {{ $errors->has('dollor') ? 'has-error' : ''}}">
     <label for="dollor" class="col-md-4 control-label">{{ 'Dollor' }}</label>
     <div class="col-md-6">
         <input class="form-control dollor" name="dollor" type="number" id="dollor" placeholder="0" value="{{ $product->dollor?? ''}}"   readonly>
@@ -467,7 +467,7 @@ opacity: 1;
         <input class="form-control euro" name="euro" type="number" id="euro" placeholder="0" value="{{ $product->euro?? ''}}"   readonly>
         {!! $errors->first('euro', '<p class="help-block">:message</p>') !!}
     </div>
-</div>
+</div> --}}
 <div class="form-group {{ $errors->has('perchase_price') ? 'has-error' : ''}}">
     <label for="perchase_price" class="col-md-4 control-label">{{ 'Perchase Price' }}</label>
     <div class="col-md-6">
@@ -648,22 +648,22 @@ function readURL(input,id,i) {
         
     $(document).ready(function () {
         update_sku();
-        $('#sale_price').keyup(function(){
-            var sale_price      = $('#sale_price').val();
-            var dollor          = 160 ;
-            var dinar           = 515 ;
-            var riyal           = 42 ;
-            var euro            = 190;
-            var prk_to_dollor   = (sale_price/dollor);
-            var prk_to_dinar    = (sale_price/dinar);
-            var prk_to_riyal    = (sale_price/riyal);
-            var prk_to_euro     = (sale_price/euro);
-            $('#dollor').val(prk_to_dollor.toFixed(2));
-            $('#dinar').val(prk_to_dinar.toFixed(2));
-            $('#riyal').val(prk_to_riyal.toFixed(2));
-            $('#euro').val(prk_to_euro.toFixed(2));
+        // $('#sale_price').keyup(function(){
+        //     var sale_price      = $('#sale_price').val();
+        //     var dollor          = 160 ;
+        //     var dinar           = 515 ;
+        //     var riyal           = 42 ;
+        //     var euro            = 190;
+        //     var prk_to_dollor   = (sale_price/dollor);
+        //     var prk_to_dinar    = (sale_price/dinar);
+        //     var prk_to_riyal    = (sale_price/riyal);
+        //     var prk_to_euro     = (sale_price/euro);
+        //     $('#dollor').val(prk_to_dollor.toFixed(2));
+        //     $('#dinar').val(prk_to_dinar.toFixed(2));
+        //     $('#riyal').val(prk_to_riyal.toFixed(2));
+        //     $('#euro').val(prk_to_euro.toFixed(2));
 
-        });
+        // });
 
         // $('#img_url').hide();
         $("#category_id,#subcategory_id,#child_subcategory_id,#brand_id,#discount_type").select2();

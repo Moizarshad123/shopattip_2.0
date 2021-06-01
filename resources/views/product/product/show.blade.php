@@ -268,7 +268,7 @@ opacity: 1;
                                 <th> Sale Price </th>
                                 <td> {{ @$product->sale_price - @$product->commission }} </td>
                             </tr>
-                            <tr>
+                            {{-- <tr>
                                 
                                 <th> Dollor </th>
                                 <td> {{ $product->dollor??'0' }} </td>
@@ -287,7 +287,7 @@ opacity: 1;
                                 
                                 <th> Euro </th>
                                 <td> {{ $product->euro??'0' }} </td>
-                            </tr>
+                            </tr> --}}
                             <tr>
                                 <th> Perchase Price </th>
                                 <td> {{ $product->purchase_price??"0" }} </td>
