@@ -21,7 +21,8 @@ class SubCategoryController extends Controller
         $model = str_slug('subcategory','-');
         if(auth()->user()->permissions()->where('name','=','view-'.$model)->first()!= null) {
             $keyword = $request->get('search');
-            $perPage = 25;
+            $subcategory = SubCategory::with('category')->get();
+            $perPage = count($subcategory);
 
             if (!empty($keyword)) {
                 $subcategory = SubCategory::with('category')->where('category_id', 'LIKE', "%$keyword%")
@@ -30,6 +31,7 @@ class SubCategoryController extends Controller
                 ->paginate($perPage);
             } else {
                 $subcategory = SubCategory::with('category')->paginate($perPage);
+             
                
             }
 

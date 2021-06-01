@@ -23,7 +23,8 @@ class ChildSubCategoryController extends Controller
         $model = str_slug('childsubcategory','-');
         if(auth()->user()->permissions()->where('name','=','view-'.$model)->first()!= null) {
             $keyword = $request->get('search');
-            $perPage = 25;
+            $childsubcategory = ChildSubCategory::with('subCategory')->get();
+            $perPage = count($childsubcategory);
 
             if (!empty($keyword)) {
                 $childsubcategory = ChildSubCategory::with('subCategory')->where('sub_category_id', 'LIKE', "%$keyword%")

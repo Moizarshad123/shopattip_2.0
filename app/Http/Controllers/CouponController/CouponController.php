@@ -21,7 +21,8 @@ class CouponController extends Controller
         $model = str_slug('coupon','-');
         if(auth()->user()->permissions()->where('name','=','view-'.$model)->first()!= null) {
             $keyword = $request->get('search');
-            $perPage = 25;
+            $coupon = Coupon::get();
+            $perPage = count($coupon);
 
             if (!empty($keyword)) {
                 $coupon = Coupon::where('coupon', 'LIKE', "%$keyword%")

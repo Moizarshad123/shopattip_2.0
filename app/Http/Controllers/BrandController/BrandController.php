@@ -23,7 +23,8 @@ class BrandController extends Controller
         $model = str_slug('brand','-');
         if(auth()->user()->permissions()->where('name','=','view-'.$model)->first()!= null) {
             $keyword = $request->get('search');
-            $perPage = 25;
+            $brand = Brand::get();
+            $perPage = count($brand);
 
             if (!empty($keyword)) {
                 $brand = Brand::where('name', 'LIKE', "%$keyword%")

@@ -25,7 +25,9 @@ class DiscountController extends Controller
         $model = str_slug('discount','-');
         if(auth()->user()->permissions()->where('name','=','view-'.$model)->first()!= null) {
             $keyword = $request->get('search');
-            $perPage = 25;
+            $discount = Discount::get();
+
+            $perPage = count($discount);
 
             if (!empty($keyword)) {
                 $discount = Discount::where('category_type', 'LIKE', "%$keyword%")

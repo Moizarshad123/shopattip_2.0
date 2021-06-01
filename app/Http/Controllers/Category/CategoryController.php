@@ -21,7 +21,8 @@ class CategoryController extends Controller
         $model = str_slug('category','-');
         if(auth()->user()->permissions()->where('name','=','view-'.$model)->first()!= null) {
             $keyword = $request->get('search');
-            $perPage = 25;
+            $category = Category::get();
+            $perPage = count($category);
 
             if (!empty($keyword)) {
                 $category = Category::where('category_type_id', 'LIKE', "%$keyword%")

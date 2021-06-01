@@ -23,7 +23,8 @@ class BannerController extends Controller
         $model = str_slug('banner','-');
         if(auth()->user()->permissions()->where('name','=','view-'.$model)->first()!= null) {
             $keyword = $request->get('search');
-            $perPage = 25;
+            $banner = Banner::get();
+            $perPage = count($banner);
 
             if (!empty($keyword)) {
                 $banner = Banner::where('banner_type', 'LIKE', "%$keyword%")

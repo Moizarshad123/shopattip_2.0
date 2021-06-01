@@ -33,7 +33,9 @@ class ProductController extends Controller
         $model = str_slug('product','-');
         if(auth()->user()->permissions()->where('name','=','view-'.$model)->first()!= null) {
             $keyword = $request->get('search');
-            $perPage = 25;
+            $product = Product::get();
+
+            $perPage = count($product);
 
             if (!empty($keyword)) {
                 $product = Product::where('product_type_id', 'LIKE', "%$keyword%")
