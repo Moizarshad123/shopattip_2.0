@@ -40,8 +40,13 @@
                                 <th> Child Subcategory </th>
                                 <td> {{ $discount->subChildCategory[0]->name??'null' }} </td>
                             </tr>
+                            <tr>
                                 <th> Disount Type </th>
                                 <td> {{ $discount->disount_type }} </td>
+                            </tr>
+                            <tr>
+                                <th> Disount Title </th>
+                                <td> {{ $discount->disount_title }} </td>
                             </tr>
                             <tr>
                                 <th> Discount </th>

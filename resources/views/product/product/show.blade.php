@@ -308,6 +308,10 @@ opacity: 1;
                                 <th> Commission </th>
                                 <td> {{ $product->commission??'0' }} </td>
                             </tr>
+                            <tr>
+                                <th> Product Added Date </th>
+                                <td> {{ $product->date??'12-12-2012' }} </td>
+                            </tr>
                             </tbody>
                         </table>
                         <h2>Product Variaction</h2>

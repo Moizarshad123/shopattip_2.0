@@ -21,6 +21,14 @@
                                 <td>{{ $brand->id }}</td>
                             </tr> --}}
                             <tr>
+                                <th> Brand Type </th>
+                                    @if($brand->brand_type_id == 1)
+                                    <td>General</td>
+                                    @elseif($brand->brand_type_id == 2)
+                                    <td>Grocery</td>
+                                    @endif
+                            </tr>
+                            <tr>
                                 <th> Name </th>
                                 <td> {{ $brand->name }} </td>
                             </tr>

@@ -188,8 +188,8 @@ opacity: 1;
 <div class="form-group {{ $errors->has('product_type_id') ? 'has-error' : ''}}">
     <label for="product_type_id" class="col-md-4 control-label">{{ 'Product Type' }}</label>
     <div class="col-md-6">
-        <input type="radio" name="product_type_id" id="product_type_id" value="1" {{($product->product_type_id==1) ? "checked" :''}}> GENERAL 
-        <input type="radio" name="product_type_id" id="product_type_id" value="2" style="margin-left: 51px;"  {{($product->product_type_id==2) ? "checked" :''}}> GROCERY
+        <b><input type="radio" name="product_type_id" id="product_type_id" value="1" {{(@$product->product_type_id==1) ? "checked" :''}}> GENERAL </b>
+        <b><input type="radio" name="product_type_id" id="product_type_id" value="2" style="margin-left: 51px;"  {{(@$product->product_type_id==2) ? "checked" :''}}> GROCERY </b>
         {!! $errors->first('product_type_id', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -481,7 +481,7 @@ opacity: 1;
         {{-- <input class="form-control" name="discount_type" type="text" id="discount_type" value="{{ $product->discount_type?? ''}}" > --}}
         <select class="form-control select2" name="discount_type" id="discount_type">
             <option>Select Discount Type</option>
-            @if($product->discount_type == 'amount')
+            @if(@$product->discount_type == 'amount')
                 <option value="flat" selected>Flat</option>
                 <option value="percent">Percent</option>
             @else 

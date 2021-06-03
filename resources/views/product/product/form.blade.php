@@ -196,8 +196,8 @@
 <div class="form-group {{ $errors->has('product_type_id') ? 'has-error' : ''}}">
     <label for="product_type_id" class="col-md-4 control-label">{{ 'Product Type' }}</label>
     <div class="col-md-6">
-        <input type="radio" name="product_type_id"  id="product_type_id" value="1" required> GENERAL 
-        <input type="radio" name="product_type_id" id="product_type_id" value="2" style="margin-left: 51px;" required> GROCERY
+        <b><input type="radio" name="product_type_id"  id="product_type_id" value="1" required> GENERAL</b> 
+        <b><input type="radio" name="product_type_id" id="product_type_id" value="2" style="margin-left: 51px;" required> GROCERY</b>
         {!! $errors->first('product_type_id', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -242,8 +242,8 @@
     <div class="col-md-6">
         <select  class="form-control" name="brand_id" id="brand_id" required > 
             <option value="" >Select Brand</option>
-            @foreach ($brands as $brand)
-            <option value="{{ $brand->id }}"  >{{ $brand->name }}</option>
+            @foreach (@$brands as $brand)
+            <option value="{{ @$brand->id }}"  >{{ @$brand->name }}</option>
             @endforeach
        
         </select>
@@ -673,7 +673,18 @@ margin-right: 120px !important;">
         
     $(document).ready(function () {
         
+        var data = { 
+            "programs": [ 
+                { "name":"zonealarm", "price":"500" }, 
+                { "name":"kaspersky", "price":"200" } 
+                ] 
+            };
 
+        $.each(data.programs, function (i) {
+            $.each(data.programs[i], function (key, val) {
+                alert(key + val);
+            });
+        });
         // $('#sale_price').keyup(function(){
 
            

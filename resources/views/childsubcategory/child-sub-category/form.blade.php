@@ -103,8 +103,8 @@
 <script>
     $(document).ready(function () {
     //change selectboxes to selectize mode to be searchable
-        $("#sub_category_id").select2();
-        $("#select_category").select2();
+        $("#sub_category_id,#category_type,#select_category").select2();
+        // $("#select_category").select2();
    
     });
 

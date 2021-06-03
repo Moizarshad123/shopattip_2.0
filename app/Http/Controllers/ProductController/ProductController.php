@@ -26,7 +26,7 @@ class ProductController extends Controller
     {
         $this->middleware('auth');
     }
-
+  
 
     public function index(Request $request){
        
@@ -75,7 +75,7 @@ class ProductController extends Controller
     }
 
     public function store(Request $request){
-
+        date_default_timezone_set("Asia/Karachi");
        
         $model = str_slug('product','-');
         if(auth()->user()->permissions()->where('name','=','add-'.$model)->first()!= null) {
@@ -109,7 +109,7 @@ class ProductController extends Controller
         $product->child_subcategory_id  = $request->child_subcategory_id;
         $product->brand_id              = $request->brand_id;
         $product->description           = @$request->description;
-        // $product->current_stock         = @$request->qty;
+        $product->date                  = date('Y-m-d H:i:s');
         $product->sale_price            = @$request->commission+intval($request->sale_price);
         // $product->dollor                = @$request->dollor;
         // $product->riyal                 = @$request->riyal;
@@ -250,7 +250,7 @@ class ProductController extends Controller
                 $name = 'choice_options_'.$no;
                
                 $data = array();
-          
+    
                 foreach (json_decode($request[$name][0]) as $key => $item) {
                  
                     array_push($data, $item->value);
@@ -405,6 +405,7 @@ class ProductController extends Controller
              $product->brand_id                 = $request->brand_id;
              $product->description              = $request->description;
             //  $product->current_stock            = @$request->qty;
+            $product->date                  = date('Y-m-d H:i:s');
              $product->sale_price               = @$request->commission+intval($request->sale_price);
             //  $product->dollor                   = $request->dollor;
             //  $product->riyal                    = $request->riyal;
@@ -443,8 +444,8 @@ class ProductController extends Controller
              $product->url_name             = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->name));
              if( @$request->has('colors')){
                 if($request->has('colors_active') && $request->has('colors') && count($request->colors) > 0){
-                    $color_codes = implode(', ', $request->colors);
-                    $result_color_ids = \App\ProductColor::select('id')->whereIn('color_code', $request->colors)->get();
+                    $color_codes            = implode(', ', $request->colors);
+                    $result_color_ids       = \App\ProductColor::select('id')->whereIn('color_code', $request->colors)->get();
         
                     $color_ids =[];
                     foreach ($result_color_ids as $key => $value)
@@ -462,22 +463,23 @@ class ProductController extends Controller
      
              $str   = array();
 
-             $product_stock   = ProductVariation::where('product_id',$id)->delete();
+             $product_stock     = ProductVariation::where('product_id',$id)->delete();
              if( @$request->has('colors')){
                 for($i=0; $i<count($request->colors); $i++){
                 
-                    $product_stock = new ProductVariation;
-                    $product_stock->product_id = $product->id;
+                    $product_stock              = new ProductVariation;
+                    $product_stock->product_id  = $product->id;
                     if($request->has('colors_active') && $request->has('colors') && count($request->colors) > 0){
-                        $color_name = \App\ProductColor::where('color_code', $request->colors[$i])->first()->name;
+                        $color_name             = \App\ProductColor::where('color_code', $request->colors[$i])->first()->name;
                         array_push($str, $color_name);
                     }
-                        $product_stock->color = @$str[$i];
-                        $product_stock->stock = @$request->qty[$i];
+                        $product_stock->color   = @$str[$i];
+                        $product_stock->stock   = @$request->qty[$i];
                         $product_stock->save();
                 }
              }
-
+            //  $image_path = public_path('website/productImages/').$logo;
+            //  unlink($image_path);
                
             $logo =  "product_".$product->id."_1.".$request->front_image->extension();
             $request->front_image->move(public_path('website/productImages'), $logo);

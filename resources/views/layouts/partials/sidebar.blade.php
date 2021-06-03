@@ -88,7 +88,16 @@
 
                         </ul>
                     </li> --}}
-
+                    <li class="two-column">
+                        <a class="waves-effect" href="javascript:void(0);" aria-expanded="false"><i
+                                class="icon-user fa-fw"></i> <span class="hide-menu"> Categories</span></a>
+                        <ul aria-expanded="false" class="collapse">
+                            <li><a href="{{asset('category/category')}}">Main Category</a></li>
+                            <li><a href="{{asset('sub-category/sub-category')}}">Sub Category</a></li>
+                            <li><a href="{{asset('child-sub-category')}}">Child SubCategory</a></li>
+    
+                        </ul>
+                    </li>
                     @endif
                     @foreach($laravelAdminMenus->menus as $section)
                         @if(count(collect($section->items)) > 0)

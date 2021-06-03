@@ -42,6 +42,7 @@
 <div class="form-group {{ $errors->has('product_type_id') ? 'has-error' : ''}}">
     <label for="product_type_id" class="col-md-4 control-label">{{ 'Product Type' }}</label>
     <div class="col-md-6">
+        
         <input type="radio" name="product_type_id"  id="product_type_id" value="1" required> GENERAL 
         <input type="radio" name="product_type_id" id="product_type_id" value="2" style="margin-left: 51px;" required> GROCERY
         {!! $errors->first('product_type_id', '<p class="help-block">:message</p>') !!}
@@ -151,13 +152,22 @@
         {{-- {!! Form::text('disount_type', null, ('required' == 'required') ? ['class' => 'form-control', 'required' => 'required'] : ['class' => 'form-control']) !!} --}}
         {!! $errors->first('disount_type', '<p class="help-block">:message</p>') !!}
     </div>
-</div><div class="form-group {{ $errors->has('discount') ? 'has-error' : ''}}">
+</div>
+<div class="form-group {{ $errors->has('discount_title') ? 'has-error' : ''}}">
+    {!! Form::label('discount', 'Discount Title', ['class' => 'col-md-4 control-label']) !!}
+    <div class="col-md-6">
+        {!! Form::number('discount_title', null, ('required' == 'required') ? ['maxlength'=>'5','class' => 'form-control', 'required' => 'required'] : ['class' => 'form-control']) !!}
+        {!! $errors->first('discount_title', '<p class="help-block">:message</p>') !!}
+    </div>
+</div>
+<div class="form-group {{ $errors->has('discount') ? 'has-error' : ''}}">
     {!! Form::label('discount', 'Discount', ['class' => 'col-md-4 control-label']) !!}
     <div class="col-md-6">
         {!! Form::number('discount', null, ('required' == 'required') ? ['maxlength'=>'5','class' => 'form-control', 'required' => 'required'] : ['class' => 'form-control']) !!}
         {!! $errors->first('discount', '<p class="help-block">:message</p>') !!}
     </div>
-</div><div class="form-group {{ $errors->has('start_date') ? 'has-error' : ''}}">
+</div>
+<div class="form-group {{ $errors->has('start_date') ? 'has-error' : ''}}">
     {!! Form::label('start_date', 'Start Date', ['class' => 'col-md-4 control-label']) !!}
     <div class="col-md-6">
         {!! Form::date('start_date', null, ('required' == 'required') ? ['class' => 'form-control', 'required' => 'required'] : ['class' => 'form-control']) !!}

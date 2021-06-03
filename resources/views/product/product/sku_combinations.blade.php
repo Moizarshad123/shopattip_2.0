@@ -20,12 +20,14 @@
 
 
 @foreach ($combinations as $key => $combination)
+
 	@php
 		$sku = '';
+	
 		foreach (explode(' ', $product_name) as $key => $value) {
 			$sku .= substr($value, 0, 1);
+			
 		}
-
 		$str = '';
 		foreach ($combination as $key => $item){
 			if($key > 0 ){

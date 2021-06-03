@@ -72,14 +72,15 @@ class DiscountController extends Controller
         $model = str_slug('discount','-');
         if(auth()->user()->permissions()->where('name','=','add-'.$model)->first()!= null) {
             $this->validate($request, [
-            'product_type_id' => 'required',
-			'category_id' => 'required',
-			'subcategory_id' => 'required',
-			'child_subcategory_id' => 'required',
-			'disount_type' => 'required',
-			'discount' => 'required',
-			'start_date' => 'required',
-			'end_date' => 'required'
+            'product_type_id'       => 'required',
+			'category_id'           => 'required',
+			'subcategory_id'        => 'required',
+			'child_subcategory_id'  => 'required',
+			'disount_type'          => 'required',
+			'discount_title'        => 'required',
+			'discount'              => 'required',
+			'start_date'            => 'required',
+			'end_date'              => 'required'
 		]);
             // $requestData = $request->all();
             // Discount::create($requestData);
@@ -89,6 +90,7 @@ class DiscountController extends Controller
             $discount->subcategory_id	     = $request->subcategory_id;
             $discount->child_subcategory_id  = $request->child_subcategory_id;
             $discount->disount_type          = $request->disount_type;
+            $discount->discount_title        = $request->discount_title;
             $discount->discount              = $request->discount;
             $discount->start_date            = $request->start_date;
             $discount->end_date              = $request->end_date;
@@ -136,14 +138,15 @@ class DiscountController extends Controller
         $model = str_slug('discount','-');
         if(auth()->user()->permissions()->where('name','=','edit-'.$model)->first()!= null) {
             $this->validate($request, [
-                'product_type_id' => 'required',
-                'category_id' => 'required',
-                'subcategory_id' => 'required',
-                'child_subcategory_id' => 'required',
-                'disount_type' => 'required',
-                'discount' => 'required',
-                'start_date' => 'required',
-                'end_date' => 'required'
+                'product_type_id'       => 'required',
+                'category_id'           => 'required',
+                'subcategory_id'        => 'required',
+                'child_subcategory_id'  => 'required',
+                'disount_type'          => 'required',
+                'discount_title'        => 'required',
+                'discount'              => 'required',
+                'start_date'            => 'required',
+                'end_date'              => 'required'
 		]);
             // $requestData = $request->all();
             
@@ -152,9 +155,10 @@ class DiscountController extends Controller
 
              $discount->product_type_id       = $request->product_type_id;
              $discount->category_id           = $request->category_id;
-             $discount->subcategory_id	     = $request->subcategory_id;
+             $discount->subcategory_id	      = $request->subcategory_id;
              $discount->child_subcategory_id  = $request->child_subcategory_id;
              $discount->disount_type          = $request->disount_type;
+             $discount->discount_title        = $request->discount_title;
              $discount->discount              = $request->discount;
              $discount->start_date            = $request->start_date;
              $discount->end_date              = $request->end_date;

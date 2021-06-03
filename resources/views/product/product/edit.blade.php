@@ -11,13 +11,13 @@
                     @endcan
                     <div class="clearfix"></div>
                     <hr>
-                    @if ($errors->any())
+                    {{-- @if ($errors->any())
                         <ul class="alert alert-danger">
                             @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>
                             @endforeach
                         </ul>
-                    @endif
+                    @endif --}}
 
                     <form method="POST" id="choice_form" action="{{ url('/product/product/update/' . $product->id) }}" accept-charset="UTF-8" class="form-horizontal" enctype="multipart/form-data">
                         {{-- {{ method_field('PATCH') }} --}}
