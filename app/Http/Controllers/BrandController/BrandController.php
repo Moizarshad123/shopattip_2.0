@@ -56,7 +56,9 @@ class BrandController extends Controller
         $model = str_slug('brand','-');
         if(auth()->user()->permissions()->where('name','=','add-'.$model)->first()!= null) {
             $this->validate($request, [
-			'name' => 'required'
+			'brand_type_id' => 'required',
+			'name' => 'required',
+			'logo' => 'required',
 		]);
          
             $brand       = new Brand();
@@ -97,7 +99,9 @@ class BrandController extends Controller
         $model = str_slug('brand','-');
         if(auth()->user()->permissions()->where('name','=','edit-'.$model)->first()!= null) {
             $this->validate($request, [
-			'name' => 'required'
+			'brand_type_id' => 'required',
+			'name' => 'required',
+			'logo' => 'required',
 		]);
             // $requestData = $request->all();
             // $brand = Brand::findOrFail($id);

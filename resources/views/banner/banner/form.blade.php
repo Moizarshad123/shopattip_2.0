@@ -1,7 +1,7 @@
 <div class="form-group {{ $errors->has('banner_type') ? 'has-error' : ''}}">
     {!! Form::label('banner_type', 'Banner Type', ['class' => 'col-md-4 control-label']) !!}
     <div class="col-md-6">
-        <select name="banner_type" class="form-control">
+        <select name="banner_type" class="form-control" required>
             <option value="">Select Banner Type</option>
             <option @if(isset($banner->banner_type) && $banner->banner_type == '1') selected @endif value="1">General</option>
             <option @if(isset($banner->banner_type) && $banner->banner_type == '2') selected @endif value="2">Grocery</option>
@@ -18,7 +18,8 @@
 </div><div class="form-group {{ $errors->has('banner') ? 'has-error' : ''}}">
     {!! Form::label('banner', 'Banner', ['class' => 'col-md-4 control-label']) !!}
     <div class="col-md-6">
-        {!! Form::file('banner', null, ('required' == 'required') ? ['class' => 'form-control', 'required' => 'required'] : ['class' => 'form-control']) !!}
+        <input type="file" class="form-control" name=" banner" id="banner" required>
+        {{-- {!! Form::file('banner', null, ('required' == 'required') ? ['class' => 'form-control', 'required' => 'required'] : ['class' => 'form-control']) !!} --}}
         <br>
         @if($ACTION == 'EDIT')
         @include('includes.image_html',['variable'=>$banner->banner])

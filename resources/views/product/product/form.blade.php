@@ -190,11 +190,26 @@
 
         }
 
+        .boderApply{
+            border-color: red;
+        }
+        tags.tagify.tagify--noTags.tagify--empty{
+            height: 40px;
+        }
+
+        .tagify.tagify--focus{
+            border-color: #212529 !important;
+        }
+        .required
+        {
+            color: red;
+        }
+
 </style>
 @endpush
 
 <div class="form-group {{ $errors->has('product_type_id') ? 'has-error' : ''}}">
-    <label for="product_type_id" class="col-md-4 control-label">{{ 'Product Type' }}</label>
+    <label for="product_type_id" class="col-md-4 control-label">{{ 'Product Type' }}<span class="required"> *</span></label>
     <div class="col-md-6">
         <b><input type="radio" name="product_type_id"  id="product_type_id" value="1" required> GENERAL</b> 
         <b><input type="radio" name="product_type_id" id="product_type_id" value="2" style="margin-left: 51px;" required> GROCERY</b>
@@ -202,7 +217,7 @@
     </div>
 </div>
 <div class="form-group {{ $errors->has('category_id') ? 'has-error' : ''}}">
-    <label for="category_id" class="col-md-4 control-label">{{ 'Category' }}</label>
+    <label for="category_id" class="col-md-4 control-label">{{ 'Category' }}<span class="required"> *</span></label>
     <div class="col-md-6">
         <select  class="form-control" name="category_id" id="category_id"  required disabled='true' > 
 
@@ -211,7 +226,7 @@
     </div>
 </div>
 <div class="form-group {{ $errors->has('subcategory_id') ? 'has-error' : ''}}">
-    <label for="subcategory_id" class="col-md-4 control-label">{{ 'Subcategory' }}</label>
+    <label for="subcategory_id" class="col-md-4 control-label">{{ 'Subcategory' }}<span class="required"> *</span></label>
     <div class="col-md-6">
         <select  class="form-control" name="subcategory_id" id="subcategory_id" required disabled='true'> 
 
@@ -221,7 +236,7 @@
     </div>
 </div>
 <div class="form-group {{ $errors->has('child_subcategory_id') ? 'has-error' : ''}}">
-    <label for="child_subcategory_id" class="col-md-4 control-label">{{ 'Child Subcategory' }}</label>
+    <label for="child_subcategory_id" class="col-md-4 control-label">{{ 'Child Subcategory' }}<span class="required"> *</span></label>
     <div class="col-md-6">
         <select  class="form-control" name="child_subcategory_id" id="child_subcategory_id" required disabled='true'> 
 
@@ -231,14 +246,14 @@
     </div>
 </div>
 <div class="form-group {{ $errors->has('name') ? 'has-error' : ''}}">
-    <label for="name" class="col-md-4 control-label">{{ 'Name' }}</label>
+    <label for="name" class="col-md-4 control-label">{{ 'Name' }}<span class="required"> *</span></label>
     <div class="col-md-6">
-        <input class="form-control" name="name" type="text" id="name"  required maxlength="50"/>
+        <input class="form-control " name="name" type="text" id="name"  required maxlength="50" placeholder="Product name"/>
         {!! $errors->first('name', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
 <div class="form-group {{ $errors->has('brand_id') ? 'has-error' : ''}}">
-    <label for="brand_id" class="col-md-4 control-label">{{ 'Brand' }}</label>
+    <label for="brand_id" class="col-md-4 control-label">{{ 'Brand' }}<span class="required"> *</span></label>
     <div class="col-md-6">
         <select  class="form-control" name="brand_id" id="brand_id" required > 
             <option value="" >Select Brand</option>
@@ -251,22 +266,23 @@
     </div>
 </div>
 <div class="form-group {{ $errors->has('tags') ? 'has-error' : ''}}">
-    <label for="tags" class="col-md-4 control-label">{{ 'Tags' }}</label>
+    <label for="tags" class="col-md-4 control-label">{{ 'Tags' }}<span class="required"> *</span></label>
     <div class="col-md-6">
-        <input name="tags[]" type="text" id="tags"  placeholder="Type and hit enter to add a tag"  />
+        <input name="tags[]" type="text" id="tags"  placeholder="Type and hit enter to add a tag"   />
         {!! $errors->first('tags', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
 <div class="form-group {{ $errors->has('description') ? 'has-error' : ''}}">
     <label for="description" class="col-md-4 control-label">{{ 'Description' }}</label>
     <div class="col-md-6">
-        <textarea class="form-control" rows="5" name="description" type="text" id="description" required maxlength="300" ></textarea>
+        <textarea class="form-control" rows="5" name="description" type="text" id="description" required maxlength="300" placeholder="Description"></textarea>
         {!! $errors->first('description', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
 <h4 style="font-weight: bold">Add Images</h4>
+<hr>
 <div class="form-group {{ $errors->has('front_image') ? 'has-error' : ''}}">
-    <label for="front_image" class="col-md-4 control-label">{{ 'Front Image' }}</label>
+    <label for="front_image" class="col-md-4 control-label">{{ 'Front Image' }}<span class="required"> *</span></label>
     <div class="col-md-6">
         <input class="form-control" name="front_image" type="file" id="img_file" onChange="img_pathUrl(this);"   required>
         {!! $errors->first('front_image', '<p class="help-block">:message</p>') !!}
@@ -274,7 +290,7 @@
     <img id="img_url" src="" alt="your image" />
 </div>
 <div class="form-group {{ $errors->has('thumbnail_image') ? 'has-error' : ''}}">
-    <label for="thumbnail_image" class="col-md-4 control-label">{{ 'Thumb-nail Image' }}</label>
+    <label for="thumbnail_image" class="col-md-4 control-label">{{ 'Thumb-nail Image' }}<span class="required"> *</span></label>
     <div class="col-md-6" id="imageDiv">
         <input class="form-control" multiple name="thumbnail_image[]" type="file" id="thumbnail_img"   required>
         {!! $errors->first('thumbnail_image', '<p class="help-block">:message</p>') !!}
@@ -371,22 +387,23 @@
     <i class="fa fa-plus-circle"></i>
 </a> --}}
 <h4 style="font-weight: bold">Add Variation</h4>
+<hr>
 <div class="form-group {{ $errors->has('size') ? 'has-error' : ''}}">
-    <label for="size" class="col-md-4 control-label">{{ 'Size' }}</label>
+    <label for="size" class="col-md-4 control-label">{{ 'Size' }}<span class="required"> *</span></label>
     <div class="col-md-6">
-        <input class=" " name="size[]" type="text" id="size"   placeholder="Type and hit enter to add Size"   />
+        <input class=" " name="size[]" type="text" id="size"   placeholder="Type and hit enter to add size"   />
         {!! $errors->first('size', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
 <div class="form-group {{ $errors->has('fabric') ? 'has-error' : ''}}">
-    <label for="fabric" class="col-md-4 control-label">{{ 'Fabric' }}</label>
+    <label for="fabric" class="col-md-4 control-label">{{ 'Fabric' }}<span class="required"> *</span></label>
     <div class="col-md-6">
-        <input class=" " name="fabric[]" type="text" id="fabric"  placeholder="Type and hit enter to add Fabric"    />
+        <input class=" " name="fabric[]" type="text" id="fabric"  placeholder="Type and hit enter to add fabric"    />
         {!! $errors->first('fabric', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
 <div class="form-group {{ $errors->has('colors') ? 'has-error' : ''}}">
-    <label for="colors" class="col-md-4 control-label">{{ 'Colors' }}</label>
+    <label for="colors" class="col-md-4 control-label">{{ 'Colors' }}<span class="required"> *</span></label>
     <div class="col-md-6">
         <select class="color-choose color_table" data-live-search="true" data-selected-text-format="count" required name="colors[]" id="colors" multiple disabled >
             @foreach (\App\ProductColor::orderBy('name', 'asc')->where('active',1)->get() as $key => $color)
@@ -434,7 +451,7 @@ margin-right: 120px !important;">
 </div>
 
 <div class="form-group {{ $errors->has('sale_price') ? 'has-error' : ''}}">
-    <label for="sale_price" class="col-md-4 control-label">{{ 'Sale Price' }}</label>
+    <label for="sale_price" class="col-md-4 control-label">{{ 'Sale Price' }}<span class="required"> *</span></label>
     <div class="col-md-6">
         <input class="form-control sale_price" name="sale_price"  type="number" id="sale_price" placeholder="0"   required maxlength="10" oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);'>
         {!! $errors->first('sale_price', '<p class="help-block">:message</p>') !!}
@@ -472,7 +489,7 @@ margin-right: 120px !important;">
 </div> --}}
 
 <div class="form-group {{ $errors->has('perchase_price') ? 'has-error' : ''}}">
-    <label for="perchase_price" class="col-md-4 control-label">{{ 'Perchase Price' }}</label>
+    <label for="perchase_price" class="col-md-4 control-label">{{ 'Perchase Price' }}<span class="required"> *</span></label>
     <div class="col-md-6">
         <input class="form-control" name="perchase_price" type="number" id="perchase_price" placeholder="0"   required maxlength="10" oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);'>
         {!! $errors->first('perchase_price', '<p class="help-block">:message</p>') !!}
@@ -555,7 +572,7 @@ margin-right: 120px !important;">
 
 <div class="form-group">
     <div class="col-md-offset-4 col-md-4">
-        <input class="btn btn-primary" type="submit" value="{{ $submitButtonText?? 'Create' }}">
+        <input class="btn btn-primary" id="submitBtn" type="submit" value="{{ $submitButtonText?? 'Create' }}">
     </div>
 </div>
 
@@ -575,6 +592,7 @@ margin-right: 120px !important;">
 {{-- <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> --}}
 
 <script>
+
 
    
     function img_pathUrl(input){
@@ -669,21 +687,34 @@ margin-right: 120px !important;">
     $('#shipping_type_flat_rate').click(function(){
         $('#flat_shipping_cost').show();
     });
+   
 
+    
         
     $(document).ready(function () {
+        $("div").delegate("#submitBtn", "click", function(){
+            $("tags").attr("required");
+        });
         
-        var data = { 
-            "programs": [ 
-                { "name":"zonealarm", "price":"500" }, 
-                { "name":"kaspersky", "price":"200" } 
-                ] 
-            };
-
-        $.each(data.programs, function (i) {
-            $.each(data.programs[i], function (key, val) {
-                alert(key + val);
-            });
+        $('#submitBtn').click(function(){
+    
+            var product_type_id      = $('#product_type_id').val();
+            var category_id          = $('#category_id').val();
+            var subcategory_id       = $('#subcategory_id').val();
+            var child_subcategory_id = $('#child_subcategory_id').val();
+            var name                 = $('#name').val();
+            var brand_id             = $('#brand_id').val();
+            var tags                 = $('#tags').val();
+            var description          = $('#description').val();
+            var img_file             = $('#img_file').val();
+            var thumbnail_img        = $('#thumbnail_img').val();
+            var size                 = $('#size').val();
+            var fabric               = $('#fabric').val();
+            var colors               = $('#colors').val();
+            var customer_choice_options  = $('#customer_choice_options').val();
+            var sale_price               = $('#sale_price').val();
+            var perchase_price           = $('#perchase_price').val();
+    
         });
         // $('#sale_price').keyup(function(){
 
@@ -995,6 +1026,7 @@ margin-right: 120px !important;">
         var tagify = new Tagify(tags, {
             whitelist: [],
             maxTags: 15,
+            empty:false,
             dropdown: {
                 maxItems: 5,           
                 classname: "tags-look",
@@ -1002,7 +1034,9 @@ margin-right: 120px !important;">
                 closeOnSelect: true,   
                 required:true
             }
+            
         });
+        console.log(tagify.value);
         var tagify = new Tagify(size, {
             whitelist: [],
             maxTags: 15,
@@ -1029,6 +1063,12 @@ margin-right: 120px !important;">
         // var input = document.querySelector('#fabric');
         // var tagify = new Tagify(input);
         // tagify.addTags();
+
+        // $('#submitBtn').click(function(){
+        //     if(tagify.value.length  == 0){
+        //         alert('tags must be field');
+        //     }
+        // });
           
     
     });

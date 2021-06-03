@@ -10,7 +10,7 @@
     <label for="category_type_id" class="col-md-4 control-label">{{ 'Category Type' }}</label>
     <div class="col-md-6">
         {{-- <input class="form-control" name="category_type_id" type="number" id="category_type_id" value="{{ $category->category_type_id??''}}" required> --}}
-        <select class="form-control" name="category_type_id" id="category_type_id">
+        <select class="form-control" name="category_type_id" id="category_type_id" required>
             <option value="">Select Category Type</option>
             <option @if(isset($category->category_type_id) && $category->category_type_id == '1') selected @endif value="1">General</option>
             <option @if(isset($category->category_type_id) && $category->category_type_id == '2') selected @endif value="2">Grocery</option>
@@ -49,7 +49,7 @@
 <div class="form-group {{ $errors->has('banner') ? 'has-error' : ''}}">
     <label for="banner" class="col-md-4 control-label">{{ 'Banner' }}</label>
     <div class="col-md-6">
-        <input class="form-control" name="banner" type="file" id="banner" value="{{ $category->banner??''}}" >
+        <input class="form-control" name="banner" type="file" id="banner" value="{{ $category->banner??''}}" required>
         <br>
         @if($ACTION == 'EDIT')
         @include('includes.image_html',['variable'=>$category->banner])
@@ -60,6 +60,7 @@
 </div><div class="form-group {{ $errors->has('status') ? 'has-error' : ''}}">
     <label for="status" class="col-md-4 control-label">{{ 'Status' }}</label>
     <div class="col-md-6">
+        
         {{-- <input class="form-control" name="status" type="text" id="status" value="{{ $category->status??''}}" required> --}}
         @include('includes.status_select_html',['variable'=>$category->status??''])
         {!! $errors->first('status', '<p class="help-block">:message</p>') !!}

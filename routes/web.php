@@ -13,7 +13,7 @@ Route::get('/', 'PagesController@HomePage');
 
 
 
-Route::group(['middleware' => ['auth', 'roles'],'roles' => ['admin','user']], function () {
+Route::group(['middleware' => ['auth', 'roles'],'roles' => ['admin','user','vendor']], function () {
 // Route::group(['middleware' => ['auth', 'roles'],'roles' => ['admin','user']], function () {
 
     Route::get('/dashboard', function () {
@@ -29,8 +29,8 @@ Route::group(['middleware' => 'guest'],function (){
 Route::group(['middleware' => 'auth'], function () {
 });
 
-Route::group(['middleware' => ['auth', 'roles'],'roles' => 'admin'], function () {
-// Route::group(['middleware' => ['auth', 'roles'],'roles' => 'admin'], function () {
+// Route::group(['middleware' => ['auth', 'roles'],'roles' => 'admin','roles' => 'vendor'], function () {
+Route::group(['middleware' => ['auth', 'roles'],'roles' => 'admin','vendor'], function () {
     Route::get('index2', function () {
         return view('dashboard.index2');
     });

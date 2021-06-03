@@ -55,7 +55,21 @@ class ProductController extends Controller
                 ->orWhere('shipping_cost', 'LIKE', "%$keyword%")
                 ->paginate($perPage);
             } else {
-                $product = Product::with('category','subCategory','subChildCategory')->paginate($perPage);
+                $user_id = auth()->user()->id;
+                $user    = User::findorfail($user_id);
+                if( $user_id ==1)
+                {
+                    $added_by_id = $user_id;
+                    $product = Product::with('category','subCategory','subChildCategory')->paginate($perPage);
+
+                }
+                else
+                {
+                    $vendor_id   = $user_id;
+                    $added_by_id = $vendor_id;
+                    $product = Product::with('category','subCategory','subChildCategory')->where('added_by_id',$added_by_id)->paginate($perPage);
+
+                }    
             }
 
             return view('product.product.index', compact('product'));
@@ -80,26 +94,36 @@ class ProductController extends Controller
         $model = str_slug('product','-');
         if(auth()->user()->permissions()->where('name','=','add-'.$model)->first()!= null) {
             $this->validate($request, [
-            
-            ]);
-       
+                // 'tags'              => 'required',
+                // 'size'              => 'required',
+                // 'fabric'            => 'required',
+                // 'colors'            => 'required',
+		]);
+
         $user_id    = auth()->user()->id;
         $user       = User::findorfail($user_id);
       
         $product    = new Product;
         if( $user_id == 1)
         {
-            $added_by_id              = $user_id;
-            $added_by_type            = "admin";
-            $product->product_type_id = $request->product_type_id;
+           
+            $added_by_id                = $user_id;
+            $added_by_type              = "admin";
+            $product->product_type_id   = $request->product_type_id;
         }
         else
         {
-            $vendor_id                = $user->vendor['id'];
-            $vendor_type_id           = $user->vendor['vendor_type_id'];
-            $added_by_id              = $vendor_id;
-            $added_by_type            = "vendor";
-            $product->product_type_id = $vendor_type_id;
+           
+            // $vendor_id                  = $user->vendor['id'];
+            // dd($vendor_id);
+            // $vendor_type_id             = $user->vendor['vendor_type_id'];
+            // $added_by_id                = $vendor_id;
+            // $added_by_type              = "vendor";
+            // $product->product_type_id   = $vendor_type_id;
+            $added_by_id                = $user_id;
+            $added_by_type              = "vendor";
+            $product->product_type_id   = $request->product_type_id;
+
         }
         $product->added_by_id           = $added_by_id;
         $product->added_by_type         = $added_by_type;
@@ -167,7 +191,7 @@ class ProductController extends Controller
             }
         }
       
-        $product->save();
+        // $product->save();
   
         $str   = array();
 
@@ -186,7 +210,7 @@ class ProductController extends Controller
                
                 $product_stock->color = @$str[$i];
                 $product_stock->stock = @$request->qty[$i];
-                $product_stock->save();
+                // $product_stock->save();
    
            }
         }
@@ -261,22 +285,22 @@ class ProductController extends Controller
           
 
         }
-        $str = array();
-       
-
-        if( $request->has('colors')){
-           
-        for($i=0; $i<count($request->colors); $i++){
-  
-            if($request->has('colors_active') && $request->has('colors') && count($request->colors) > 0){
-                $color_name = \App\ProductColor::where('color_code', $request->colors[$i])->first()->name;
-                array_push($str, $color_name);
+            $str = array();
         
+
+            if( $request->has('colors')){
+            
+            for($i=0; $i<count($request->colors); $i++){
+    
+                if($request->has('colors_active') && $request->has('colors') && count($request->colors) > 0){
+                    $color_name = \App\ProductColor::where('color_code', $request->colors[$i])->first()->name;
+                    array_push($str, $color_name);
+            
+                }
+            
             }
-           
-        }
        
-    }
+        }
         if($request->product_id != null){
             $product_id = $request->product_id;
             $product_stock   = ProductVariation::where('product_id',$request->product_id)->get();
@@ -354,7 +378,15 @@ class ProductController extends Controller
                 // $subCategories      = SubCategory::select('id','name','url_name','category_id')->where('status',1)->get();
                 // $childSubCategories = ChildSubCategory::select('id','name','url_name','sub_category_id')->where('status',1)->get();
                
-
+                // $vendor_type_id = $user->vendor['vendor_type_id'];
+                $vendor_type_id = $user_id;
+                // $Categories     = Category::select('id','name','url_name','category_type_id')->where('status',1)->where('category_type_id',$vendor_type_id)->get();
+                // $brands         = Brand::orderBy('id','desc')->where('brand_type_id',$vendor_type_id)->get();
+                $Categories         = Category::select('id','name','url_name','category_type_id')->where('status',1)->get();
+                $subCategories      = SubCategory::select('id','name','url_name','category_id')->where('status',1)->get();
+                $childSubCategories = ChildSubCategory::select('id','name','url_name','sub_category_id')->where('status',1)->get();
+               
+                $brands     = Brand::orderBy('id','desc')->get();
     
                 
             }
@@ -390,11 +422,14 @@ class ProductController extends Controller
              }
              else
              {
-                 $vendor_id                 = $user->vendor['id'];
-                 $vendor_type_id            = $user->vendor['vendor_type_id'];
-                 $added_by_id               = $vendor_id;
-                 $added_by_type             = "vendor";
-                 $product->product_type_id      = $vendor_type_id;
+                //  $vendor_id                 = $user->vendor['id'];
+                //  $vendor_type_id            = $user->vendor['vendor_type_id'];
+                //  $added_by_id               = $vendor_id;
+                //  $added_by_type             = "vendor";
+                //  $product->product_type_id      = $vendor_type_id;
+                 $added_by_id                = $user_id;
+                 $added_by_type              = "vendor";
+                 $product->product_type_id   = $request->product_type_id;
              }
              $product->added_by_id              = $added_by_id;
              $product->added_by_type            = $added_by_type;
@@ -478,8 +513,6 @@ class ProductController extends Controller
                         $product_stock->save();
                 }
              }
-            //  $image_path = public_path('website/productImages/').$logo;
-            //  unlink($image_path);
                
             $logo =  "product_".$product->id."_1.".$request->front_image->extension();
             $request->front_image->move(public_path('website/productImages'), $logo);

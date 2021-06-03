@@ -35,6 +35,8 @@ class LoginController extends Controller
             return redirect('dashboard');
 
           
+        }elseif($user->hasRole('vendor')){
+            return redirect('dashboard');
         }
         else
         {

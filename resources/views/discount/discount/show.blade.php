@@ -18,13 +18,13 @@
                             <tbody>
                             <tr>
                                 <th>ID</th>
-                                <td>{{ $discount->id }}</td>
+                                <td>{{ @$discount->id }}</td>
                             </tr>
                             <tr>
                                 <th> Product Type </th>
-                                    @if($discount->product_type_id == 1)
+                                    @if(@$discount->product_type_id == 1)
                                     <td>General</td>
-                                    @elseif($discount->product_type_id == 2)
+                                    @elseif(@$discount->product_type_id == 2)
                                     <td>Grocery</td>
                                     @endif
                             </tr>
@@ -42,15 +42,15 @@
                             </tr>
                             <tr>
                                 <th> Disount Type </th>
-                                <td> {{ $discount->disount_type }} </td>
+                                <td> {{ $discount->disount_type??'' }} </td>
                             </tr>
                             <tr>
                                 <th> Disount Title </th>
-                                <td> {{ $discount->disount_title }} </td>
+                                <td> {{ $discount->discount_title??'' }} </td>
                             </tr>
                             <tr>
                                 <th> Discount </th>
-                                <td> {{ $discount->discount }} </td>
+                                <td> {{ $discount->discount??'0' }} </td>
                             </tr>
                             </tbody>
                         </table>

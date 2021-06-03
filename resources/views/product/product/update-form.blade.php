@@ -162,31 +162,35 @@
         background-color: var(--dark);
         }
 
+        /*tagify tag input*/
 
+        .aiz-tag-input {
+        height: auto;
+        padding: 0.465rem 1rem 0.2rem;
+        }
+        .aiz-tag-input .tagify__tag,
+        .aiz-tag-input .tagify__input {
+        margin: 0px 5px 5px 0px;
+        }
+        .aiz-tag-input .tagify__tag__removeBtn {
+        font: 12px Serif;
+        line-height: 1.5;
+        }
+        .aiz-tag-input .tagify__tag__removeBtn:hover + div > span {
+        opacity: 1;
+        }
+        tags.tagify.tagify--noTags.tagify--empty{
+            height: 40px;
+        }
 
-
-/*tagify tag input*/
-
-.aiz-tag-input {
-height: auto;
-padding: 0.465rem 1rem 0.2rem;
-}
-.aiz-tag-input .tagify__tag,
-.aiz-tag-input .tagify__input {
-margin: 0px 5px 5px 0px;
-}
-.aiz-tag-input .tagify__tag__removeBtn {
-font: 12px Serif;
-line-height: 1.5;
-}
-.aiz-tag-input .tagify__tag__removeBtn:hover + div > span {
-opacity: 1;
-}
+        .tagify.tagify--focus{
+            border-color: #212529 !important;
+        }
 </style>
 @endpush
 
 <div class="form-group {{ $errors->has('product_type_id') ? 'has-error' : ''}}">
-    <label for="product_type_id" class="col-md-4 control-label">{{ 'Product Type' }}</label>
+    <label for="product_type_id" class="col-md-4 control-label">{{ 'Product Type' }}<span class="required"> *</span></label>
     <div class="col-md-6">
         <b><input type="radio" name="product_type_id" id="product_type_id" value="1" {{(@$product->product_type_id==1) ? "checked" :''}}> GENERAL </b>
         <b><input type="radio" name="product_type_id" id="product_type_id" value="2" style="margin-left: 51px;"  {{(@$product->product_type_id==2) ? "checked" :''}}> GROCERY </b>
@@ -194,7 +198,7 @@ opacity: 1;
     </div>
 </div>
 <div class="form-group {{ $errors->has('category_id') ? 'has-error' : ''}}">
-    <label for="category_id" class="col-md-4 control-label">{{ 'Category' }}</label>
+    <label for="category_id" class="col-md-4 control-label">{{ 'Category' }}<span class="required"> *</span></label>
     <div class="col-md-6">
         <select  class="form-control" name="category_id" id="category_id" required > 
             @foreach($Categories as $Category)
@@ -207,7 +211,7 @@ opacity: 1;
     </div>
 </div>
 <div class="form-group {{ $errors->has('subcategory_id') ? 'has-error' : ''}}">
-    <label for="subcategory_id" class="col-md-4 control-label">{{ 'Subcategory' }}</label>
+    <label for="subcategory_id" class="col-md-4 control-label">{{ 'Subcategory' }}<span class="required"> *</span></label>
     <div class="col-md-6">
         <select  class="form-control" name="subcategory_id" id="subcategory_id" required > 
             @foreach($subCategories as $subCategory)
@@ -220,7 +224,7 @@ opacity: 1;
     </div>
 </div>
 <div class="form-group {{ $errors->has('child_subcategory_id') ? 'has-error' : ''}}">
-    <label for="child_subcategory_id" class="col-md-4 control-label">{{ 'Child Subcategory' }}</label>
+    <label for="child_subcategory_id" class="col-md-4 control-label">{{ 'Child Subcategory' }}<span class="required"> *</span></label>
     <div class="col-md-6">
         <select  class="form-control" name="child_subcategory_id" id="child_subcategory_id" required> 
             @foreach($childSubCategories as $shildsubCategory)
@@ -233,14 +237,14 @@ opacity: 1;
     </div>
 </div>
 <div class="form-group {{ $errors->has('name') ? 'has-error' : ''}}">
-    <label for="name" class="col-md-4 control-label">{{ 'Name' }}</label>
+    <label for="name" class="col-md-4 control-label">{{ 'Name' }}<span class="required"> *</span></label>
     <div class="col-md-6">
         <input class="form-control" name="name" type="text" id="name" value="{{ $product->name?? ''}}" />
         {!! $errors->first('name', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
 <div class="form-group {{ $errors->has('brand_id') ? 'has-error' : ''}}">
-    <label for="brand_id" class="col-md-4 control-label">{{ 'Brand' }}</label>
+    <label for="brand_id" class="col-md-4 control-label">{{ 'Brand' }}<span class="required"> *</span></label>
     <div class="col-md-6">
         <select  class="form-control" name="brand_id" id="brand_id" required> 
             <option value="" >Select Brand</option>
@@ -254,7 +258,7 @@ opacity: 1;
     </div>
 </div>
 <div class="form-group {{ $errors->has('tags') ? 'has-error' : ''}}">
-    <label for="tags" class="col-md-4 control-label">{{ 'Tags' }}</label>
+    <label for="tags" class="col-md-4 control-label">{{ 'Tags' }}<span class="required"> *</span></label>
     <div class="col-md-6">
         <input  name="tags[]" type="text" id="tags" value="{{ $product->tags?? ''}}" placeholder="Type and hit enter to add a tag"  />
         {!! $errors->first('tags', '<p class="help-block">:message</p>') !!}
@@ -269,7 +273,7 @@ opacity: 1;
 </div>
 <h4 style="font-weight: bold">Add Images</h4>
 <div class="form-group {{ $errors->has('front_image') ? 'has-error' : ''}}">
-    <label for="front_image" class="col-md-4 control-label custom-file-label" id="imgLabel">{{ 'Front Image' }}</label>
+    <label for="front_image" class="col-md-4 control-label custom-file-label" id="imgLabel">{{ 'Front Image' }}<span class="required"> *</span></label>
   
     <div class="col-md-6">
         <input class="form-control" name="front_image" type="file" id="img_file" value="{{ $product->front_image?? ''}}" required>
@@ -280,7 +284,7 @@ opacity: 1;
 
 </div>
 <div class="form-group {{ $errors->has('thumbnail_image') ? 'has-error' : ''}}">
-    <label for="thumbnail_image"  id="imgLabel"class="col-md-4 control-label tom-file-label">{{ 'Thumb-nail Image' }}</label>
+    <label for="thumbnail_image"  id="imgLabel"class="col-md-4 control-label tom-file-label">{{ 'Thumb-nail Image' }}<span class="required"> *</span></label>
   
 
     <div class="col-md-6">
@@ -323,23 +327,23 @@ opacity: 1;
 </div>
 <h4 style="font-weight: bold">Add Variation</h4>
 <div class="form-group {{ $errors->has('size') ? 'has-error' : ''}}">
-    <label for="size" class="col-md-4 control-label">{{ 'Size' }}</label>
+    <label for="size" class="col-md-4 control-label">{{ 'Size' }}<span class="required"> *</span></label>
     <div class="col-md-6">
-        <input  name="size[]" type="text" id="size" value="{{ $product->size?? ''}}" placeholder="Type and hit enter to add Size"  />
+        <input  name="size[]" type="text" id="size" value="{{ $product->size?? ''}}" placeholder="Type and hit enter to add size"  />
         {!! $errors->first('size', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
 
 <div class="form-group {{ $errors->has('fabric') ? 'has-error' : ''}}">
-    <label for="fabric" class="col-md-4 control-label">{{ 'Fabric' }}</label>
+    <label for="fabric" class="col-md-4 control-label">{{ 'Fabric' }}<span class="required"> *</span></label>
     <div class="col-md-6">
-        <input  name="fabric[]" type="text" id="fabric" value="{{ $product->fabric?? ''}}" placeholder="Type and hit enter to add Fabric"  />
+        <input  name="fabric[]" type="text" id="fabric" value="{{ $product->fabric?? ''}}" placeholder="Type and hit enter to add fabric"  />
         {!! $errors->first('fabric', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
 
 <div class="form-group {{ $errors->has('colors') ? 'has-error' : ''}}">
-    <label for="colors" class="col-md-4 control-label">{{ 'Colors' }}</label>
+    <label for="colors" class="col-md-4 control-label">{{ 'Colors' }}<span class="required"> *</span></label>
     <div class="col-md-6">
         @if(@$product->colors != null )
         {{-- <input type="text" name="colors" id="colors" class="form-control"> --}}
@@ -433,7 +437,7 @@ opacity: 1;
 </div>
 
 <div class="form-group {{ $errors->has('sale_price') ? 'has-error' : ''}}">
-    <label for="sale_price" class="col-md-4 control-label">{{ 'Sale Price' }}</label>
+    <label for="sale_price" class="col-md-4 control-label">{{ 'Sale Price' }}<span class="required"> *</span></label>
     <div class="col-md-6">
         <input class="form-control" name="sale_price" type="number" id="sale_price" placeholder="0" value="{{ @$product->sale_price - @$product->commission}}" required maxlength="10" oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);'>
         {!! $errors->first('sale_price', '<p class="help-block">:message</p>') !!}
@@ -469,7 +473,7 @@ opacity: 1;
     </div>
 </div> --}}
 <div class="form-group {{ $errors->has('perchase_price') ? 'has-error' : ''}}">
-    <label for="perchase_price" class="col-md-4 control-label">{{ 'Perchase Price' }}</label>
+    <label for="perchase_price" class="col-md-4 control-label">{{ 'Perchase Price' }}<span class="required"> *</span></label>
     <div class="col-md-6">
         <input class="form-control" name="perchase_price" type="number" id="perchase_price" placeholder="0" value="{{ $product->purchase_price?? ''}}" required maxlength="10" oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);'>
         {!! $errors->first('perchase_price', '<p class="help-block">:message</p>') !!}
@@ -603,8 +607,8 @@ function readURL(input,id,i) {
                     $el.unwrap();
                     $('#imgLabel').text('');
                     imgLabel
-                    alert(this.width + " " + this.height);
-                    alert('image hight and with should be 1200 ')
+                    // alert(this.width + " " + this.height);
+                    // alert('image hight and with should be 1200 ')
                 }
             };
             img.onerror = function() {

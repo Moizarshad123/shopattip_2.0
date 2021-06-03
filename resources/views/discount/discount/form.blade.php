@@ -156,7 +156,7 @@
 <div class="form-group {{ $errors->has('discount_title') ? 'has-error' : ''}}">
     {!! Form::label('discount', 'Discount Title', ['class' => 'col-md-4 control-label']) !!}
     <div class="col-md-6">
-        {!! Form::number('discount_title', null, ('required' == 'required') ? ['maxlength'=>'5','class' => 'form-control', 'required' => 'required'] : ['class' => 'form-control']) !!}
+        {!! Form::text('discount_title', null, ('required' == '') ? ['maxlength'=>'40','class' => 'form-control', 'required' => 'required'] : ['class' => 'form-control']) !!}
         {!! $errors->first('discount_title', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
