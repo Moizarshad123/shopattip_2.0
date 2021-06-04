@@ -205,6 +205,10 @@
             color: red;
         }
 
+        #sku-error{
+            color: red;
+        }
+
 </style>
 @endpush
 
@@ -248,8 +252,16 @@
 <div class="form-group {{ $errors->has('name') ? 'has-error' : ''}}">
     <label for="name" class="col-md-4 control-label">{{ 'Name' }}<span class="required"> *</span></label>
     <div class="col-md-6">
-        <input class="form-control " name="name" type="text" id="name"  required maxlength="50" placeholder="Product name"/>
+        <input class="form-control " name="name" type="text" id="name"  required maxlength="70" placeholder="Product name" />
         {!! $errors->first('name', '<p class="help-block">:message</p>') !!}
+    </div>
+</div>
+<div class="form-group {{ $errors->has('sku') ? 'has-error' : ''}}">
+    <label for="sku" class="col-md-4 control-label">{{ 'SKU' }}<span class="required"> *</span></label>
+    <div class="col-md-6">
+        <input class="form-control " name="sku" type="text" id="sku"  required maxlength="20" placeholder="SKU" size="20" style="text-transform:uppercase"/>
+        {!! $errors->first('sku', '<p class="help-block">:message</p>') !!}
+        <span id="sku-error"></span>
     </div>
 </div>
 <div class="form-group {{ $errors->has('brand_id') ? 'has-error' : ''}}">
@@ -268,7 +280,7 @@
 <div class="form-group {{ $errors->has('tags') ? 'has-error' : ''}}">
     <label for="tags" class="col-md-4 control-label">{{ 'Tags' }}<span class="required"> *</span></label>
     <div class="col-md-6">
-        <input name="tags[]" type="text" id="tags"  placeholder="Type and hit enter to add a tag"   />
+        <input name="tags[]" type="text" id="tags"  placeholder="Type and hit enter to add a tag" maxlength="10"  />
         {!! $errors->first('tags', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -689,33 +701,36 @@ margin-right: 120px !important;">
     });
    
 
-    
-        
     $(document).ready(function () {
-        $("div").delegate("#submitBtn", "click", function(){
-            $("tags").attr("required");
-        });
+
+$('#tags').keyup(function(){
+    $('.tagify__input').attr('maxlength',10);
+})
+
+        // $("div").delegate("#submitBtn", "click", function(){
+        //     $("tags").attr("required");
+        // });
         
-        $('#submitBtn').click(function(){
+        // $('#submitBtn').click(function(){
     
-            var product_type_id      = $('#product_type_id').val();
-            var category_id          = $('#category_id').val();
-            var subcategory_id       = $('#subcategory_id').val();
-            var child_subcategory_id = $('#child_subcategory_id').val();
-            var name                 = $('#name').val();
-            var brand_id             = $('#brand_id').val();
-            var tags                 = $('#tags').val();
-            var description          = $('#description').val();
-            var img_file             = $('#img_file').val();
-            var thumbnail_img        = $('#thumbnail_img').val();
-            var size                 = $('#size').val();
-            var fabric               = $('#fabric').val();
-            var colors               = $('#colors').val();
-            var customer_choice_options  = $('#customer_choice_options').val();
-            var sale_price               = $('#sale_price').val();
-            var perchase_price           = $('#perchase_price').val();
+        //     var product_type_id      = $('#product_type_id').val();
+        //     var category_id          = $('#category_id').val();
+        //     var subcategory_id       = $('#subcategory_id').val();
+        //     var child_subcategory_id = $('#child_subcategory_id').val();
+        //     var name                 = $('#name').val();
+        //     var brand_id             = $('#brand_id').val();
+        //     var tags                 = $('#tags').val();
+        //     var description          = $('#description').val();
+        //     var img_file             = $('#img_file').val();
+        //     var thumbnail_img        = $('#thumbnail_img').val();
+        //     var size                 = $('#size').val();
+        //     var fabric               = $('#fabric').val();
+        //     var colors               = $('#colors').val();
+        //     var customer_choice_options  = $('#customer_choice_options').val();
+        //     var sale_price               = $('#sale_price').val();
+        //     var perchase_price           = $('#perchase_price').val();
     
-        });
+        // });
         // $('#sale_price').keyup(function(){
 
            
@@ -1057,18 +1072,41 @@ margin-right: 120px !important;">
                 closeOnSelect: true   
             }
         });
-        // var input = document.querySelector('#size');
-        // var tagify = new Tagify(input);
-        // tagify.addTags();
-        // var input = document.querySelector('#fabric');
-        // var tagify = new Tagify(input);
-        // tagify.addTags();
+      
+        $('#sku').keyup(function(){
+            var sku = $(this).val();
+            console.log(sku);
+            if(sku == null || sku == ''){
+                console.log('sku filed is empty');
+               
+            }else{
+                $.ajax({
+                    type:"POST",
+                    url: "{{url('product/product-sku-check')}}/" +sku??'',
+                    data:{ 
+                            _token:'{{ csrf_token() }}',
+                            
+                        },
+                    cache: false,
+                    beforeSend: function(){
 
-        // $('#submitBtn').click(function(){
-        //     if(tagify.value.length  == 0){
-        //         alert('tags must be field');
-        //     }
-        // });
+                    },
+                    success: function(response){
+                        console.log(response);
+                        // $('#sku').html(data);
+                        if (response == 1) {
+                            $('#sku-error').html("SKU NOT AVALIABLE!");
+                            $('#submitBtn').prop('disabled',true);
+                        }else if(response == 0) {
+                            $('#sku-error').html("");
+                            $('#submitBtn').prop('disabled',false);
+
+                        }
+                    }
+                });
+            }
+            
+        });
           
     
     });

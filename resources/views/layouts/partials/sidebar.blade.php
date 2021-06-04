@@ -1,7 +1,13 @@
 
 <aside class="sidebar">
     <div class="scroll-sidebar">
-
+        {{-- @if(Session::has('message'))
+      
+        <div class="alert alert-normal alert-block" style="    background: #f9e443;border-radius: 11px;">
+            <button type="button" class="close" data-dismiss="alert">×</button> 
+            <strong>{!! session('message') !!}</strong>
+        </div>
+        @endif  --}}
         @if(auth()->check())
         @if(session()->get('theme-layout') != 'fix-header')
         <div class="user-profile">
@@ -131,6 +137,19 @@
                             @endforeach
                         @endif
                     @endforeach
+                    <li class="two-column">
+                        <a class="waves-effect" href="javascript:void(0);" aria-expanded="false"><i
+                                class="glyphicon glyphicon-list fa-fw"></i> <span class="hide-menu"> Optimize</span></a>
+                        <ul aria-expanded="false" class="collapse">
+                            <li><a href="{{ url('clear-cache') }}">Cache Clear</a></li>
+                            <li><a href="{{ url('clear-route') }}">Route Clear</a></li>
+                            <li><a href="{{ url('clear-config') }}">Config Clear</a></li>
+                            <li><a href="{{ url('clear-view') }}">View Clear</a></li>
+    
+                        </ul>
+                    </li>
+                  
+
                     {{-- @can('view-blog')
                     <li class="two-column">
                         <a class="waves-effect" href="javascript:void(0);" aria-expanded="false"><i
@@ -315,3 +334,14 @@
         @endif
     </div>
 </aside>
+
+@push('js')
+<script>
+    $("document").ready(function(){
+    setTimeout(function(){
+       $("div.alert").remove();
+    }, 2000 ); // 3 secs
+
+});
+</script>
+@endpush

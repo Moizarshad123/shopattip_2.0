@@ -474,6 +474,12 @@
             <div class="row">
                 <div class="col-md-8 col-md-offset-2 col-sm-12">
                     <h1 align="center">Welcome to Dashboard</h1>
+                    {{-- @if(Session::has('message'))
+                        <div class="alert alert-normal alert-block" style="    background: #f9e443;border-radius: 11px;">
+                            <button type="button" class="close" data-dismiss="alert">×</button> 
+                            <strong>{!! session('message') !!}</strong>
+                        </div>
+                    @endif  --}}
                 </div>
             </div>
         </div>

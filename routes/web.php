@@ -1,6 +1,29 @@
 <?php
 
 use Stevebauman\Location\Facades\Location;
+Route::get('/clear-cache', function() {
+    Artisan::call('cache:clear');
+    return redirect(url()->previous())->with('message', 'Clear Cache!'); 
+});
+Route::get('/clear-route', function() {
+   
+    Artisan::call('route:clear');
+    return redirect(url()->previous())->with('message', 'Clear Route!'); 
+
+});
+
+Route::get('/clear-config', function() {
+    Artisan::call('config:clear');
+    return redirect(url()->previous())->with('message', 'Clear Config!'); 
+
+});
+Route::get('/clear-view', function() {
+    Artisan::call('view:clear');
+    return redirect(url()->previous())->with('message', 'Clear View!'); 
+
+});
+
+
 
 Route::get('get-location-from-ip',function(){
     $ip = '87.231.45.33';
@@ -326,6 +349,10 @@ Route::post('products/sku-combination', 'ProductController\\ProductController@sk
 Route::post('products/sku_combination_edit', 'ProductController\\ProductController@sku_combination_edit')->name('admin.products.sku_combination_edit');
 Route::post('products/get-color-codes', 'ProductController\\ProductController@getColorCodes');
 Route::post('product/product/update/{id}', 'ProductController\\ProductController@update');
+Route::post('product/product-sku-check/{sku}', 'ProductController\\ProductController@skuCheck');
+Route::post('product/product-sku-update-check/{sku}', 'ProductController\\ProductController@skuUpdateCheck');
+
+
 
 
 

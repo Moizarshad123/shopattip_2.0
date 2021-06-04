@@ -4,6 +4,7 @@
             data-target=".navbar-collapse">
             <i class="fa fa-bars"></i>
         </a>
+      
         <div class="top-left-part" style="padding-left: 80px;">
             @if(auth()->check())
             <a class="logo" href="{{'/dashboard'}}">
@@ -22,6 +23,7 @@
             @endif
 
         </div>
+
         <ul class="nav navbar-top-links navbar-left hidden-xs">
             @if(session()->get('theme-layout') != 'fix-header' && auth()->check())
         {{--     <li class="sidebar-toggle">
@@ -37,7 +39,7 @@
                 </form>
             </li> --}}
         </ul>
-
+   
         <ul class="nav navbar-top-links navbar-right pull-right">
             @if(auth()->check())
 
@@ -207,3 +209,15 @@
         </ul>
     </div>
 </nav>
+
+
+@push('js')
+<script>
+    $("document").ready(function(){
+    setTimeout(function(){
+       $("div.alert").remove();
+    }, 000 ); // 3 secs
+
+});
+</script>
+@endpush

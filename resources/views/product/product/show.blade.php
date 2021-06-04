@@ -221,6 +221,11 @@ opacity: 1;
                                 <th> Name </th>
                                 <td> {{ $product->name??'null' }} </td>
                             </tr>
+
+                            <tr>
+                                <th> SKU </th>
+                                <td> {{ $product->sku??'' }} </td>
+                            </tr>
                         
                             <tr>
                                 <th> Brand </th>
@@ -248,8 +253,6 @@ opacity: 1;
                                 
                                         </div>
                                         @endfor
-
-
                                
                                 </td>
                             </tr>
@@ -260,6 +263,11 @@ opacity: 1;
                             <tr>
                                 <th> Fabric </th>
                                 <td> <input type="text" id="fabric" value="{{ $product->fabric??'null' }} " readonly></td>
+                            </tr>
+
+                            <tr>
+                                <th> Stock </th>
+                                <td>{{ $product->current_stock??'0' }} </td>
                             </tr>
                           
 
@@ -311,6 +319,14 @@ opacity: 1;
                             <tr>
                                 <th> Product Added Date </th>
                                 <td> {{ $product->date??'12-12-2012' }} </td>
+                            </tr>
+                            <tr>
+                                <th> Updated By Id </th>
+                                <td> {{ $product->updated_by_id??'' }} </td>
+                            </tr>
+                            <tr>
+                                <th> Updated By Type </th>
+                                <td> {{ $product->updated_by_type??'' }} </td>
                             </tr>
                             </tbody>
                         </table>

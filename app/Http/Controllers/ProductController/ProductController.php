@@ -57,14 +57,11 @@ class ProductController extends Controller
             } else {
                 $user_id = auth()->user()->id;
                 $user    = User::findorfail($user_id);
-                if( $user_id ==1)
-                {
+                if( $user_id ==1){
                     $added_by_id = $user_id;
                     $product = Product::with('category','subCategory','subChildCategory')->paginate($perPage);
 
-                }
-                else
-                {
+                }else{
                     $vendor_id   = $user_id;
                     $added_by_id = $vendor_id;
                     $product = Product::with('category','subCategory','subChildCategory')->where('added_by_id',$added_by_id)->paginate($perPage);
@@ -128,6 +125,7 @@ class ProductController extends Controller
         $product->added_by_id           = $added_by_id;
         $product->added_by_type         = $added_by_type;
         $product->name                  = $request->name;
+        $product->sku                   = $request->sku;
         $product->category_id           = $request->category_id;
         $product->subcategory_id	    = $request->subcategory_id;
         $product->child_subcategory_id  = $request->child_subcategory_id;
@@ -190,8 +188,16 @@ class ProductController extends Controller
                 $product->colors = json_encode($colors);
             }
         }
+        $stock = 0;
+        if(sizeof($request->qty)){
+            for($qty = 0; $qty < count($request->qty); $qty++){
+                $stock = $stock + $request->qty[$qty];
+            }
+        }
       
-        // $product->save();
+        $product->current_stock = $stock;
+    
+        $product->save();
   
         $str   = array();
 
@@ -403,7 +409,7 @@ class ProductController extends Controller
 
     public function update(Request $request, $id){
     
-       
+     //    dd($request);
         $model = str_slug('product','-');
         if(auth()->user()->permissions()->where('name','=','edit-'.$model)->first()!= null) {
             $this->validate($request, [
@@ -427,20 +433,23 @@ class ProductController extends Controller
                 //  $added_by_id               = $vendor_id;
                 //  $added_by_type             = "vendor";
                 //  $product->product_type_id      = $vendor_type_id;
-                 $added_by_id                = $user_id;
-                 $added_by_type              = "vendor";
-                 $product->product_type_id   = $request->product_type_id;
+                 $added_by_id                   = $user_id;
+                 $added_by_type                 = "vendor";
+                 $product->product_type_id      = $request->product_type_id;
              }
              $product->added_by_id              = $added_by_id;
              $product->added_by_type            = $added_by_type;
+             $product->updated_by_id            = $added_by_id??'null';
+             $product->updated_by_type          = $added_by_type??'null';
              $product->name                     = $request->name;
+             $product->sku                      = $request->sku;
              $product->category_id              = $request->category_id;
              $product->subcategory_id	        = $request->subcategory_id;
              $product->child_subcategory_id     = $request->child_subcategory_id;
              $product->brand_id                 = $request->brand_id;
              $product->description              = $request->description;
             //  $product->current_stock            = @$request->qty;
-            $product->date                  = date('Y-m-d H:i:s');
+            $product->date                      = date('Y-m-d H:i:s');
              $product->sale_price               = @$request->commission+intval($request->sale_price);
             //  $product->dollor                   = $request->dollor;
             //  $product->riyal                    = $request->riyal;
@@ -494,6 +503,14 @@ class ProductController extends Controller
                     $product->colors = json_encode($colors);
                 }
             }
+            $stock = 0;
+            if(sizeof($request->qty)){
+                for($qty = 0; $qty < count($request->qty); $qty++){
+                    $stock = $stock + $request->qty[$qty];
+                }
+            }
+          
+            $product->current_stock = $stock;
              $product->save();
      
              $str   = array();
@@ -554,6 +571,39 @@ class ProductController extends Controller
         $colors = ProductColor::orderBy('name', 'asc')->where('active',1)->get();
        echo $colors;
        
+    }
+
+    public function skuCheck( $sku = null){
+        if($sku != null){
+            $getsku = Product::where('sku',$sku)->first();
+            if($getsku != null){
+               return 1;
+                    
+            }else{
+                return 0;
+            }
+
+        }
+      
+    }
+
+    public function skuUpdateCheck(Request $request, $sku = null){
+        if($sku != null){
+            $getsku = Product::where('sku',$sku)->where('id',$request->product_id)->first();
+            if($getsku != null){
+               return 1;
+                    
+            }else{
+            $getsku = Product::where('sku',$sku)->first();
+            if($getsku != null){
+                return 'found';
+            }
+
+                return 'not found';
+            }
+
+        }
+      
     }
 
 }

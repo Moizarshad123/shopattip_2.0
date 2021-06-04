@@ -186,6 +186,14 @@
         .tagify.tagify--focus{
             border-color: #212529 !important;
         }
+        .required
+        {
+            color: red;
+        }
+
+        #sku-error{
+            color: red;
+        }
 </style>
 @endpush
 
@@ -241,6 +249,15 @@
     <div class="col-md-6">
         <input class="form-control" name="name" type="text" id="name" value="{{ $product->name?? ''}}" />
         {!! $errors->first('name', '<p class="help-block">:message</p>') !!}
+    </div>
+</div>
+
+<div class="form-group {{ $errors->has('sku') ? 'has-error' : ''}}">
+    <label for="sku" class="col-md-4 control-label">{{ 'SKU' }}<span class="required"> *</span></label>
+    <div class="col-md-6">
+        <input class="form-control " name="sku" type="text" id="sku" value="{{ $product->sku?? ''}}"  required maxlength="20" placeholder="SKU" size="20" style="text-transform:uppercase"/>
+        {!! $errors->first('sku', '<p class="help-block">:message</p>') !!}
+        <span id="sku-error"></span>
     </div>
 </div>
 <div class="form-group {{ $errors->has('brand_id') ? 'has-error' : ''}}">
@@ -563,7 +580,7 @@
 
 <div class="form-group">
     <div class="col-md-offset-4 col-md-4">
-        <input class="btn btn-primary" type="submit" value="{{ $submitButtonText?? 'Create' }}">
+        <input class="btn btn-primary" id="submitBtn" type="submit" value="{{ $submitButtonText?? 'Create' }}">
     </div>
 </div>
 
@@ -580,7 +597,7 @@
 
 <script>
 
-function readURL(input,id,i) {
+    function readURL(input,id,i) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
 
@@ -988,16 +1005,41 @@ function readURL(input,id,i) {
             }
         });
 
-        // var input = document.querySelector('#tags');
-        // var tagify = new Tagify(input);
-        // tagify.addTags();
-        // var input = document.querySelector('#size');
-        // var tagify = new Tagify(input);
-        // tagify.addTags();
-        // var input = document.querySelector('#fabric');
-        // var tagify = new Tagify(input);
-        // tagify.addTags();
-          
+        $('#sku').keyup(function(){
+            var sku = $(this).val();
+            console.log(sku);
+            if(sku == null || sku == ''){
+                console.log('sku filed is empty');
+               
+            }else{
+                $.ajax({
+                    type:"POST",
+                    url: "{{url('product/product-sku-update-check')}}/" +sku??'',
+                    data:$('#choice_form').serialize(),
+                    cache: false,
+                    beforeSend: function(){
+
+                    },
+                    success: function(response){
+                        console.log(response);
+                        // $('#sku').html(data);
+                        if (response == 1) {
+                            $('#sku-error').html("");
+                            $('#submitBtn').prop('disabled',false);
+                        }else if(response == 'found') {
+                            $('#sku-error').html("SKU NOT AVALIABLE!");
+                            $('#submitBtn').prop('disabled',true);
+
+                        }else if(response == 'not found') {
+                            $('#sku-error').html("");
+                            $('#submitBtn').prop('disabled',false);
+
+                        }
+                    }
+                });
+            }
+            
+        });
     });
   
 </script>
