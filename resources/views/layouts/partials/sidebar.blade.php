@@ -137,6 +137,18 @@
                             @endforeach
                         @endif
                     @endforeach
+                    <li>
+                        <a class="waves-effect" href="{{asset('admin/vendors')}}">
+                              <i class="glyphicon glyphicon-list fa-fw"></i>
+                              <span class="hide-menu"> Vendors </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="waves-effect" href="{{asset('admin/reviews')}}">
+                              <i class="glyphicon glyphicon-list fa-fw"></i>
+                              <span class="hide-menu"> Reviews </span>
+                        </a>
+                    </li>
                     <li class="two-column">
                         <a class="waves-effect" href="javascript:void(0);" aria-expanded="false"><i
                                 class="glyphicon glyphicon-list fa-fw"></i> <span class="hide-menu"> Optimize</span></a>

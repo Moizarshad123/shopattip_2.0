@@ -22,11 +22,9 @@ use Illuminate\Filesystem\Filesystem;
 class ProductController extends Controller
 {
 
-    public function __construct()
-    {
+    public function __construct(){
         $this->middleware('auth');
     }
-  
 
     public function index(Request $request){
        
@@ -53,18 +51,19 @@ class ProductController extends Controller
                 ->orWhere('discount', 'LIKE', "%$keyword%")
                 ->orWhere('discount_type', 'LIKE', "%$keyword%")
                 ->orWhere('shipping_cost', 'LIKE', "%$keyword%")
+                ->orderBy('id', 'DESC')
                 ->paginate($perPage);
             } else {
                 $user_id = auth()->user()->id;
                 $user    = User::findorfail($user_id);
                 if( $user_id ==1){
                     $added_by_id = $user_id;
-                    $product = Product::with('category','subCategory','subChildCategory')->paginate($perPage);
+                    $product = Product::with('category','subCategory','subChildCategory')->orderBy('id', 'DESC')->paginate($perPage);
 
                 }else{
                     $vendor_id   = $user_id;
                     $added_by_id = $vendor_id;
-                    $product = Product::with('category','subCategory','subChildCategory')->where('added_by_id',$added_by_id)->paginate($perPage);
+                    $product = Product::with('category','subCategory','subChildCategory')->where('added_by_id',$added_by_id)->orderBy('id', 'DESC')->paginate($perPage);
 
                 }    
             }
@@ -86,6 +85,9 @@ class ProductController extends Controller
     }
 
     public function store(Request $request){
+
+        // dd($request);
+     
         date_default_timezone_set("Asia/Karachi");
        
         $model = str_slug('product','-');
@@ -138,9 +140,11 @@ class ProductController extends Controller
         // $product->dinar                 = @$request->dinar;
         // $product->euro                  = @$request->euro;
         $product->purchase_price        = @$request->perchase_price;
-        $product->discount              = @$request->discount;
-        $product->discount_type         = @$request->discount_type;
+        // $product->discount              = @$request->discount;
+        // $product->discount_type         = @$request->discount_type;
+        $product->shipping_cost         = @$request->shipping_cost;
         $product->commission            = @$request->commission;
+
         $tags                    = array();
         if($request->tags[0] != null){
             foreach (json_decode($request->tags[0]) as $key => $tag) {
@@ -148,6 +152,7 @@ class ProductController extends Controller
             }
         }
         $product->tags                  = implode(',', $tags);
+
         $sizes                    = array();
         if($request->size[0] != null){
             foreach (json_decode($request->size[0]) as $key => $size) {
@@ -162,7 +167,6 @@ class ProductController extends Controller
                 array_push($fabrics, $fabric->value);
             }
         }
-       
         $product->fabric                  = implode(',', $fabrics);
        
         $product->num_of_imgs           = count($request->thumbnail_image) + 1;
@@ -178,24 +182,22 @@ class ProductController extends Controller
                     array_push($color_ids,$value->id);
                 }
             
-
                 $product->colors = json_encode($color_ids);
                 
-            
             }else {
             
                 $colors = array();
                 $product->colors = json_encode($colors);
             }
         }
-        $stock = 0;
-        if(sizeof($request->qty)){
-            for($qty = 0; $qty < count($request->qty); $qty++){
-                $stock = $stock + $request->qty[$qty];
-            }
-        }
+        // $stock = 0;
+        // if(sizeof($request->qty)){
+        //     for($qty = 0; $qty < count($request->qty); $qty++){
+        //         $stock = $stock + $request->qty[$qty];
+        //     }
+        // }
       
-        $product->current_stock = $stock;
+        // $product->current_stock = $stock;
     
         $product->save();
   
@@ -221,11 +223,10 @@ class ProductController extends Controller
            }
         }
 
-  
-            $logo =  "product_".$product->id."_1.".$request->front_image->extension();
-            $request->front_image->move(public_path('website/productImages'), $logo);
-            $this->addImages($request->thumbnail_image,$product->id);
-            return redirect('product/product')->with('flash_message', 'Product added!');
+        $logo =  "product_".$product->id."_1.".$request->front_image->extension();
+        $request->front_image->move(public_path('website/productImages'), $logo);
+        $this->addImages($request->thumbnail_image,$product->id);
+        return redirect('product/product')->with('message', 'Product added!');
         }
         return response(view('403'), 403);
     }
@@ -424,7 +425,7 @@ class ProductController extends Controller
              {
                  $added_by_id               = $user_id;
                  $added_by_type             = "admin";
-                 $product->product_type_id  = $request->product_type_id;
+                 $product->product_type_id  = @$request->product_type_id;
              }
              else
              {
@@ -435,29 +436,30 @@ class ProductController extends Controller
                 //  $product->product_type_id      = $vendor_type_id;
                  $added_by_id                   = $user_id;
                  $added_by_type                 = "vendor";
-                 $product->product_type_id      = $request->product_type_id;
+                 $product->product_type_id      = @$request->product_type_id;
              }
-             $product->added_by_id              = $added_by_id;
-             $product->added_by_type            = $added_by_type;
-             $product->updated_by_id            = $added_by_id??'null';
-             $product->updated_by_type          = $added_by_type??'null';
-             $product->name                     = $request->name;
-             $product->sku                      = $request->sku;
-             $product->category_id              = $request->category_id;
-             $product->subcategory_id	        = $request->subcategory_id;
-             $product->child_subcategory_id     = $request->child_subcategory_id;
-             $product->brand_id                 = $request->brand_id;
-             $product->description              = $request->description;
+             $product->added_by_id              = @$added_by_id;
+             $product->added_by_type            = @$added_by_type;
+             $product->updated_by_id            = @$added_by_id??'null';
+             $product->updated_by_type          = @$added_by_type??'null';
+             $product->name                     = @$request->name;
+             $product->sku                      = @$request->sku;
+             $product->category_id              = @$request->category_id;
+             $product->subcategory_id	        = @$request->subcategory_id;
+             $product->child_subcategory_id     = @$request->child_subcategory_id;
+             $product->brand_id                 = @$request->brand_id;
+             $product->description              = @$request->description;
             //  $product->current_stock            = @$request->qty;
-            $product->date                      = date('Y-m-d H:i:s');
+             $product->date                      = date('Y-m-d H:i:s');
              $product->sale_price               = @$request->commission+intval($request->sale_price);
             //  $product->dollor                   = $request->dollor;
             //  $product->riyal                    = $request->riyal;
             //  $product->dinar                    = $request->dinar;
             //  $product->euro                     = $request->euro;
-             $product->purchase_price           = $request->perchase_price;
-             $product->discount                 = @$request->discount;
-             $product->discount_type            = @$request->discount_type;
+             $product->purchase_price           = @$request->perchase_price;
+            //  $product->discount                 = @$request->discount;
+            //  $product->discount_type            = @$request->discount_type;
+             $product->shipping_cost            = @$request->shipping_cost;
              $product->commission               = @$request->commission;
              $tags                              = array();
 
@@ -503,14 +505,14 @@ class ProductController extends Controller
                     $product->colors = json_encode($colors);
                 }
             }
-            $stock = 0;
-            if(sizeof($request->qty)){
-                for($qty = 0; $qty < count($request->qty); $qty++){
-                    $stock = $stock + $request->qty[$qty];
-                }
-            }
+            // $stock = 0;
+            // if(sizeof($request->qty)){
+            //     for($qty = 0; $qty < count($request->qty); $qty++){
+            //         $stock = $stock + $request->qty[$qty];
+            //     }
+            // }
           
-            $product->current_stock = $stock;
+            // $product->current_stock = $stock;
              $product->save();
      
              $str   = array();
@@ -521,8 +523,8 @@ class ProductController extends Controller
                 
                     $product_stock              = new ProductVariation;
                     $product_stock->product_id  = $product->id;
-                    if($request->has('colors_active') && $request->has('colors') && count($request->colors) > 0){
-                        $color_name             = \App\ProductColor::where('color_code', $request->colors[$i])->first()->name;
+                    if($request->has('colors_active') && $request->has('colors') && count(@$request->colors) > 0){
+                        $color_name             = \App\ProductColor::where('color_code', @$request->colors[$i])->first()->name;
                         array_push($str, $color_name);
                     }
                         $product_stock->color   = @$str[$i];
@@ -534,7 +536,7 @@ class ProductController extends Controller
             $logo =  "product_".$product->id."_1.".$request->front_image->extension();
             $request->front_image->move(public_path('website/productImages'), $logo);
             $this->addImages($request->thumbnail_image,$product->id);
-             return redirect('product/product')->with('flash_message', 'Product updated!');
+             return redirect('product/product')->with('message', 'Product updated!');
         }
         return response(view('403'), 403);
 
@@ -545,7 +547,7 @@ class ProductController extends Controller
         if(auth()->user()->permissions()->where('name','=','delete-'.$model)->first()!= null) {
             Product::destroy($id);
 
-            return redirect('product/product')->with('flash_message', 'Product deleted!');
+            return redirect('product/product')->with('message', 'Product deleted!');
         }
         return response(view('403'), 403);
 
@@ -605,5 +607,41 @@ class ProductController extends Controller
         }
       
     }
+
+    public function upload(Request $request){
+       
+        
+        $username='923160896681';///Your Username
+        $password='saqlain123';///Your SECRET Password
+        $sender='SHOPATTIP';///Your Masking
+        $mobile='03160896681';///add comma to send multiple sms like 92301,92310,92321
+        $message='Test SMS';///Your Message
+        $post =
+        "sender=".urlencode($sender)."&mobile=".urlencode($mobile)."&message=".urlencode($message)."&format=json";
+        $url = "http://sendpk.com/api/sms.php?username=".$username."&password=".$password."";
+        $ch = curl_init();
+        $timeout = 0; // set to zero for no timeout
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/4.0 (compatible; MSIE 6.0; Windows 
+        NT 5.1; SV1)');
+        curl_setopt($ch, CURLOPT_URL,$url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS,$post);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+        echo $content = curl_exec($ch);
+        /*Print Responce*/
+        // echo $result; 
+      
+    }
+
+    public function test(Request $request){
+       return view('product.product.test');
+    }
+
+    public function customerReviews(Type $var = null)
+    {
+        return view('reviews/index');
+    }
+    
 
 }

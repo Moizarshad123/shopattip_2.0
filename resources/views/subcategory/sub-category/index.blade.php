@@ -4,6 +4,14 @@
     <link href="{{asset('plugins/components/datatables/jquery.dataTables.min.css')}}" rel="stylesheet" type="text/css"/>
     <link href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css" rel="stylesheet"
           type="text/css"/>
+          <style>
+            .wrap{
+                word-break: break-all; 
+            }
+            #myTable_filter input{
+            border-color: #6f6f6f !important;
+        }
+        </style>
 @endpush
 
 @section('content')
@@ -18,7 +26,7 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="white-box">
-                    <h3 class="box-title pull-left">Subcategory</h3>
+                    <h3 class="box-title pull-left">Subcategories</h3>
                     @can('add-'.str_slug('SubCategory'))
                         <a class="btn btn-success pull-right" href="{{ url('/sub-category/sub-category/create') }}"><i
                                     class="icon-plus"></i> Add Subcategory</a>
@@ -40,9 +48,9 @@
                             @foreach($subcategory as $item)
                                 <tr>
                                     <td>{{ $loop->iteration ?? $item->id }}</td>
-                                    <td>{{ $item->category->name??'' }}</td>
-                                    <td>{{ $item->name??'' }}</td>
-                                    <td>{{ $item->url_name??'' }}</td>
+                                    <td class="wrap">{{ $item->category->name??'' }}</td>
+                                    <td class="wrap">{{ $item->name??'' }}</td>
+                                    <td class="wrap">{{ $item->url_name??'' }}</td>
                                     <td>
                                         @can('view-'.str_slug('SubCategory'))
                                             <a href="{{ url('/sub-category/sub-category/' . $item->id) }}"

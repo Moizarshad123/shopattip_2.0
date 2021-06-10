@@ -47,13 +47,23 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
-        $user = auth()->user();
-        activity($user->name)
-            ->performedOn($user)
-            ->causedBy($user)
-            ->log('LoggedOut');
-        $this->guard()->logout();
-        $request->session()->invalidate();
-        return redirect('/');
+        try{
+            $user = auth()->user();
+           
+            if($user){
+                activity($user->name)
+                    ->performedOn($user)
+                    ->causedBy($user)
+                    ->log('LoggedOut');
+                $this->guard()->logout();
+                $request->session()->invalidate();
+                return redirect('/');
+
+            }else{
+                return redirect('/');
+
+            }
+           
+        }catch(\Exception $e){}//end trycatch.
     }
 }

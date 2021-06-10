@@ -4,7 +4,7 @@ namespace App\Http\Controllers\BannerController;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
-
+use App\Category;
 use App\Banner;
 use Storage;
 
@@ -27,12 +27,14 @@ class BannerController extends Controller
             $perPage = count($banner);
 
             if (!empty($keyword)) {
-                $banner = Banner::where('banner_type', 'LIKE', "%$keyword%")
+                $banner = Banner::with('category')->where('banner_type', 'LIKE', "%$keyword%")
                 ->orWhere('title', 'LIKE', "%$keyword%")
                 ->orWhere('banner', 'LIKE', "%$keyword%")
+                ->orderBy('id', 'DESC')
                 ->paginate($perPage);
             } else {
-                $banner = Banner::paginate($perPage);
+                $banner = Banner::with('category')->orderBy('id', 'DESC')->paginate($perPage);
+                // dd($banner);
             }
 
             return view('banner.banner.index', compact('banner'));
@@ -44,10 +46,10 @@ class BannerController extends Controller
     public function create()
     {
         $ACTION = 'ADD';
-        
+        $categories = Category::all();
         $model = str_slug('banner','-');
         if(auth()->user()->permissions()->where('name','=','add-'.$model)->first()!= null) {
-            return view('banner.banner.create',compact('ACTION'));
+            return view('banner.banner.create',compact('ACTION','categories'));
         }
         return response(view('403'), 403);
 
@@ -60,14 +62,16 @@ class BannerController extends Controller
             $this->validate($request, [
 			'banner_type' => 'required',
 			'title' => 'required',
-			'banner' => 'required'
+			'banner' => 'required',
+			'category_type' => 'required'
 		]);
             // $requestData = $request->all();
             // Banner::create($requestData);
             
-            $banner              = new Banner();
-            $banner->banner_type = $request->banner_type;
-            $banner->title       = $request->title;
+            $banner                     = new Banner();
+            $banner->banner_type        = $request->banner_type;
+            $banner->title              = $request->title;
+            $banner->category_type      = $request->category_type;
 
             if($request->hasFile('banner')){
                 $image         = Storage::disk('website')->put('banners', $request->banner);
@@ -75,7 +79,7 @@ class BannerController extends Controller
             }
             $banner->save();
 
-            return redirect('banner')->with('flash_message', 'Banner added!');
+            return redirect('banner')->with('message', 'Banner added!');
         }
         return response(view('403'), 403);
     }
@@ -84,7 +88,7 @@ class BannerController extends Controller
     {
         $model = str_slug('banner','-');
         if(auth()->user()->permissions()->where('name','=','view-'.$model)->first()!= null) {
-            $banner = Banner::findOrFail($id);
+            $banner = Banner::with('category')->findOrFail($id);
             return view('banner.banner.show', compact('banner'));
         }
         return response(view('403'), 403);
@@ -95,7 +99,8 @@ class BannerController extends Controller
         $model = str_slug('banner','-');
         if(auth()->user()->permissions()->where('name','=','edit-'.$model)->first()!= null) {
             $banner = Banner::findOrFail($id);
-            return view('banner.banner.edit', compact('banner','ACTION'));
+            $getCategories = Category::all();
+            return view('banner.banner.edit', compact('banner','ACTION','getCategories'));
         }
         return response(view('403'), 403);
     }
@@ -107,16 +112,20 @@ class BannerController extends Controller
             $this->validate($request, [
 			'banner_type' => 'required',
 			'title' => 'required',
-			'banner' => 'required'
+			'banner' => 'required',
+			'category_type' => 'required'
+
 		]);
             // $requestData = $request->all();
             
             // $banner = Banner::findOrFail($id);
             //  $banner->update($requestData);
 
-            $banner              = Banner::find($id);
-            $banner->banner_type = $request->banner_type;
-            $banner->title       = $request->title;
+            $banner                 = Banner::find($id);
+            $banner->banner_type    = $request->banner_type;
+            $banner->title          = $request->title;
+            $banner->category_type  = $request->category_type;
+
 
             if($request->hasFile('banner')){
                 $image         = Storage::disk('website')->put('banners', $request->banner);
@@ -125,7 +134,7 @@ class BannerController extends Controller
             $banner->save();
 
 
-             return redirect('banner')->with('flash_message', 'Banner updated!');
+             return redirect('banner')->with('message', 'Banner updated!');
         }
         return response(view('403'), 403);
 
@@ -138,9 +147,15 @@ class BannerController extends Controller
         if(auth()->user()->permissions()->where('name','=','delete-'.$model)->first()!= null) {
             Banner::destroy($id);
 
-            return redirect('banner')->with('flash_message', 'Banner deleted!');
+            return redirect('banner')->with('message', 'Banner deleted!');
         }
         return response(view('403'), 403);
 
+    }
+
+    public function fetchCategoriesList($brand_type_id = null)
+    {
+        $categories = Category::where('category_type_id',$brand_type_id)->get();
+        echo $categories;
     }
 }

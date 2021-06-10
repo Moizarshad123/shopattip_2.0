@@ -8,7 +8,7 @@
                     <h3 class="box-title pull-left">Create New Brand</h3>
                     @can('view-'.str_slug('Brand'))
                         <a class="btn btn-success pull-right" href="{{url('/brand')}}">
-                            <i class="icon-arrow-left-circle"></i> View Brand</a>
+                            <i class="icon-arrow-left-circle"></i> Back</a>
                     @endcan
                     <div class="clearfix"></div>
                     <hr>
@@ -20,7 +20,7 @@
                         </ul>
                     @endif --}}
 
-                    {!! Form::open(['url' => '/brand', 'class' => 'form-horizontal', 'files' => true]) !!}
+                    {!! Form::open(['url' => '/brand', 'id'=>'create','class' => 'form-horizontal', 'files' => true]) !!}
 
                     @include ('brand.brand.form')
 

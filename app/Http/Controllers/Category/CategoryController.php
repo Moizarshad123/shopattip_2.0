@@ -32,9 +32,10 @@ class CategoryController extends Controller
                 // ->orWhere('description', 'LIKE', "%$keyword%")
                 ->orWhere('banner', 'LIKE', "%$keyword%")
                 ->orWhere('status', 'LIKE', "%$keyword%")
+                ->orderBy('id', 'DESC')
                 ->paginate($perPage);
             } else {
-                $category = Category::paginate($perPage);
+                $category = Category::orderBy('id', 'DESC')->paginate($perPage);
             }
 
             return view('category.category.index', compact('category'));
@@ -84,7 +85,7 @@ class CategoryController extends Controller
             $category->banner               = $image??"";
             $category->status               = $request->status;
             $category->save();
-            return redirect('category/category')->with('flash_message', 'Category added!');
+            return redirect('category/category')->with('message', 'Category added!');
         }
         return response(view('403'), 403);
     }
@@ -103,6 +104,7 @@ class CategoryController extends Controller
 
     public function edit(Category $category)
     {
+       
         $ACTION = 'EDIT';
         $model = str_slug('category','-');
         if(auth()->user()->permissions()->where('name','=','edit-'.$model)->first()!= null) {
@@ -115,6 +117,7 @@ class CategoryController extends Controller
 
     public function update(Request $request, Category $category)
     {
+        // dd($request);
         $id = $category->id;
         $model = str_slug('category','-');
         if(auth()->user()->permissions()->where('name','=','edit-'.$model)->first()!= null) {
@@ -153,9 +156,7 @@ class CategoryController extends Controller
                 ]);
             }
             
-         
-
-             return redirect('category/category')->with('flash_message', 'Category updated!');
+             return redirect('category/category')->with('message', 'Category updated!');
         }
         return response(view('403'), 403);
 
@@ -168,7 +169,7 @@ class CategoryController extends Controller
         if(auth()->user()->permissions()->where('name','=','delete-'.$model)->first()!= null) {
             Category::destroy($id);
 
-            return redirect('category/category')->with('flash_message', 'Category deleted!');
+            return redirect('category/category')->with('message', 'Category deleted!');
         }
         return response(view('403'), 403);
 

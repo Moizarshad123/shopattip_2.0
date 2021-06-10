@@ -4,6 +4,16 @@
     <link href="{{asset('plugins/components/datatables/jquery.dataTables.min.css')}}" rel="stylesheet" type="text/css"/>
     <link href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css" rel="stylesheet"
           type="text/css"/>
+<style>
+    
+.wrap{
+    word-break: break-all; 
+    
+}
+#myTable_filter input{
+            border-color: #6f6f6f !important;
+        }
+</style>
 @endpush
 
 @section('content')
@@ -18,7 +28,7 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="white-box">
-                    <h3 class="box-title pull-left">Category</h3>
+                    <h3 class="box-title pull-left">Categories</h3>
                     @can('add-'.str_slug('Category'))
                         <a class="btn btn-success pull-right" href="{{ url('/category/category/create') }}"><i
                                     class="icon-plus"></i> Add Category</a>
@@ -32,7 +42,7 @@
                                 <th>#</th>
                                 <th>Category Type</th>
                                 {{-- <th>Level Name</th> --}}
-                                <th>Name</th>
+                                <th >Name</th>
                                 <th>Banner</th>
                                 <th>Stats</th>
                                 <th>Actions</th>
@@ -49,7 +59,7 @@
                                     <td>Grocery</td>
                                     @endif
                                     {{-- <td>{{ $item->level_name }}</td> --}}
-                                    <td>{{ $item->name??'' }}</td>
+                                    <td class="wrap">{{ $item->name??'' }}</td>
                                     @include('includes.image_html',['variable'=>$item->banner??''])
                                     @include('includes.status_badge_html',['variable'=>$item->status??''])
                                     <td>

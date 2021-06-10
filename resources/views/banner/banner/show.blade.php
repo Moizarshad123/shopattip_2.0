@@ -29,8 +29,12 @@
                                 @endif
                             </tr>
                             <tr>
+                                <th> Category Type </th>
+                                <td style="word-break: break-all;"> {{ @$banner->category->name }} </td>
+                            </tr>
+                            <tr>
                                 <th> Title </th>
-                                <td> {{ $banner->title }} </td>
+                                <td style="word-break: break-all;"> {{ @$banner->title }} </td>
                             </tr>
                             <tr>
                                 <th> Banner </th>

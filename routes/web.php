@@ -339,6 +339,7 @@ Route::resource('brand', 'BrandController\\BrandController');
 // Route::resource('brand', 'BrandController\\BrandController');
 
 Route::get('select-category-type/{category_type_id}', 'SubCategoryController\\SubCategoryController@fetchCategoryBaseList');
+Route::get('select-brand-type/{brand_type_id}', 'BannerController\\BannerController@fetchCategoriesList');
 
 
 Route::resource('product/product', 'ProductController\\ProductController');
@@ -351,6 +352,15 @@ Route::post('products/get-color-codes', 'ProductController\\ProductController@ge
 Route::post('product/product/update/{id}', 'ProductController\\ProductController@update');
 Route::post('product/product-sku-check/{sku}', 'ProductController\\ProductController@skuCheck');
 Route::post('product/product-sku-update-check/{sku}', 'ProductController\\ProductController@skuUpdateCheck');
+Route::post('product/product-coupon-check/{coupon}', 'CouponController\\CouponController@couponCheck');
+Route::post('product/product-coupon-update-check/{coupon}', 'CouponController\\CouponController@couponUpdateCheck');
+
+
+
+
+
+Route::post('uploads', 'ProductController\\ProductController@upload');
+Route::get('test', 'ProductController\\ProductController@test');
 
 
 
@@ -369,6 +379,13 @@ Route::resource('discount', 'DiscountController\\DiscountController');
 
 Route::get('getcategoryforchildsubcat/{id}','ChildSubCategory\\ChildSubCategoryController@GetCategoryForChildSubCategory');
 Route::get('getsubcategoryforchildsubcat/{id}','ChildSubCategory\\ChildSubCategoryController@GetSubCategoryForChildSubCategory');
+
+
+Route::get('admin/reviews', 'ProductController\\ProductController@customerReviews');
+Route::get('admin/vendors', 'VendorController@vendorsList');
+Route::get('admin/vendor-status-change', 'VendorController@vendorStatusChange');
+
+
 
 
 // 

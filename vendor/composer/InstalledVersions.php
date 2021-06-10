@@ -497,12 +497,12 @@ private static $installed = array (
     ),
     'laravel/socialite' => 
     array (
-      'pretty_version' => 'v4.4.1',
-      'version' => '4.4.1.0',
+      'pretty_version' => 'v5.2.3',
+      'version' => '5.2.3.0',
       'aliases' => 
       array (
       ),
-      'reference' => '80951df0d93435b773aa00efe1fad6d5015fac75',
+      'reference' => '1960802068f81e44b2ae9793932181cf1cb91b5c',
     ),
     'laravel/tinker' => 
     array (

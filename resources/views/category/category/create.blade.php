@@ -7,7 +7,7 @@
                 <div class="white-box">
                     <h3 class="box-title pull-left">Create New Category</h3>
                     @can('view-'.str_slug('Category'))
-                    <a  class="btn btn-success pull-right" href="{{url('/category/category')}}"><i class="icon-arrow-left-circle"></i> Add Category</a>
+                    <a  class="btn btn-success pull-right" href="{{url('/category/category')}}"><i class="icon-arrow-left-circle"></i> Back</a>
                     @endcan
 
                     <div class="clearfix"></div>
@@ -20,7 +20,7 @@
                         </ul>
                     @endif --}}
 
-                    <form method="POST" action="{{ url('/category/category') }}" accept-charset="UTF-8"
+                    <form method="POST" action="{{ url('/category/category') }}" id="create" accept-charset="UTF-8"
                           class="form-horizontal" enctype="multipart/form-data">
                         {{ csrf_field() }}
 

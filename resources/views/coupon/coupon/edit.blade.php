@@ -21,11 +21,13 @@
                     @endif
 
                     {!! Form::model($coupon, [
-                        'method' => 'PATCH',
+                        'method' => 'POST',
                         'url' => ['/coupon', $coupon->id],
                         'class' => 'form-horizontal',
-                        'files' => true
+                        'files' => true,
+                        'id' =>'choice_form'
                     ]) !!}
+                    @csrfsss
 
                     @include ('coupon.coupon.form', ['submitButtonText' => 'Update'])
 

@@ -30,27 +30,27 @@
                             </tr>
                             <tr>
                                 <th> Category </th>
-                                <td> {{ $discount->category[0]->name??'null' }} </td>
+                                <td style="word-break: break-all;"> {{ $discount->category[0]->name??'null' }} </td>
                             </tr>
                             <tr>
                                 <th> Subcategory </th>
-                                <td> {{ $discount->subCategory[0]->name??'null' }} </td>
+                                <td style="word-break: break-all;"> {{ $discount->subCategory[0]->name??'null' }} </td>
                             </tr>
                             <tr>
                                 <th> Child Subcategory </th>
-                                <td> {{ $discount->subChildCategory[0]->name??'null' }} </td>
+                                <td style="word-break: break-all;"> {{ $discount->subChildCategory[0]->name??'null' }} </td>
                             </tr>
                             <tr>
                                 <th> Disount Type </th>
-                                <td> {{ $discount->disount_type??'' }} </td>
+                                <td style="word-break: break-all;"> {{ $discount->disount_type??'' }} </td>
                             </tr>
                             <tr>
                                 <th> Disount Title </th>
-                                <td> {{ $discount->discount_title??'' }} </td>
+                                <td style="word-break: break-all;"> {{ $discount->discount_title??'' }} </td>
                             </tr>
                             <tr>
                                 <th> Discount </th>
-                                <td> {{ $discount->discount??'0' }} </td>
+                                <td style="word-break: break-all;"> {{ $discount->discount??'0' }} </td>
                             </tr>
                             </tbody>
                         </table>

@@ -22,7 +22,7 @@
 <div class="form-group {{ $errors->has('category_type_id') ? 'has-error' : ''}}">
     <label for="category_type_id" class="col-md-4 control-label">{{ 'Category Type' }}</label>
     <div class="col-md-6">
-        <select class="form-control category_type_id" name="category_type_id" id="category_type_id">
+        <select class="form-control category_type_id" name="category_type_id" id="category_type_id" required>
             <option value=""> Select Category Type</option>
             @if(@$subcategory->category->category_type_id == 1)
                 <option  value="1" selected>General</option>
@@ -79,20 +79,20 @@
 <div class="form-group {{ $errors->has('name') ? 'has-error' : ''}}">
     <label for="name" class="col-md-4 control-label">{{ 'Name' }}</label>
     <div class="col-md-6">
-        <input class="form-control" name="name" type="text" id="name" value="{{ $subcategory->name?? ''}}" required maxlength="70">
+        <input class="form-control" name="name" type="text" id="name" value="{{ $subcategory->name?? ''}}" required maxlength="45">
         {!! $errors->first('name', '<p class="help-block">:message</p>') !!}
     </div>
 </div><div class="form-group {{ $errors->has('url_name') ? 'has-error' : ''}}">
     <label for="url_name" class="col-md-4 control-label">{{ 'Url Name' }}</label>
     <div class="col-md-6">
-        <input class="form-control" name="url_name" type="text" id="url_name" value="{{ $subcategory->url_name?? ''}}" required maxlength="70">
+        <input class="form-control" name="url_name" type="text" id="url_name" value="{{ $subcategory->url_name?? ''}}" required maxlength="45">
         {!! $errors->first('url_name', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
 
 <div class="form-group">
     <div class="col-md-offset-4 col-md-4">
-        <input class="btn btn-primary" type="submit" value="{{ $submitButtonText?? 'Create' }}">
+        <input class="btn btn-primary" id="submitBtn" type="submit" value="{{ $submitButtonText?? 'Create' }}">
     </div>
 </div>
 
@@ -151,6 +151,23 @@
                         alert('Select any category');
                     }
                 });
+
+                $('#submitBtn').click(function(){
+                    // e.preventDefault();
+                
+                    var category_type_id    = $('#category_type_id').val();
+                    var category_id         = $('#category_id').val();
+                    var name                = $('#name').val();
+                    var child_subcategory_id    = $('#url_name').val();
+                
+                    if(category_type_id == '' && category_id == '' && name == '' && child_subcategory_id == ''){
+                        $('#submitBtn').prop('disabled',false);
+                    }else if(category_type_id != '' && category_id != '' && name != '' && child_subcategory_id != ''){
+                        $('#submitBtn').prop('disabled',true);
+                        $('#create').submit();
+                    }
+                    
+                })
 
                 // var editValue =  $('#edit').val();
                 // var category_type =  $('#category_type_id').val();

@@ -8,7 +8,7 @@
                     <h3 class="box-title pull-left">Create New Discount</h3>
                     @can('view-'.str_slug('Discount'))
                         <a class="btn btn-success pull-right" href="{{url('/discount')}}">
-                            <i class="icon-arrow-left-circle"></i> View Discount</a>
+                            <i class="icon-arrow-left-circle"></i> Back</a>
                     @endcan
                     <div class="clearfix"></div>
                     <hr>
@@ -20,7 +20,7 @@
                         </ul>
                     @endif --}}
 
-                    {!! Form::open(['url' => '/discount', 'class' => 'form-horizontal', 'files' => true]) !!}
+                    {!! Form::open(['url' => '/discount', 'id'=>'create', 'class' => 'form-horizontal', 'files' => true]) !!}
 
                     @include ('discount.discount.form')
 

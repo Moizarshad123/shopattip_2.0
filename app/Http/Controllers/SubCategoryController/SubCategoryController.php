@@ -10,14 +10,12 @@ use Illuminate\Http\Request;
 
 class SubCategoryController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('auth');
     }
 
-    public function index(Request $request)
-    {
+    public function index(Request $request){
         $model = str_slug('subcategory','-');
         if(auth()->user()->permissions()->where('name','=','view-'.$model)->first()!= null) {
             $keyword = $request->get('search');
@@ -28,11 +26,10 @@ class SubCategoryController extends Controller
                 $subcategory = SubCategory::with('category')->where('category_id', 'LIKE', "%$keyword%")
                 ->orWhere('name', 'LIKE', "%$keyword%")
                 ->orWhere('url_name', 'LIKE', "%$keyword%")
+                ->orderBy('id', 'DESC')
                 ->paginate($perPage);
             } else {
-                $subcategory = SubCategory::with('category')->paginate($perPage);
-             
-               
+                $subcategory = SubCategory::with('category')->orderBy('id', 'DESC')->paginate($perPage);
             }
 
             return view('subcategory.sub-category.index', compact('subcategory'));
@@ -41,8 +38,7 @@ class SubCategoryController extends Controller
 
     }
 
-    public function create()
-    {
+    public function create(){
         $ACTION = 'CREATES';
         $model = str_slug('subcategory','-');
         if(auth()->user()->permissions()->where('name','=','add-'.$model)->first()!= null) {
@@ -69,7 +65,7 @@ class SubCategoryController extends Controller
             $subCategory->save();
             
             // SubCategory::create($requestData);
-            return redirect('sub-category/sub-category')->with('flash_message', 'SubCategory added!');
+            return redirect('sub-category/sub-category')->with('message', 'SubCategory added!');
         }
         return response(view('403'), 403);
     }
@@ -119,7 +115,7 @@ class SubCategoryController extends Controller
             $subCategory->save();
             //  $subcategory->update($requestData);
 
-             return redirect('sub-category/sub-category')->with('flash_message', 'SubCategory updated!');
+             return redirect('sub-category/sub-category')->with('message', 'SubCategory updated!');
         }
         return response(view('403'), 403);
 
@@ -133,7 +129,7 @@ class SubCategoryController extends Controller
         if(auth()->user()->permissions()->where('name','=','delete-'.$model)->first()!= null) {
             SubCategory::destroy($id);
 
-            return redirect('sub-category/sub-category')->with('flash_message', 'SubCategory deleted!');
+            return redirect('sub-category/sub-category')->with('message', 'SubCategory deleted!');
         }
         return response(view('403'), 403);
 

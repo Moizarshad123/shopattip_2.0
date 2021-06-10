@@ -4,6 +4,11 @@
     <link href="{{asset('plugins/components/datatables/jquery.dataTables.min.css')}}" rel="stylesheet" type="text/css"/>
     <link href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css" rel="stylesheet"
           type="text/css"/>
+          <style>
+            .wrap{
+                word-break: break-all; 
+            }
+        </style>
 @endpush
 
 @section('content')
@@ -18,7 +23,7 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="white-box">
-                    <h3 class="box-title pull-left">Coupon</h3>
+                    <h3 class="box-title pull-left">Coupons</h3>
                     @can('add-'.str_slug('Coupon'))
                         <a class="btn btn-success pull-right" href="{{ url('/coupon/create') }}"><i
                                     class="icon-plus"></i> Add Coupon</a>

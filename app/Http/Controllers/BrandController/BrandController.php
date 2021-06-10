@@ -29,9 +29,10 @@ class BrandController extends Controller
             if (!empty($keyword)) {
                 $brand = Brand::where('name', 'LIKE', "%$keyword%")
                 ->orWhere('logo', 'LIKE', "%$keyword%")
+                ->orderBy('id', 'DESC')
                 ->paginate($perPage);
             } else {
-                $brand = Brand::paginate($perPage);
+                $brand = Brand::orderBy('id', 'DESC')->paginate($perPage);
             }
 
             return view('brand.brand.index', compact('brand'));
@@ -69,7 +70,7 @@ class BrandController extends Controller
                 $brand->logo = $image;
             }
             $brand->save();
-            return redirect('brand')->with('flash_message', 'Brand added!');
+            return redirect('brand')->with('message', 'Brand added!');
         }
         return response(view('403'), 403);
     }
@@ -116,7 +117,7 @@ class BrandController extends Controller
             }
             $brand->save();
 
-             return redirect('brand')->with('flash_message', 'Brand updated!');
+             return redirect('brand')->with('message', 'Brand updated!');
         }
         return response(view('403'), 403);
 
@@ -128,9 +129,11 @@ class BrandController extends Controller
         if(auth()->user()->permissions()->where('name','=','delete-'.$model)->first()!= null) {
             Brand::destroy($id);
 
-            return redirect('brand')->with('flash_message', 'Brand deleted!');
+            return redirect('brand')->with('message', 'Brand deleted!');
         }
         return response(view('403'), 403);
 
     }
+
+   
 }

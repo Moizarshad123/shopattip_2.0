@@ -4,6 +4,11 @@
     <link href="{{asset('plugins/components/datatables/jquery.dataTables.min.css')}}" rel="stylesheet" type="text/css"/>
     <link href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css" rel="stylesheet"
           type="text/css"/>
+          <style>
+            .wrap{
+                word-break: break-all; 
+            }
+        </style>
 @endpush
 
 @section('content')
@@ -19,7 +24,7 @@
 
             <div class="col-sm-12">
                 <div class="white-box">
-                    <h3 class="box-title pull-left">Brand</h3>
+                    <h3 class="box-title pull-left">Brands</h3>
                     @can('add-'.str_slug('Brand'))
                         <a class="btn btn-success pull-right" href="{{ url('/brand/create') }}"><i
                                     class="icon-plus"></i> Add Brand</a>
@@ -40,7 +45,7 @@
                             @foreach($brand as $item)
                                 <tr>
                                     <td>{{ $loop->iteration ?? $item->id }}</td>
-                                    <td>{{ $item->name }}</td>
+                                    <td class="wrap">{{ $item->name }}</td>
                                    
                                         @include('includes.image_html',['variable'=>$item->logo])
                                     

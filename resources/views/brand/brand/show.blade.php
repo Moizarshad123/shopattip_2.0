@@ -28,9 +28,10 @@
                                     <td>Grocery</td>
                                     @endif
                             </tr>
+                                    
                             <tr>
                                 <th> Name </th>
-                                <td> {{ $brand->name }} </td>
+                                <td style="word-break: break-all; "> {{ $brand->name }} </td>
                             </tr>
                             <tr>
                                 <th> Logo </th>

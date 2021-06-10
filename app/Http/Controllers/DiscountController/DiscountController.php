@@ -35,10 +35,11 @@ class DiscountController extends Controller
                 ->orWhere('discount', 'LIKE', "%$keyword%")
                 ->orWhere('start_date', 'LIKE', "%$keyword%")
                 ->orWhere('end_date', 'LIKE', "%$keyword%")
+                ->orderBy('id', 'DESC')
                 ->paginate($perPage);
             } else {
                 // $discount = Discount::paginate($perPage);
-                $discount = Discount::with('category','subCategory','subChildCategory')->paginate($perPage);
+                $discount = Discount::orderBy('id', 'DESC')->with('category','subCategory','subChildCategory')->paginate($perPage);
                 // dd($discount);
 
             }
@@ -95,7 +96,7 @@ class DiscountController extends Controller
             $discount->start_date            = $request->start_date;
             $discount->end_date              = $request->end_date;
             $discount->save();
-            return redirect('discount')->with('flash_message', 'Discount added!');
+            return redirect('discount')->with('message', 'Discount added!');
         }
         return response(view('403'), 403);
     }
@@ -164,7 +165,7 @@ class DiscountController extends Controller
              $discount->end_date              = $request->end_date;
              $discount->save();
 
-             return redirect('discount')->with('flash_message', 'Discount updated!');
+             return redirect('discount')->with('message', 'Discount updated!');
         }
         return response(view('403'), 403);
 
@@ -183,7 +184,7 @@ class DiscountController extends Controller
         if(auth()->user()->permissions()->where('name','=','delete-'.$model)->first()!= null) {
             Discount::destroy($id);
 
-            return redirect('discount')->with('flash_message', 'Discount deleted!');
+            return redirect('discount')->with('message', 'Discount deleted!');
         }
         return response(view('403'), 403);
 

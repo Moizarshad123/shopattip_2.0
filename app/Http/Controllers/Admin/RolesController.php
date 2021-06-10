@@ -88,6 +88,7 @@ class RolesController extends Controller
      */
     public function edit($id)
     {
+        
         $role = Role::findOrFail($id);
         $permissions = Permission::select('id', 'name', 'label')->get()->pluck('label', 'name');
 

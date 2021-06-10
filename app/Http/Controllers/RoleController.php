@@ -41,6 +41,7 @@ class RoleController extends Controller
     }
 
     public function edit(Request $request, $id){
+      
         $permissions = Permission::all();
         $blog_permissions = Permission::permissionList('blog');
         $role = Role::findOrfail($request->id);

@@ -4,6 +4,14 @@
     <link href="{{asset('plugins/components/datatables/jquery.dataTables.min.css')}}" rel="stylesheet" type="text/css"/>
     <link href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css" rel="stylesheet"
           type="text/css"/>
+          <style>
+            .wrap{
+                word-break: break-all; 
+            }
+            #myTable_filter input{
+            border-color: #6f6f6f !important;
+        }
+        </style>
 @endpush
 
 @section('content')
@@ -18,7 +26,7 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="white-box">
-                    <h3 class="box-title pull-left">Product</h3>
+                    <h3 class="box-title pull-left">Products</h3>
                     @can('add-'.str_slug('Product'))
                         <a class="btn btn-success pull-right" href="{{ url('/product/product/create') }}"><i
                                     class="icon-plus"></i> Add Product</a>
@@ -51,9 +59,9 @@
                                     <td>Grocery</td>
                                     @endif
                        
-                                    <td>{{$item->category[0]->name??''}}</td>
-                                    <td>{{ $item->subCategory[0]->name??'' }}</td>
-                                    <td>{{ $item->subChildCategory[0]->name??'' }}</td>
+                                    <td class="wrap">{{$item->category[0]->name??''}}</td>
+                                    <td class="wrap">{{ $item->subCategory[0]->name??'' }}</td>
+                                    <td class="wrap">{{ $item->subChildCategory[0]->name??'' }}</td>
 
                                     <td>
                                         @can('view-'.str_slug('Product'))

@@ -24,7 +24,8 @@
                         'method' => 'PATCH',
                         'url' => ['/discount', $discount->id],
                         'class' => 'form-horizontal',
-                        'files' => true
+                        'files' => true,
+                        'id' => 'create'
                     ]) !!}
 
                     @include ('discount.discount.form', ['submitButtonText' => 'Update'])

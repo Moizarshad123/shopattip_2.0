@@ -207,37 +207,37 @@ opacity: 1;
                             </tr>
                             <tr>
                                 <th> Category </th>
-                                <td> {{ $product->category[0]->name??'null' }} </td>
+                                <td style="word-break: break-all;"> {{ $product->category[0]->name??'null' }} </td>
                             </tr>
                             <tr>
                                 <th> Subcategory </th>
-                                <td> {{ $product->subCategory[0]->name??'null' }} </td>
+                                <td style="word-break: break-all;"> {{ $product->subCategory[0]->name??'null' }} </td>
                             </tr>
                             <tr>
                                 <th> Child Subcategory </th>
-                                <td> {{ $product->subChildCategory[0]->name??'null' }} </td>
+                                <td style="word-break: break-all;"> {{ $product->subChildCategory[0]->name??'null' }} </td>
                             </tr>
                             <tr>
                                 <th> Name </th>
-                                <td> {{ $product->name??'null' }} </td>
+                                <td style="word-break: break-all;"> {{ $product->name??'null' }} </td>
                             </tr>
 
                             <tr>
                                 <th> SKU </th>
-                                <td> {{ $product->sku??'' }} </td>
+                                <td style="word-break: break-all;"> {{ $product->sku??'' }} </td>
                             </tr>
                         
                             <tr>
                                 <th> Brand </th>
-                                <td> {{ $product['brand'][0]->name??'null' }} </td>
+                                <td style="word-break: break-all;"> {{ $product['brand'][0]->name??'null' }} </td>
                             </tr>
                             <tr>
                                 <th> Tags </th>
-                                <td><input type="text" id="tags" value="{{ $product->tags??'null' }}" readonly>  </td>
+                                <td style="word-break: break-all;"><input type="text" id="tags" value="{{ $product->tags??'null' }}" readonly>  </td>
                             </tr>
                             <tr>
                                 <th> Description </th>
-                                <td> {{ $product->description??'null' }} </td>
+                                <td style="word-break: break-all;"> {{ $product->description??'null' }} </td>
                             </tr>
                             <tr>
                                 <th> Front Image </th>
@@ -258,11 +258,11 @@ opacity: 1;
                             </tr>
                             <tr>
                                 <th> Size </th>
-                                <td><input type="text" id="size" value="{{ $product->size??'null' }}" readonly>  </td>
+                                <td style="word-break: break-all;"><input type="text" id="size" value="{{ $product->size??'null' }}" readonly>  </td>
                             </tr>
                             <tr>
                                 <th> Fabric </th>
-                                <td> <input type="text" id="fabric" value="{{ $product->fabric??'null' }} " readonly></td>
+                                <td style="word-break: break-all;"> <input type="text" id="fabric" value="{{ $product->fabric??'null' }} " readonly></td>
                             </tr>
 
                             <tr>

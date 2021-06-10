@@ -24,7 +24,8 @@
                         'method' => 'PATCH',
                         'url' => ['/brand', $brand->id],
                         'class' => 'form-horizontal',
-                        'files' => true
+                        'files' => true,
+                        'id'=>'create'
                     ]) !!}
 
                     @include ('brand.brand.form', ['submitButtonText' => 'Update'])

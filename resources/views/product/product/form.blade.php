@@ -1,7 +1,7 @@
 @push('css')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tagify/3.22.1/tagify.css" />  
 <link href="{{asset('plugins/components/bootstrap-tagsinput/dist/bootstrap-tagsinput.css')}}"  />
-
+<link href="{{asset('plugins/components/toast-master/css/jquery.toast.css')}}" rel="stylesheet">
 
 {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/css/select2.min.css" rel="stylesheet"/> --}}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@yaireo/tagify@3.1.0/dist/tagify.css" />
@@ -252,16 +252,22 @@
 <div class="form-group {{ $errors->has('name') ? 'has-error' : ''}}">
     <label for="name" class="col-md-4 control-label">{{ 'Name' }}<span class="required"> *</span></label>
     <div class="col-md-6">
-        <input class="form-control " name="name" type="text" id="name"  required maxlength="70" placeholder="Product name" />
+        <input class="form-control " name="name" type="text" id="name"  required maxlength="45" placeholder="Product name" />
         {!! $errors->first('name', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
 <div class="form-group {{ $errors->has('sku') ? 'has-error' : ''}}">
     <label for="sku" class="col-md-4 control-label">{{ 'SKU' }}<span class="required"> *</span></label>
     <div class="col-md-6">
-        <input class="form-control " name="sku" type="text" id="sku"  required maxlength="20" placeholder="SKU" size="20" style="text-transform:uppercase"/>
+        <input class="form-control " name="sku" type="text" id="sku"  readonly required maxlength="10" placeholder="SKU" size="20" style="text-transform:uppercase"/>
         {!! $errors->first('sku', '<p class="help-block">:message</p>') !!}
         <span id="sku-error"></span>
+    </div>
+    <div class="col-md-0">
+        <label class="" style="margin-top: 7px;">
+            <input type="button" id="getit" class="button" value="Generate"  >
+            <span></span>
+        </label>
     </div>
 </div>
 <div class="form-group {{ $errors->has('brand_id') ? 'has-error' : ''}}">
@@ -280,7 +286,7 @@
 <div class="form-group {{ $errors->has('tags') ? 'has-error' : ''}}">
     <label for="tags" class="col-md-4 control-label">{{ 'Tags' }}<span class="required"> *</span></label>
     <div class="col-md-6">
-        <input name="tags[]" type="text" id="tags"  placeholder="Type and hit enter to add a tag" maxlength="10"  />
+        <input name="tags[]" type="text" id="tags" class="form-control"  placeholder="Type and hit enter to add a tag" maxlength="10" required />
         {!! $errors->first('tags', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -403,14 +409,14 @@
 <div class="form-group {{ $errors->has('size') ? 'has-error' : ''}}">
     <label for="size" class="col-md-4 control-label">{{ 'Size' }}<span class="required"> *</span></label>
     <div class="col-md-6">
-        <input class=" " name="size[]" type="text" id="size"   placeholder="Type and hit enter to add size"   />
+        <input  name="size[]" type="text" id="size" class="form-control"  placeholder="Type and hit enter to add size"  required />
         {!! $errors->first('size', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
 <div class="form-group {{ $errors->has('fabric') ? 'has-error' : ''}}">
     <label for="fabric" class="col-md-4 control-label">{{ 'Fabric' }}<span class="required"> *</span></label>
     <div class="col-md-6">
-        <input class=" " name="fabric[]" type="text" id="fabric"  placeholder="Type and hit enter to add fabric"    />
+        <input  name="fabric[]" type="text" id="fabric" class="form-control" placeholder="Type and hit enter to add fabric"  required  />
         {!! $errors->first('fabric', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -462,13 +468,7 @@ margin-right: 120px !important;">
 
 </div>
 
-<div class="form-group {{ $errors->has('sale_price') ? 'has-error' : ''}}">
-    <label for="sale_price" class="col-md-4 control-label">{{ 'Sale Price' }}<span class="required"> *</span></label>
-    <div class="col-md-6">
-        <input class="form-control sale_price" name="sale_price"  type="number" id="sale_price" placeholder="0"   required maxlength="10" oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);'>
-        {!! $errors->first('sale_price', '<p class="help-block">:message</p>') !!}
-    </div>
-</div>
+
 
 {{-- <div class="form-group {{ $errors->has('dollor') ? 'has-error' : ''}}">
     <label for="dollor" class="col-md-4 control-label">{{ 'Dollor' }}</label>
@@ -499,15 +499,22 @@ margin-right: 120px !important;">
         {!! $errors->first('euro', '<p class="help-block">:message</p>') !!}
     </div>
 </div> --}}
-
 <div class="form-group {{ $errors->has('perchase_price') ? 'has-error' : ''}}">
     <label for="perchase_price" class="col-md-4 control-label">{{ 'Perchase Price' }}<span class="required"> *</span></label>
     <div class="col-md-6">
-        <input class="form-control" name="perchase_price" type="number" id="perchase_price" placeholder="0"   required maxlength="10" oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);'>
+        <input class="form-control" name="perchase_price" type="number" id="perchase_price" placeholder=""   required maxlength="10" oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);'>
         {!! $errors->first('perchase_price', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
-<div class="form-group {{ $errors->has('discount_type') ? 'has-error' : ''}}">
+<div class="form-group {{ $errors->has('sale_price') ? 'has-error' : ''}}">
+    <label for="sale_price" class="col-md-4 control-label">{{ 'Sale Price' }}<span class="required"> *</span></label>
+    <div class="col-md-6">
+        <input class="form-control sale_price" name="sale_price"  type="number" id="sale_price" placeholder=""   required maxlength="10" oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);'>
+        {!! $errors->first('sale_price', '<p class="help-block">:message</p>') !!}
+    </div>
+</div>
+
+{{-- <div class="form-group {{ $errors->has('discount_type') ? 'has-error' : ''}}">
     <label for="discount_type" class="col-md-4 control-label">{{ 'Discount Type' }}</label>
     <div class="col-md-6">
         <select class="form-control select2" name="discount_type" id="discount_type" >
@@ -521,10 +528,10 @@ margin-right: 120px !important;">
 <div class="form-group {{ $errors->has('discount') ? 'has-error' : ''}}">
     <label for="discount" class="col-md-4 control-label">{{ 'Discount' }}</label>
     <div class="col-md-6">
-        <input class="form-control" name="discount" type="text" id="discount" placeholder="0"    maxlength="10" oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);' >
+        <input class="form-control" name="discount" type="number" id="discount" placeholder="0"    maxlength="10" oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);' >
         {!! $errors->first('discount', '<p class="help-block">:message</p>') !!}
     </div>
-</div>
+</div> --}}
 
 
 {{-- <div class="card-header">
@@ -569,7 +576,7 @@ margin-right: 120px !important;">
 <div class="form-group {{ $errors->has('shipping_cost') ? 'has-error' : ''}}" id="flat_shipping_cost">
     <label for="shipping_cost" class="col-md-4 control-label">{{ 'Shipping Cost' }}</label>
     <div class="col-md-6">
-        <input class="form-control" name="shipping_cost" type="number" id="shipping_cost" placeholder="0"  maxlength="10"  oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);'>
+        <input class="form-control" name="shipping_cost" type="number" id="shipping_cost" placeholder=""  maxlength="10"  oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);'>
         {!! $errors->first('shipping_cost', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -577,7 +584,7 @@ margin-right: 120px !important;">
 <div class="form-group {{$errors->has('commission') ? 'has-error' : ''}}" >
     <label for="commission" class="col-md-4 control-label">{{ 'Commission' }}</label>
     <div class="col-md-6">
-        <input class="form-control"  name="commission" type="number" id="commission" placeholder="0"   maxlength="10"  oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);' >
+        <input class="form-control"  name="commission" type="number" id="commission"  readonly>
         {!! $errors->first('commission', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -593,58 +600,180 @@ margin-right: 120px !important;">
 @push('js')
 
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify@3.1.0/dist/tagify.min.js"></script>
+{{-- <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify@3.1.0/dist/tagify.min.js"></script> --}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.1.1/tagify.min.js"></script>
 
 {{-- <script src="{{ asset('vendor/js/forms/select/select2.full.min.js') }}"></script> --}}
 
 <script src="{{asset('plugins/components/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js')}}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-color/2.1.2/jquery.color.min.js" integrity="sha512-VjRpiWhUqdNa9bwBV7LnlG8CwsCVPenFyOQTSRTOGHw/tjtME96zthh0Vv9Itf3i8w4CkUrdYaS6+dAt1m1YXQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-color/2.1.2/jquery.color.min.js" ></script>
 <script src="https://cdn.jsdelivr.net/npm/a-color-picker@1.1.8/dist/acolorpicker.js"></script>
 {{-- <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> --}}
-
+<script src="{{asset('plugins/components/toast-master/js/jquery.toast.js')}}"></script>
 <script>
 
-
+    var max = '1000000';
+    var $wrap = $('#sku');
+    $('#getit').click(function() {
+        var num = +$wrap.val();
+        $wrap.val('SAT'+Math.ceil(Math.random() * max));
+    });
    
+
+   $('#shipping_cost').keyup(function(){
+        var sale_price = parseInt($('#sale_price').val());
+        var perchase_price = parseInt($('#perchase_price').val());
+    //    var shipping_cost = $('#shipping_cost').val();
+      
+        var shipping_cost = parseInt($(this).val());
+        // $('#shipping_cost').val(shipping_cost);
+        if(sale_price != 0 && perchase_price != 0 && shipping_cost != 0){
+
+            var sale_minus_perchase = ((sale_price - perchase_price));
+            console.log('s_m_p',sale_minus_perchase);
+            var commission = (sale_minus_perchase + shipping_cost);
+            console.log('c',commission);
+            $('#commission').val(commission);
+
+        }else if(sale_price == 0 && perchase_price != 0){
+            $('#commission').val('');
+        }
+        else if(sale_price != 0 && perchase_price == 0){
+            $('#commission').val('');
+        }
+        else{
+            $('#commission').val('');
+
+        }
+
+   });
+   $('#sale_price').keyup(function(){
+        var shipping_cost = parseInt($('#shipping_cost').val());
+        var perchase_price = parseInt($('#perchase_price').val());
+      
+        var sale_price = parseInt($(this).val());
+        // $('#shipping_cost').val(shipping_cost);
+        if(sale_price != 0 && perchase_price != 0 && shipping_cost != 0){
+
+            var sale_minus_perchase = ((sale_price - perchase_price));
+            console.log('s_m_p',sale_minus_perchase);
+            var commission = (sale_minus_perchase + shipping_cost);
+            console.log('c',commission);
+            $('#commission').val(commission);
+
+        }else if(sale_price == 0 && perchase_price != 0){
+            $('#commission').val('');
+        }
+        else if(sale_price != 0 && perchase_price == 0){
+            $('#commission').val('');
+        }
+        else{
+            $('#commission').val('');
+
+        }
+
+   });
+   $('#perchase_price').keyup(function(){
+        var shipping_cost = parseInt($('#shipping_cost').val());
+        var sale_price = parseInt($('#sale_price').val());
+      
+        var perchase_price = parseInt($(this).val());
+        // $('#shipping_cost').val(shipping_cost);
+        if(sale_price != 0 && perchase_price != 0 && shipping_cost != 0){
+
+            var sale_minus_perchase = ((sale_price - perchase_price));
+            console.log('s_m_p',sale_minus_perchase);
+            var commission = (sale_minus_perchase + shipping_cost);
+            console.log('c',commission);
+            $('#commission').val(commission);
+
+        }else if(sale_price == 0 && perchase_price != 0){
+            $('#commission').val('');
+        }
+        else if(sale_price != 0 && perchase_price == 0){
+            $('#commission').val('');
+        }
+        else{
+            $('#commission').val('');
+
+        }
+
+   });
+
+
     function img_pathUrl(input){
-        
-        $('#img_url').show();
-        $('#img_url')[0].src = (window.URL ? URL : webkitURL).createObjectURL(input.files[0]);
+        $('#img_file').change(function () {
+            var ext = this.value.match(/\.(.+)$/)[1];
+            switch (ext) {
+                case 'jpg':
+                case 'png':
+                    $('#uploadButton').attr('disabled', false);
+                    $('#img_url').show();
+                    $('#img_url')[0].src = (window.URL ? URL : webkitURL).createObjectURL(input.files[0]);
+                    break;
+                default:
+                    $.toast({
+                        heading: 'Error!',
+                        position: 'top-center',
+                        text: 'This is not an allowed file type',
+                        loaderBg: '#ff6849',
+                        icon: 'error',
+                        hideAfter: 2000,
+                        stack: 6
+                    });
+                    this.value = '';
+            }
+        });
     }
     var count = 0;
     var htmlTag = '';
     function readURL(input,id,i){ 
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
 
-                reader.onload = function(e) {
-                var img = $('#'+id).attr('src', e.target.result).css({"height": "100", "margin-left": "300px","margin-top":"10px"});
-                }
+            reader.onload = function(e) {
+            var img = $('#'+id).attr('src', e.target.result).css({"height": "100", "margin-left": "300px","margin-top":"10px"});
+            }
 
-                reader.readAsDataURL(input.files[i]); // convert to base64 string
-            }     
+            reader.readAsDataURL(input.files[i]); // convert to base64 string
+        }     
     }
 
 
     var _URL = window.URL || window.webkitURL;
-        $("#thumbnail_img").change(function(e) {
-
-        var file, img;
-        for(let i = 0; i<this.files.length;i++){
-            if ((file = this.files[i])) {
-                count++;
-                img = new Image();
-                img.src = _URL.createObjectURL(file);
-
-
-            }
-            readURL(this,'thumbnail'+i,i);
-           console.log(i);
-           $('#count_no_of_imgs').val(i);
-         
-        }
+    $("#thumbnail_img").change(function(e) {
        
+        var ext = this.value.match(/\.(.+)$/)[1];
+        switch (ext) {
+            case 'jpg':
+            case 'png':
+                $('#uploadButton').attr('disabled', false);
+                var file, img;
+                for(let i = 0; i<this.files.length;i++){
+                    if ((file = this.files[i])) {
+                        count++;
+                        img = new Image();
+                        img.src = _URL.createObjectURL(file);
+                    }
+                    readURL(this,'thumbnail'+i,i);
+                console.log(i);
+                $('#count_no_of_imgs').val(i);
+                
+                }
+                break;
+            default:
+                $.toast({
+                        heading: 'Error!',
+                        position: 'top-center',
+                        text: 'This is not an allowed file type',
+                        loaderBg: '#ff6849',
+                        icon: 'error',
+                        hideAfter: 2000,
+                        stack: 6
+                    });
+                this.value = '';
+        }
+  
     });
 
     // $(function() {
@@ -703,9 +832,28 @@ margin-right: 120px !important;">
 
     $(document).ready(function () {
 
-$('#tags').keyup(function(){
-    $('.tagify__input').attr('maxlength',10);
-})
+      
+
+        $('#img_file').change(function () {
+            var ext = this.value.match(/\.(.+)$/)[1];
+            switch (ext) {
+                case 'jpg':
+                case 'png':
+                    $('#uploadButton').attr('disabled', false);
+                    break;
+                default:
+                    $.toast({
+                        heading: 'Error!',
+                        position: 'top-center',
+                        text: 'This is not an allowed file type',
+                        loaderBg: '#ff6849',
+                        icon: 'error',
+                        hideAfter: 2000,
+                        stack: 6
+                    });
+                    this.value = '';
+            }
+        });
 
         // $("div").delegate("#submitBtn", "click", function(){
         //     $("tags").attr("required");
@@ -1031,82 +1179,155 @@ $('#tags').keyup(function(){
             }
 
         });
-
-
-
-        var tags = document.querySelector('#tags');
         var size = document.querySelector('#size');
+        $('#size').keyup(function(){
+            $('#size').removeClass('form-control');
+            var size = document.querySelector('#size');
+            tagify = new Tagify(size);
+            tagifyFun(tagify)
+        });
         var fabric = document.querySelector('#fabric');
-        // create a Tagify component
-        var tagify = new Tagify(tags, {
-            whitelist: [],
-            maxTags: 15,
-            empty:false,
-            dropdown: {
-                maxItems: 5,           
-                classname: "tags-look",
-                enabled: 0,            
-                closeOnSelect: true,   
-                required:true
-            }
-            
+        $('#fabric').keyup(function(){
+            $('#fabric').removeClass('form-control');
+            var fabric = document.querySelector('#fabric');
+            tagify = new Tagify(fabric);
+            tagifyFun(tagify)
         });
-        console.log(tagify.value);
-        var tagify = new Tagify(size, {
-            whitelist: [],
-            maxTags: 15,
-            dropdown: {
-                maxItems: 5,           
-                classname: "tags-look", 
-                enabled: 0,           
-                closeOnSelect: true    
-            }
+        $('#tags').keyup(function(){
+            $('#tags').removeClass('form-control');
+            var tags = document.querySelector('#tags');
+            tagify = new Tagify(tags);
+            tagifyFun(tagify)
         });
-        var tagify = new Tagify(fabric, {
-            whitelist: [],
-            maxTags: 15,
-            dropdown: {
-                maxItems: 5,           
-                classname: "tags-look", 
-                enabled: 0,             
-                closeOnSelect: true   
+
+        function tagifyFun(tagify){
+            const maxChars = 10; 
+            tagify.on('input', function(e){
+                console.log(e);
+                if( e.detail.value.length > maxChars )
+                    trimValue(e);
+            })
+            tagify.on('add', function(e){
+                // remove last added tag if the total length exceeds
+                if( tagify.DOM.input.textContent > maxChars )
+                    tagify.removeTag(); // removes the last added tag
+            })
+            function trimValue(e){
+                // reset the value completely before making changes
+                tagify.value.length = 0; 
+                // trim the value
+                let newValue = tagify.DOM.originalInput.value.slice(0, maxChars - e.detail.length);
+                // parse the new mixed value after trimming any excess characters
+                tagify.parseMixTags(newValue)
             }
-        });
+        }
       
-        $('#sku').keyup(function(){
-            var sku = $(this).val();
-            console.log(sku);
-            if(sku == null || sku == ''){
-                console.log('sku filed is empty');
-               
-            }else{
-                $.ajax({
-                    type:"POST",
-                    url: "{{url('product/product-sku-check')}}/" +sku??'',
-                    data:{ 
-                            _token:'{{ csrf_token() }}',
-                            
-                        },
-                    cache: false,
-                    beforeSend: function(){
-
-                    },
-                    success: function(response){
-                        console.log(response);
-                        // $('#sku').html(data);
-                        if (response == 1) {
-                            $('#sku-error').html("SKU NOT AVALIABLE!");
-                            $('#submitBtn').prop('disabled',true);
-                        }else if(response == 0) {
-                            $('#sku-error').html("");
-                            $('#submitBtn').prop('disabled',false);
-
-                        }
-                    }
-                });
+       
+        $('#submitBtn').click(function(){
+            // e.preventDefault();
+           
+            var product_type_id         = $('#product_type_id').val();
+            var category_id             = $('#category_id').val();
+            var subcategory_id          = $('#subcategory_id').val();
+            var child_subcategory_id    = $('#child_subcategory_id').val();
+            var name                    = $('#name').val();
+            var sku                     = $('#sku').val();
+            var brand_id                = $('#brand_id').val();
+            var description             = $('#description').val();
+            var tags                    = $('#tags').val();
+            var img_file                = $('#img_file').val();
+            var thumbnail_img           = $('#thumbnail_img').val();
+            var size                    = $('#size').val();
+            var fabric                  = $('#fabric').val();
+            var color                   = $('#colors').val();
+            var perchase_price          = $('#perchase_price').val();
+            var sale_price              = $('#sale_price').val();
+            
+            
+            if(product_type_id == '' && category_id == '' && subcategory_id == '' && child_subcategory_id == ''&& name == '' && brand_id == '' && sku == '' && description == '' && tags == '' && img_file == ''  && thumbnail_img == ''  && size == ''  && fabric == ''  && color == ''  && perchase_price == '' && sale_price == '' ){
+                $('#submitBtn').prop('disabled',false);
+            }else if(product_type_id != '' && category_id != '' && subcategory_id != '' && child_subcategory_id != ''&& name != '' && brand_id != '' && sku != '' && description != '' && tags != '' && img_file != '' && thumbnail_img != '' && size != '' && fabric != '' && color != '' && perchase_price != ''  && sale_price != ''){
+                $('#submitBtn').prop('disabled',true);
+                $('#choice_form').submit();
             }
             
-        });
+        })
+
+        // var tags = document.querySelector('#tags');
+        // var size = document.querySelector('#size');
+        // var fabric = document.querySelector('#fabric');
+        // // create a Tagify component
+        // var tagify = new Tagify(tags, {
+        //     whitelist: [],
+        //     maxTags: 15,
+        //     empty:false,
+        //     dropdown: {
+        //         maxItems: 5,           
+        //         classname: "tags-look",
+        //         enabled: 0,            
+        //         closeOnSelect: true,   
+        //         required:true
+        //     }
+            
+        // });
+        // console.log(tagify.value);
+        // var tagify = new Tagify(size, {
+        //     whitelist: [],
+        //     maxTags: 15,
+        //     dropdown: {
+        //         maxItems: 5,           
+        //         classname: "tags-look", 
+        //         enabled: 0,           
+        //         closeOnSelect: true    
+        //     }
+        // });
+        // var tagify = new Tagify(fabric, {
+        //     whitelist: [],
+        //     maxTags: 15,
+        //     dropdown: {
+        //         maxItems: 5,           
+        //         classname: "tags-look", 
+        //         enabled: 0,             
+        //         closeOnSelect: true   
+        //     }
+        // });
+      
+        // $('#sku').keyup(function(){
+        //     var sku = $(this).val();
+        //     console.log(sku);
+        //     if(sku == null || sku == ''){
+        //         console.log('sku filed is empty');
+               
+        //     }else{
+        //         $.ajax({
+        //             type:"POST",
+        //             url: "{{url('product/product-sku-check')}}/" +sku??'',
+        //             data:{ 
+        //                     _token:'{{ csrf_token() }}',
+                            
+        //                 },
+        //             cache: false,
+        //             beforeSend: function(){
+
+        //             },
+        //             success: function(response){
+        //                 console.log(response);
+        //                 // $('#sku').html(data);
+        //                 if (response == 1) {
+        //                     $('#sku-error').html("SKU NOT AVALIABLE!");
+        //                     $('#submitBtn').prop('disabled',true);
+        //                 }else if(response == 0) {
+        //                     $('#sku-error').html("");
+        //                     $('#submitBtn').prop('disabled',false);
+
+        //                 }
+        //             }
+        //         });
+        //     }
+            
+        // });
+
+    
           
     
     });

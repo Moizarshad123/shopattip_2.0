@@ -22,15 +22,15 @@
                             </tr> --}}
                             <tr>
                                 <th> Sub Category  </th>
-                                <td> {{ $childsubcategory->subCategory->name }} </td>
+                                <td style="word-break: break-all; "> {{ $childsubcategory->subCategory->name }} </td>
                             </tr>
                             <tr>
                                 <th> Name </th>
-                                <td> {{ $childsubcategory->name }} </td>
+                                <td style="word-break: break-all; "> {{ $childsubcategory->name }} </td>
                             </tr>
                             <tr>
                                 <th> Url Name </th>
-                                <td> {{ $childsubcategory->url_name }} </td>
+                                <td style="word-break: break-all; "> {{ $childsubcategory->url_name }} </td>
                             </tr>
                             </tbody>
                         </table>

@@ -34,7 +34,7 @@
                             </tr> --}}
                             <tr>
                                 <th> Name </th>
-                                <td> {{ $category->name??"" }} </td>
+                                <td style="word-break: break-all; "> {{ $category->name??"" }} </td>
                             </tr>
                             {{-- <tr>
                                 <th> URL Name </th>

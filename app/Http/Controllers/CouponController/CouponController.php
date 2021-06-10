@@ -30,9 +30,10 @@ class CouponController extends Controller
                 ->orWhere('coupon_amount', 'LIKE', "%$keyword%")
                 ->orWhere('start_date', 'LIKE', "%$keyword%")
                 ->orWhere('end_date', 'LIKE', "%$keyword%")
+                ->orderBy('id', 'DESC')
                 ->paginate($perPage);
             } else {
-                $coupon = Coupon::paginate($perPage);
+                $coupon = Coupon::orderBy('id', 'DESC')->paginate($perPage);
             }
 
             return view('coupon.coupon.index', compact('coupon'));
@@ -43,11 +44,11 @@ class CouponController extends Controller
 
     public function create()
     {
-        $action = 'add';
+        $ACTION = 'ADD';
 
         $model = str_slug('coupon','-');
         if(auth()->user()->permissions()->where('name','=','add-'.$model)->first()!= null) {
-            return view('coupon.coupon.create',compact('action'));
+            return view('coupon.coupon.create',compact('ACTION'));
         }
         return response(view('403'), 403);
 
@@ -67,7 +68,7 @@ class CouponController extends Controller
             $requestData = $request->all();
             
             Coupon::create($requestData);
-            return redirect('coupon')->with('flash_message', 'Coupon added!');
+            return redirect('coupon')->with('message', 'Coupon added!');
         }
         return response(view('403'), 403);
     }
@@ -84,11 +85,11 @@ class CouponController extends Controller
 
     public function edit($id)
     {
-        $action = 'edit';
+        $ACTION = 'EDIT';
         $model = str_slug('coupon','-');
         if(auth()->user()->permissions()->where('name','=','edit-'.$model)->first()!= null) {
             $coupon = Coupon::findOrFail($id);
-            return view('coupon.coupon.edit', compact('coupon','action'));
+            return view('coupon.coupon.edit', compact('coupon','ACTION'));
         }
         return response(view('403'), 403);
     }
@@ -109,7 +110,7 @@ class CouponController extends Controller
             $coupon = Coupon::findOrFail($id);
              $coupon->update($requestData);
 
-             return redirect('coupon')->with('flash_message', 'Coupon updated!');
+             return redirect('coupon')->with('message', 'Coupon updated!');
         }
         return response(view('403'), 403);
 
@@ -121,9 +122,43 @@ class CouponController extends Controller
         if(auth()->user()->permissions()->where('name','=','delete-'.$model)->first()!= null) {
             Coupon::destroy($id);
 
-            return redirect('coupon')->with('flash_message', 'Coupon deleted!');
+            return redirect('coupon')->with('message', 'Coupon deleted!');
         }
         return response(view('403'), 403);
 
+    }
+
+    public function couponCheck($coupon = null)
+    {
+        if($coupon != null){
+            $getcoupon = Coupon::where('coupon',$coupon)->first();
+            if($getcoupon != null){
+               return 1;
+                    
+            }else{
+                return 0;
+            }
+
+        }
+    }
+
+    public function couponUpdateCheck(Request $request, $coupon = null){
+    
+        if($coupon != null){
+            $getcoupon = Coupon::where('coupon',$coupon)->where('id',$request->coupon_id)->first();
+            if($getcoupon != null){
+               return 1;
+                    
+            }else{
+            $getcoupon = Coupon::where('coupon',$coupon)->first();
+            if($getcoupon != null){
+                return 'found';
+            }
+
+                return 'not found';
+            }
+
+        }
+      
     }
 }

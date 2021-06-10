@@ -67,7 +67,8 @@
             }
         }
     </style>
-    <script>	var AIZ = AIZ || {}; </script>
+    <script>	
+    var AIZ = AIZ || {}; </script>
 </head>
 
 <body class="@if(session()->get('theme-layout')) {{session()->get('theme-layout')}} @endif">
@@ -90,7 +91,7 @@
         @yield('content')
         <footer class="footer t-a-c">
             <div class="p-20 bg-white">
-                <center> 2017 © Cubic Admin / Design & Developed By <a href="https://jthemes.com" target="_blank">jThemes Studio</a> </center>
+                <center> 2021 © Cubic Admin / Design & Developed By <a href="https://jthemes.com" target="_blank">jThemes Studio</a> </center>
             </div>
         </footer>
     </div>

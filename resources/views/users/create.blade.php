@@ -77,7 +77,7 @@
                                         <div class="col-sm-10">
                                             <input id="name" name="name" type="text"
                                                    placeholder="Name" class="form-control required"
-                                                   value="{!! old('name') !!}"/>
+                                                   value="{!! old('name') !!}" maxlength="30"/>
 
                                             {!! $errors->first('name', '<span class="help-block">:message</span>') !!}
                                         </div>
@@ -87,7 +87,7 @@
                                         <label for="email" class="col-sm-2 control-label">Email *</label>
                                         <div class="col-sm-10">
                                             <input id="email" name="email" placeholder="E-mail" type="text"
-                                                   class="form-control required email" value="{!! old('email') !!}"/>
+                                                   class="form-control required email" value="{!! old('email') !!}" maxlength="40"/>
                                             {!! $errors->first('email', '<span class="help-block">:message</span>') !!}
                                         </div>
                                     </div>
@@ -96,7 +96,7 @@
                                         <label for="password" class="col-sm-2 control-label">Password *</label>
                                         <div class="col-sm-10">
                                             <input id="password" name="password" type="password" placeholder="Password"
-                                                   class="form-control required" value="{!! old('password') !!}"/>
+                                                   class="form-control required" value="{!! old('password') !!}" maxlength="20"/>
                                             {!! $errors->first('password', '<span class="help-block">:message</span>') !!}
                                         </div>
                                     </div>
@@ -107,7 +107,7 @@
                                         <div class="col-sm-10">
                                             <input id="password_confirmation" name="password_confirmation"
                                                    type="password"
-                                                   placeholder="Confirm Password " class="form-control required"/>
+                                                   placeholder="Confirm Password " class="form-control required" maxlength="20"/>
                                             {!! $errors->first('password_confirmation', '<span class="help-block">:message</span>') !!}
                                         </div>
                                     </div>
@@ -189,7 +189,7 @@
                                         <div class="col-sm-10">
                                             <input id="countries" name="country" type="text"
                                                    class="form-control"
-                                                   value="{!! old('country') !!}"/>
+                                                   value="{!! old('country') !!}" maxlength="40"/>
                                             <span class="help-block">{{ $errors->first('country', ':message') }}</span>
 
                                         </div>
@@ -200,7 +200,7 @@
                                         <div class="col-sm-10">
                                             <input id="state" name="state" type="text"
                                                    class="form-control"
-                                                   value="{!! old('state') !!}"/>
+                                                   value="{!! old('state') !!}" maxlength="40"/>
                                             <span class="help-block">{{ $errors->first('state', ':message') }}</span>
                                         </div>
                                     </div>
@@ -209,7 +209,7 @@
                                         <label for="city" class="col-sm-2 control-label">City</label>
                                         <div class="col-sm-10">
                                             <input id="city" name="city" type="text" class="form-control"
-                                                   value="{!! old('city') !!}"/>
+                                                   value="{!! old('city') !!}" maxlength="40"/>
                                             <span class="help-block">{{ $errors->first('city', ':message') }}</span>
 
                                         </div>
@@ -219,7 +219,7 @@
                                         <label for="address" class="col-sm-2 control-label">Address</label>
                                         <div class="col-sm-10">
                                             <input id="address" name="address" type="text" class="form-control"
-                                                   value="{{ old('address') }}"/>
+                                                   value="{{ old('address') }}" maxlength="70"/>
                                             <span class="help-block">{{ $errors->first('address', ':message') }}</span>
 
                                         </div>
@@ -228,8 +228,8 @@
                                     <div class="form-group {{ $errors->first('postal', 'has-error') }}">
                                         <label for="postal" class="col-sm-2 control-label">Postal/zip</label>
                                         <div class="col-sm-10">
-                                            <input id="postal" name="postal" type="text" class="form-control"
-                                                   value="{!! old('postal') !!}"/>
+                                            <input id="postal" name="postal" type="number" class="form-control"
+                                                   value="{!! old('postal') !!}" maxlength="6"/>
                                             <span class="help-block">{{ $errors->first('postal', ':message') }}</span>
 
                                         </div>

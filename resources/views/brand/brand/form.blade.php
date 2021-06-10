@@ -1,11 +1,15 @@
 @push('css')
 {{-- <link rel="stylesheet" href="{{ asset('vendor/css/forms/select/select2.min.css') }}"> --}}
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/css/select2.min.css" rel="stylesheet"/>
+<link href="{{asset('plugins/components/toast-master/css/jquery.toast.css')}}" rel="stylesheet">
 
 
 <style>
     .select2-container .select2-selection--single {
         height: 38px !important;
+    }
+    #blah{
+        display: none;
     }
     /* span.select2-selection.select2-selection--single{
         height: 39px !important;
@@ -44,17 +48,21 @@
 <div class="form-group {{ $errors->has('name') ? 'has-error' : ''}}">
     {!! Form::label('name', 'Name', ['class' => 'col-md-4 control-label']) !!}
     <div class="col-md-6">
-        {!! Form::text('name', null, ('required' == 'required') ? ['class' => 'form-control', 'required' => 'required', 'maxlength' =>'70'] : ['class' => 'form-control']) !!}
+        {!! Form::text('name', null, ('required' == 'required') ? ['id'=>'name','class' => 'form-control', 'required' => 'required', 'maxlength' =>'45'] : ['class' => 'form-control']) !!}
         {!! $errors->first('name', '<p class="help-block">:message</p>') !!}
     </div>
 </div><div class="form-group {{ $errors->has('logo') ? 'has-error' : ''}}">
     {!! Form::label('logo', 'Logo', ['class' => 'col-md-4 control-label']) !!}
     <div class="col-md-6">
         {{-- {!! Form::file('logo', null, ('required' == 'required') ? ['class' => 'form-control', 'required' => 'required'] : ['class' => 'form-control']) !!} --}}
-        <input type="file" class="form-control" name="logo" id="logo" required>
+        <input type="file" class="form-control" name="logo" id="logo" onchange="readURL(this);" required>
         <br>
         @if($ACTION == 'EDIT')
-        @include('includes.image_html',['variable'=>$brand->logo])
+        <img id="blah" src="#" alt="your image" />
+        {{-- @include('includes.image_html',['variable'=>$brand->logo]) --}}
+        @elseif($ACTION == 'ADD')
+        <img id="blah" src="#" alt="your image" />
+
         @endif
 
         {!! $errors->first('logo', '<p class="help-block">:message</p>') !!}
@@ -63,20 +71,77 @@
 
 <div class="form-group">
     <div class="col-md-offset-4 col-md-4">
-        {!! Form::submit(isset($submitButtonText) ? $submitButtonText : 'Create', ['class' => 'btn btn-primary']) !!}
+        {!! Form::submit(isset($submitButtonText) ? $submitButtonText : 'Create', ['id'=>'submitBtn','class' => 'btn btn-primary']) !!}
     </div>
 </div>
 
 @push('js')
 
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="{{asset('plugins/components/toast-master/js/jquery.toast.js')}}"></script>
 
 <script>
-            $(document).ready(function () {
-            //change selectboxes to selectize mode to be searchable
-                // $("#brand_type_id").select2();
-                
-            });
+
+    $(document).ready(function(){
+       
+        $('#logo').change(function () {
+            var ext = this.value.match(/\.(.+)$/)[1];
+            switch (ext) {
+                case 'jpg':
+                case 'png':
+                    $('#uploadButton').attr('disabled', false);
+                    break;
+                default:
+                    $.toast({
+                        heading: 'Error!',
+                        position: 'top-center',
+                        text: 'This is not an allowed file type',
+                        loaderBg: '#ff6849',
+                        icon: 'error',
+                        hideAfter: 2000,
+                        stack: 6
+                    });
+                    this.value = '';
+            }
+        });
+
+        $('#submitBtn').click(function(){
+            // e.preventDefault();
+           
+            var brand_type_id = $('#brand_type_id').val();
+            var name = $('#name').val();
+            var logo = $('#logo').val();
+            console.log(brand_type_id);
+            console.log(name);
+            console.log(logo);
+            if(brand_type_id == '' && name == '' && logo == ''){
+                $('#submitBtn').prop('disabled',false);
+            }else if(brand_type_id != '' && name != '' && logo != '' ){
+                $('#submitBtn').prop('disabled',true);
+                $('#create').submit();
+            }
+            
+        })
+	
+    });
+
+ 
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#blah')
+                    .attr('src', e.target.result)
+                    .width(150)
+                    .height(150);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+            $('#blah').css('display','block');
+        }
+    }
   
 </script>
 

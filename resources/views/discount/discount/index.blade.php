@@ -4,6 +4,14 @@
     <link href="{{asset('plugins/components/datatables/jquery.dataTables.min.css')}}" rel="stylesheet" type="text/css"/>
     <link href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css" rel="stylesheet"
           type="text/css"/>
+          <style>
+            .wrap{
+                word-break: break-all; 
+            }
+            #myTable_filter input{
+            border-color: #6f6f6f !important;
+        }
+        </style>
 @endpush
 
 @section('content')
@@ -43,7 +51,7 @@
                             @foreach($discount as $item)
                                 <tr>
                                     <td style="text-align: center;">{{ ++$count }}</td>
-                                    <td style="text-align: center;">{{ $item->category[0]->name??'' }}</td>
+                                    <td class="wrap" style="text-align: center;">{{ $item->category[0]->name??'' }}</td>
                                     <td style="text-align: center;">{{ $item->disount_type }}</td>
                                     <td style="text-align: center;">{{ $item->discount }}</td>
                                     <td style="text-align: center;">{{ date('d-m-Y',strtotime($item->start_date)) }}</td>

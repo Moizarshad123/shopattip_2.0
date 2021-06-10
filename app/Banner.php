@@ -27,5 +27,8 @@ class Banner extends Model
      */
     protected $fillable = ['banner_type', 'title', 'banner'];
 
-    
+    public function category(){
+
+        return $this->belongsTo(Category::class,'category_type');
+    }
 }

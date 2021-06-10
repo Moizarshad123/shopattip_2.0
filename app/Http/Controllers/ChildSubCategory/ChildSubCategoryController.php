@@ -30,9 +30,10 @@ class ChildSubCategoryController extends Controller
                 $childsubcategory = ChildSubCategory::with('subCategory')->where('sub_category_id', 'LIKE', "%$keyword%")
                 ->orWhere('name', 'LIKE', "%$keyword%")
                 ->orWhere('url_name', 'LIKE', "%$keyword%")
+                ->orderBy('id', 'DESC')
                 ->paginate($perPage);
             } else {
-                $childsubcategory = ChildSubCategory::with('subCategory')->paginate($perPage);
+                $childsubcategory = ChildSubCategory::with('subCategory')->orderBy('id', 'DESC')->paginate($perPage);
             }
                 // dd($childsubcategory);
             return view('childsubcategory.child-sub-category.index', compact('childsubcategory'));
@@ -69,7 +70,7 @@ class ChildSubCategoryController extends Controller
             $childSubCategory->name = $request->name;
             $childSubCategory->url_name = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->url_name));
             $childSubCategory->save();
-            return redirect('child-sub-category')->with('flash_message', 'ChildSubCategory added!');
+            return redirect('child-sub-category')->with('message', 'ChildSubCategory added!');
         }
         return response(view('403'), 403);
     }
@@ -120,9 +121,9 @@ class ChildSubCategoryController extends Controller
                 $childsubcategory->url_name = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->url_name));
                 $childsubcategory->save();
     
-                 return redirect('child-sub-category')->with('flash_message', 'ChildSubCategory updated!');
+                 return redirect('child-sub-category')->with('message', 'ChildSubCategory updated!');
             }else{
-                return redirect('child-sub-category')->with('flash_message', 'Oops! Something Went Wrong!');
+                return redirect('child-sub-category')->with('message', 'Oops! Something Went Wrong!');
 
             }
       
@@ -137,7 +138,7 @@ class ChildSubCategoryController extends Controller
         if(auth()->user()->permissions()->where('name','=','delete-'.$model)->first()!= null) {
             ChildSubCategory::destroy($id);
 
-            return redirect('child-sub-category')->with('flash_message', 'ChildSubCategory deleted!');
+            return redirect('child-sub-category')->with('message', 'ChildSubCategory deleted!');
         }
         return response(view('403'), 403);
 

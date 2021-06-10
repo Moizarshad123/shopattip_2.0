@@ -129,7 +129,7 @@
 <div class="form-group {{ $errors->has('disount_type') ? 'has-error' : ''}}">
     {!! Form::label('disount_type', 'Disount Type', ['class' => 'col-md-4 control-label']) !!}
     <div class="col-md-6">
-        <select name="disount_type" required class="form-control">
+        <select name="disount_type" id="disount_type" required class="form-control">
 
             @if($ACTION == 'CREATEE')
                 <option value="">Select Discount Type</option>
@@ -156,34 +156,36 @@
 <div class="form-group {{ $errors->has('discount_title') ? 'has-error' : ''}}">
     {!! Form::label('discount', 'Discount Title', ['class' => 'col-md-4 control-label']) !!}
     <div class="col-md-6">
-        {!! Form::text('discount_title', null, ('required' == '') ? ['maxlength'=>'40','class' => 'form-control', 'required' => 'required'] : ['class' => 'form-control']) !!}
+        {!! Form::text('discount_title', null, ('required' == '') ? ['id'=>'discount_title','maxlength'=>'45','class' => 'form-control', 'required' => 'required'] : ['maxlength'=>'40','class' => 'form-control']) !!}
         {!! $errors->first('discount_title', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
 <div class="form-group {{ $errors->has('discount') ? 'has-error' : ''}}">
     {!! Form::label('discount', 'Discount', ['class' => 'col-md-4 control-label']) !!}
     <div class="col-md-6">
-        {!! Form::number('discount', null, ('required' == 'required') ? ['maxlength'=>'5','class' => 'form-control', 'required' => 'required'] : ['class' => 'form-control']) !!}
+        <input class="form-control" name="discount" type="number" id="discount" value="{{ $discount->discount??''}}" maxlength="5" required  oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);'>
+
+        {{-- {!! Form::number('discount', null, ('required' == 'required') ? ['maxlength'=>'5','class' => 'form-control', 'required' => 'required'] : ['maxlength'=>'5','class' => 'form-control']) !!} --}}
         {!! $errors->first('discount', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
 <div class="form-group {{ $errors->has('start_date') ? 'has-error' : ''}}">
     {!! Form::label('start_date', 'Start Date', ['class' => 'col-md-4 control-label']) !!}
     <div class="col-md-6">
-        {!! Form::date('start_date', null, ('required' == 'required') ? ['class' => 'form-control', 'required' => 'required'] : ['class' => 'form-control']) !!}
+        {!! Form::date('start_date', null, ('required' == 'required') ? ['id'=>'start_date','class' => 'form-control', 'required' => 'required'] : ['class' => 'form-control']) !!}
         {!! $errors->first('start_date', '<p class="help-block">:message</p>') !!}
     </div>
 </div><div class="form-group {{ $errors->has('end_date') ? 'has-error' : ''}}">
     {!! Form::label('end_date', 'End Date', ['class' => 'col-md-4 control-label']) !!}
     <div class="col-md-6">
-        {!! Form::date('end_date', null, ('required' == 'required') ? ['class' => 'form-control', 'required' => 'required'] : ['class' => 'form-control']) !!}
+        {!! Form::date('end_date', null, ('required' == 'required') ? ['id'=>'end_date','class' => 'form-control', 'required' => 'required'] : ['class' => 'form-control']) !!}
         {!! $errors->first('end_date', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
 
 <div class="form-group">
     <div class="col-md-offset-4 col-md-4">
-        {!! Form::submit(isset($submitButtonText) ? $submitButtonText : 'Create', ['class' => 'btn btn-primary']) !!}
+        {!! Form::submit(isset($submitButtonText) ? $submitButtonText : 'Create', ['id'=>'submitBtn','class' => 'btn btn-primary']) !!}
     </div>
 </div>
 @push('js')
@@ -195,7 +197,7 @@
     $(document).ready(function () {
     //change selectboxes to selectize mode to be searchable
 
-        $("#category_id,#subcategory_id,#child_subcategory_id,#brand_id,#discount_type").select2();
+    $("#category_id,#subcategory_id,#child_subcategory_id,#brand_id,#discount_type").select2();
       
 
       $(document).on('change','#product_type_id',function(){
@@ -338,6 +340,28 @@
           var $state = $('<span><span class="size-15px d-inline-block mr-2 rounded border" style="background:' + state.element.value + ';">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span>' + state.text + '</span></span>');
           return $state;
       };
+
+      $('#submitBtn').click(function(){
+            // e.preventDefault();
+           
+            var product_type_id         = $('#product_type_id').val();
+            var category_id             = $('#category_id').val();
+            var subcategory_id          = $('#subcategory_id').val();
+            var child_subcategory_id    = $('#child_subcategory_id').val();
+            var disount_type            = $('#disount_type').val();
+            var discount_title          = $('#discount_title').val();
+            var discount                = $('#discount').val();
+            var start_date              = $('#start_date').val();
+            var end_date                = $('#end_date').val();
+     
+            if(product_type_id == '' && category_id == '' && subcategory_id == '' && child_subcategory_id == ''&& disount_type == '' && discount_title == '' && discount == '' && start_date == '' && end_date == ''){
+                $('#submitBtn').prop('disabled',false);
+            }else if(product_type_id != '' && category_id != '' && subcategory_id != '' && child_subcategory_id != ''&& disount_type != '' && discount_title != '' && discount != '' && start_date != '' && end_date != ''){
+                $('#submitBtn').prop('disabled',true);
+                $('#create').submit();
+            }
+            
+        })
    
     });
 

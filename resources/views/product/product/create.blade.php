@@ -7,7 +7,7 @@
                 <div class="white-box">
                     <h3 class="box-title pull-left">Create New Product</h3>
                     @can('view-'.str_slug('Product'))
-                    <a  class="btn btn-success pull-right" href="{{url('/product/product')}}"><i class="icon-arrow-left-circle"></i> Add Product</a>
+                    <a  class="btn btn-success pull-right" href="{{url('/product/product')}}"><i class="icon-arrow-left-circle"></i> Back</a>
                     @endcan
 
                     <div class="clearfix"></div>

@@ -8,7 +8,7 @@
                     <h3 class="box-title pull-left">Create New Coupon</h3>
                     @can('view-'.str_slug('Coupon'))
                         <a class="btn btn-success pull-right" href="{{url('/coupon')}}">
-                            <i class="icon-arrow-left-circle"></i> View Coupon</a>
+                            <i class="icon-arrow-left-circle"></i> Back</a>
                     @endcan
                     <div class="clearfix"></div>
                     <hr>
@@ -20,7 +20,7 @@
                         </ul>
                     @endif --}}
 
-                    {!! Form::open(['name'=>"myform",'url' => '/coupon', 'class' => 'form-horizontal', 'files' => true]) !!}
+                    {!! Form::open(['name'=>"myform",'url' => '/coupon', 'id'=>'choice_form' ,'class' => 'form-horizontal', 'files' => true]) !!}
 
                     @include ('coupon.coupon.form')
 

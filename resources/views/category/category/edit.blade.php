@@ -19,7 +19,7 @@
                         </ul>
                     @endif
 
-                    <form method="POST" action="{{ url('/category/category/' . $category->id) }}" accept-charset="UTF-8" class="form-horizontal" enctype="multipart/form-data">
+                    <form method="POST" action="{{ url('/category/category/' . $category->id) }}" id="create" accept-charset="UTF-8" class="form-horizontal" enctype="multipart/form-data">
                         {{ method_field('PATCH') }}
                         {{ csrf_field() }}
 

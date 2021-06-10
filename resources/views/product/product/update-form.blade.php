@@ -1,7 +1,7 @@
 @push('css')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tagify/3.22.1/tagify.css" />  
 <link href="{{asset('plugins/components/bootstrap-tagsinput/dist/bootstrap-tagsinput.css')}}" rel="stylesheet" />
-
+<link href="{{asset('plugins/components/toast-master/css/jquery.toast.css')}}" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/css/select2.min.css" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@yaireo/tagify@3.1.0/dist/tagify.css" />
 <link rel="stylesheet" href="{{ asset('vendor/css/forms/select/select2.min.css') }}">
@@ -247,7 +247,7 @@
 <div class="form-group {{ $errors->has('name') ? 'has-error' : ''}}">
     <label for="name" class="col-md-4 control-label">{{ 'Name' }}<span class="required"> *</span></label>
     <div class="col-md-6">
-        <input class="form-control" name="name" type="text" id="name" value="{{ $product->name?? ''}}" />
+        <input class="form-control" name="name" type="text" id="name" value="{{ $product->name?? ''}}" maxlength="45"/>
         {!! $errors->first('name', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -255,9 +255,15 @@
 <div class="form-group {{ $errors->has('sku') ? 'has-error' : ''}}">
     <label for="sku" class="col-md-4 control-label">{{ 'SKU' }}<span class="required"> *</span></label>
     <div class="col-md-6">
-        <input class="form-control " name="sku" type="text" id="sku" value="{{ $product->sku?? ''}}"  required maxlength="20" placeholder="SKU" size="20" style="text-transform:uppercase"/>
+        <input class="form-control " name="sku" type="text" id="sku" value="{{ $product->sku?? ''}}"  readonly maxlength="10" placeholder="SKU" size="10" style="text-transform:uppercase"/>
         {!! $errors->first('sku', '<p class="help-block">:message</p>') !!}
         <span id="sku-error"></span>
+    </div>
+    <div class="col-md-0">
+        <label class="" style="margin-top: 7px;">
+            <input type="button" id="getit" class="button" value="Generate"  >
+            <span></span>
+        </label>
     </div>
 </div>
 <div class="form-group {{ $errors->has('brand_id') ? 'has-error' : ''}}">
@@ -293,7 +299,7 @@
     <label for="front_image" class="col-md-4 control-label custom-file-label" id="imgLabel">{{ 'Front Image' }}<span class="required"> *</span></label>
   
     <div class="col-md-6">
-        <input class="form-control" name="front_image" type="file" id="img_file" value="{{ $product->front_image?? ''}}" required>
+        <input class="form-control" name="front_image" type="file" id="img_file" value="{{ asset('website/productImages/product_'.$product->id.'_1.jpg') }}" required>
         {!! $errors->first('front_image', '<p class="help-block">:message</p>') !!}
     </div>
     <img id="img_url" src="{{ asset('website/productImages/product_'.$product->id.'_1.jpg') }}" alt="your image" style="display: block !important" />
@@ -496,10 +502,9 @@
         {!! $errors->first('perchase_price', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
-<div class="form-group {{ $errors->has('discount_type') ? 'has-error' : ''}}">
+{{-- <div class="form-group {{ $errors->has('discount_type') ? 'has-error' : ''}}">
     <label for="discount_type" class="col-md-4 control-label">{{ 'Discount Type' }}</label>
     <div class="col-md-6">
-        {{-- <input class="form-control" name="discount_type" type="text" id="discount_type" value="{{ $product->discount_type?? ''}}" > --}}
         <select class="form-control select2" name="discount_type" id="discount_type">
             <option>Select Discount Type</option>
             @if(@$product->discount_type == 'amount')
@@ -517,10 +522,10 @@
 <div class="form-group {{ $errors->has('discount') ? 'has-error' : ''}}">
     <label for="discount" class="col-md-4 control-label">{{ 'Discount' }}</label>
     <div class="col-md-6">
-        <input class="form-control" name="discount" type="text" id="discount" placeholder="0" value="{{ $product->discount?? ''}}" maxlength="10" oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);' >
+        <input class="form-control" name="discount" type="number" id="discount" placeholder="0" value="{{ $product->discount?? ''}}" maxlength="10" oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);' >
         {!! $errors->first('discount', '<p class="help-block">:message</p>') !!}
     </div>
-</div>
+</div> --}}
 
 
 {{-- <div class="card-header">
@@ -573,7 +578,7 @@
 <div class="form-group {{$errors->has('commission') ? 'has-error' : ''}}" >
     <label for="commission" class="col-md-4 control-label">{{ 'Commission' }}</label>
     <div class="col-md-6">
-        <input class="form-control"  name="commission" type="number" value="{{ $product->commission?? ''}}" id="commission" placeholder="0" maxlength="10" oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);' >
+        <input class="form-control"  name="commission" type="number" value="{{ $product->commission?? ''}}" id="commission" readonly >
         {!! $errors->first('commission', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -589,14 +594,98 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify@3.1.0/dist/tagify.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.1.1/tagify.min.js"></script>
-
+<script src="{{asset('plugins/components/toast-master/js/jquery.toast.js')}}"></script>
 <script src="{{ asset('vendor/js/forms/select/select2.full.min.js') }}"></script>
 <script src="{{ asset('js/script/forms/form-select2.js') }}"></script>
 <script src="{{asset('plugins/components/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js')}}"></script>
 
 
 <script>
+    var max = '1000000';
+    var $wrap = $('#sku');
+    $('#getit').click(function() {
+        var num = +$wrap.val();
+        $wrap.val('SAT'+Math.ceil(Math.random() * max));
+    });
+   $('#shipping_cost').keyup(function(){
+        var sale_price = parseInt($('#sale_price').val());
+        var perchase_price = parseInt($('#perchase_price').val());
+    //    var shipping_cost = $('#shipping_cost').val();
+      
+        var shipping_cost = parseInt($(this).val());
+        // $('#shipping_cost').val(shipping_cost);
+        if(sale_price != 0 && perchase_price != 0 && shipping_cost != 0){
 
+            var sale_minus_perchase = ((sale_price - perchase_price));
+            console.log('s_m_p',sale_minus_perchase);
+            var commission = (sale_minus_perchase + shipping_cost);
+            console.log('c',commission);
+            $('#commission').val(commission);
+
+        }else if(sale_price == 0 && perchase_price != 0){
+            $('#commission').val('');
+        }
+        else if(sale_price != 0 && perchase_price == 0){
+            $('#commission').val('');
+        }
+        else{
+            $('#commission').val('');
+
+        }
+
+   });
+   $('#sale_price').keyup(function(){
+        var shipping_cost = parseInt($('#shipping_cost').val());
+        var perchase_price = parseInt($('#perchase_price').val());
+      
+        var sale_price = parseInt($(this).val());
+        // $('#shipping_cost').val(shipping_cost);
+        if(sale_price != 0 && perchase_price != 0 && shipping_cost != 0){
+
+            var sale_minus_perchase = ((sale_price - perchase_price));
+            console.log('s_m_p',sale_minus_perchase);
+            var commission = (sale_minus_perchase + shipping_cost);
+            console.log('c',commission);
+            $('#commission').val(commission);
+
+        }else if(sale_price == 0 && perchase_price != 0){
+            $('#commission').val('');
+        }
+        else if(sale_price != 0 && perchase_price == 0){
+            $('#commission').val('');
+        }
+        else{
+            $('#commission').val('');
+
+        }
+
+   });
+   $('#perchase_price').keyup(function(){
+        var shipping_cost = parseInt($('#shipping_cost').val());
+        var sale_price = parseInt($('#sale_price').val());
+      
+        var perchase_price = parseInt($(this).val());
+        // $('#shipping_cost').val(shipping_cost);
+        if(sale_price != 0 && perchase_price != 0 && shipping_cost != 0){
+
+            var sale_minus_perchase = ((sale_price - perchase_price));
+            console.log('s_m_p',sale_minus_perchase);
+            var commission = (sale_minus_perchase + shipping_cost);
+            console.log('c',commission);
+            $('#commission').val(commission);
+
+        }else if(sale_price == 0 && perchase_price != 0){
+            $('#commission').val('');
+        }
+        else if(sale_price != 0 && perchase_price == 0){
+            $('#commission').val('');
+        }
+        else{
+            $('#commission').val('');
+
+        }
+
+   });
     function readURL(input,id,i) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
@@ -629,7 +718,18 @@
                 }
             };
             img.onerror = function() {
-                alert( "not a valid file: " + file.type);
+                // alert( "not a valid file: " + file.type);
+                $.toast({
+                    heading: 'Error!',
+                    position: 'top-center',
+                    text: 'This is not an allowed file type',
+                    loaderBg: '#ff6849',
+                    icon: 'error',
+                    hideAfter: 2000,
+                    stack: 6
+                });
+
+                $("#img_file").val('') ;
             };
             img.src = _URL.createObjectURL(file);
 
@@ -644,18 +744,35 @@
         for(let i = 0; i<this.files.length;i++){
             console.log(i);
             if ((file = this.files[i])) {
-                img = new Image();
+                var ext = this.value.match(/\.(.+)$/)[1];
+                switch (ext) {
+                case 'jpg':
+                case 'png':
+                    $('#uploadButton').attr('disabled', false);
+                    img = new Image();
+                    img.src = _URL.createObjectURL(file);
+                    break;
+                default:
+                    $.toast({
+                        heading: 'Error!',
+                        position: 'top-center',
+                        text: 'This is not an allowed file type',
+                        loaderBg: '#ff6849',
+                        icon: 'error',
+                        hideAfter: 2000,
+                        stack: 6
+                    });
 
-                img.src = _URL.createObjectURL(file);
-
+                    this.value = '';
+                    $("#thumbnail_img").val('');
+            }
+                
 
             }
             readURL(this,'thumbnail'+i,i);
         }
 
     });
-
-
 
     $('#shipping_type_free').click(function(){
         $('#flat_shipping_cost').hide();
@@ -664,31 +781,9 @@
         $('#flat_shipping_cost').show();
     });
 
-
-
-        
     $(document).ready(function () {
         update_sku();
-        // $('#sale_price').keyup(function(){
-        //     var sale_price      = $('#sale_price').val();
-        //     var dollor          = 160 ;
-        //     var dinar           = 515 ;
-        //     var riyal           = 42 ;
-        //     var euro            = 190;
-        //     var prk_to_dollor   = (sale_price/dollor);
-        //     var prk_to_dinar    = (sale_price/dinar);
-        //     var prk_to_riyal    = (sale_price/riyal);
-        //     var prk_to_euro     = (sale_price/euro);
-        //     $('#dollor').val(prk_to_dollor.toFixed(2));
-        //     $('#dinar').val(prk_to_dinar.toFixed(2));
-        //     $('#riyal').val(prk_to_riyal.toFixed(2));
-        //     $('#euro').val(prk_to_euro.toFixed(2));
-
-        // });
-
-        // $('#img_url').hide();
         $("#category_id,#subcategory_id,#child_subcategory_id,#brand_id,#discount_type").select2();
-      
 
         $(document).on('change','#product_type_id',function(){
             var product_type_id = $(this).val();
@@ -969,77 +1064,117 @@
 
         });
 
-        var tags = document.querySelector('#tags');
         var size = document.querySelector('#size');
+      
+        
+            $('#size').removeClass('form-control');
+            var size = document.querySelector('#size');
+            tagify = new Tagify(size);
+            tagifyFun(tagify)
+       
         var fabric = document.querySelector('#fabric');
-        // create a Tagify component
-        var tagify = new Tagify(tags, {
-            whitelist: [],
-            maxTags: 15,
-            dropdown: {
-                maxItems: 5,           
-                classname: "tags-look",
-                enabled: 0,            
-                closeOnSelect: true,   
-                required:true
+      
+            $('#fabric').removeClass('form-control');
+            var fabric = document.querySelector('#fabric');
+            tagify = new Tagify(fabric);
+            tagifyFun(tagify)
+      
+        var tags = document.querySelector('#tags');
+      
+            $('#tags').removeClass('form-control');
+            var tags = document.querySelector('#tags');
+            tagify = new Tagify(tags);
+            tagifyFun(tagify)
+       
+
+        function tagifyFun(tagify){
+            const maxChars = 10; 
+            tagify.on('input', function(e){
+                console.log(e);
+                if( e.detail.value.length > maxChars )
+                    trimValue(e);
+            })
+            tagify.on('add', function(e){
+                // remove last added tag if the total length exceeds
+                if( tagify.DOM.input.textContent > maxChars )
+                    tagify.removeTag(); // removes the last added tag
+            })
+            function trimValue(e){
+                // reset the value completely before making changes
+                tagify.value.length = 0; 
+                // trim the value
+                let newValue = tagify.DOM.originalInput.value.slice(0, maxChars - e.detail.length);
+                // parse the new mixed value after trimming any excess characters
+                tagify.parseMixTags(newValue)
             }
-        });
-        var tagify = new Tagify(size, {
-            whitelist: [],
-            maxTags: 15,
-            dropdown: {
-                maxItems: 5,           
-                classname: "tags-look", 
-                enabled: 0,           
-                closeOnSelect: true    
-            }
-        });
-        var tagify = new Tagify(fabric, {
-            whitelist: [],
-            maxTags: 15,
-            dropdown: {
-                maxItems: 5,           
-                classname: "tags-look", 
-                enabled: 0,             
-                closeOnSelect: true   
-            }
-        });
+        }
 
-        $('#sku').keyup(function(){
-            var sku = $(this).val();
-            console.log(sku);
-            if(sku == null || sku == ''){
-                console.log('sku filed is empty');
-               
-            }else{
-                $.ajax({
-                    type:"POST",
-                    url: "{{url('product/product-sku-update-check')}}/" +sku??'',
-                    data:$('#choice_form').serialize(),
-                    cache: false,
-                    beforeSend: function(){
-
-                    },
-                    success: function(response){
-                        console.log(response);
-                        // $('#sku').html(data);
-                        if (response == 1) {
-                            $('#sku-error').html("");
-                            $('#submitBtn').prop('disabled',false);
-                        }else if(response == 'found') {
-                            $('#sku-error').html("SKU NOT AVALIABLE!");
-                            $('#submitBtn').prop('disabled',true);
-
-                        }else if(response == 'not found') {
-                            $('#sku-error').html("");
-                            $('#submitBtn').prop('disabled',false);
-
-                        }
-                    }
-                });
+        $('#submitBtn').click(function(){
+            // e.preventDefault();
+           
+            var product_type_id         = $('#product_type_id').val();
+            var category_id             = $('#category_id').val();
+            var subcategory_id          = $('#subcategory_id').val();
+            var child_subcategory_id    = $('#child_subcategory_id').val();
+            var name                    = $('#name').val();
+            var sku                     = $('#sku').val();
+            var brand_id                = $('#brand_id').val();
+            var description             = $('#description').val();
+            var tags                    = $('#tags').val();
+            var img_file                = $('#img_file').val();
+            var thumbnail_img           = $('#thumbnail_img').val();
+            var size                    = $('#size').val();
+            var fabric                  = $('#fabric').val();
+            var color                   = $('#colors').val();
+            var perchase_price          = $('#perchase_price').val();
+            var sale_price              = $('#sale_price').val();
+            
+            
+            if(product_type_id == '' && category_id == '' && subcategory_id == '' && child_subcategory_id == ''&& name == '' && brand_id == '' && sku == '' && description == '' && tags == '' && img_file == ''  && thumbnail_img == ''  && size == ''  && fabric == ''  && color == ''  && perchase_price == '' && sale_price == '' ){
+                $('#submitBtn').prop('disabled',false);
+            }else if(product_type_id != '' && category_id != '' && subcategory_id != '' && child_subcategory_id != ''&& name != '' && brand_id != '' && sku != '' && description != '' && tags != '' && img_file != '' && thumbnail_img != '' && size != '' && fabric != '' && color != '' && perchase_price != ''  && sale_price != ''){
+                $('#submitBtn').prop('disabled',true);
+                $('#choice_form').submit();
             }
             
-        });
+        })
+      
+
+        // $('#sku').keyup(function(){
+        //     var sku = $(this).val();
+        //     console.log(sku);
+        //     if(sku == null || sku == ''){
+        //         console.log('sku filed is empty');
+               
+        //     }else{
+        //         $.ajax({
+        //             type:"POST",
+        //             url: "{{url('product/product-sku-update-check')}}/" +sku??'',
+        //             data:$('#choice_form').serialize(),
+        //             cache: false,
+        //             beforeSend: function(){
+
+        //             },
+        //             success: function(response){
+        //                 console.log(response);
+        //                 // $('#sku').html(data);
+        //                 if (response == 1) {
+        //                     $('#sku-error').html("");
+        //                     $('#submitBtn').prop('disabled',false);
+        //                 }else if(response == 'found') {
+        //                     $('#sku-error').html("SKU NOT AVALIABLE!");
+        //                     $('#submitBtn').prop('disabled',true);
+
+        //                 }else if(response == 'not found') {
+        //                     $('#sku-error').html("");
+        //                     $('#submitBtn').prop('disabled',false);
+
+        //                 }
+        //             }
+        //         });
+        //     }
+            
+        // });
     });
   
 </script>

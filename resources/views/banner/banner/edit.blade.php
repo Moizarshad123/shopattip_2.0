@@ -24,7 +24,8 @@
                         'method' => 'PATCH',
                         'url' => ['/banner', $banner->id],
                         'class' => 'form-horizontal',
-                        'files' => true
+                        'files' => true,
+                        'id' => 'create'
                     ]) !!}
 
                     @include ('banner.banner.form', ['submitButtonText' => 'Update'])

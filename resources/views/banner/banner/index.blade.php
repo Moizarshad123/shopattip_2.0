@@ -4,6 +4,14 @@
     <link href="{{asset('plugins/components/datatables/jquery.dataTables.min.css')}}" rel="stylesheet" type="text/css"/>
     <link href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css" rel="stylesheet"
           type="text/css"/>
+    <style>
+        .wrap{
+            word-break: break-all; 
+        }
+        #myTable_filter input{
+            border-color: #6f6f6f !important;
+        }
+    </style>
 @endpush
 
 @section('content')
@@ -19,7 +27,7 @@
 
             <div class="col-sm-12">
                 <div class="white-box">
-                    <h3 class="box-title pull-left">Banner</h3>
+                    <h3 class="box-title pull-left">Banners</h3>
                     @can('add-'.str_slug('Banner'))
                         <a class="btn btn-success pull-right" href="{{ url('/banner/create') }}"><i
                                     class="icon-plus"></i> Add Banner</a>
@@ -32,6 +40,7 @@
                             <tr>
                                 <th>#</th>
                                 <th>Banner Type</th>
+                                <th>Category Type</th>
                                 <th>Title</th>
                                 <th>Banner</th>
                                 <th>Actions</th>
@@ -40,13 +49,14 @@
                             <tbody>
                             @foreach($banner as $item)
                                 <tr>
-                                    <td>{{ $loop->iteration or $item->id }}</td>
+                                    <td>{{ $loop->iteration ?? $item->id }}</td>
                                     @if($item->banner_type == 1)
                                          <td>{{ 'General' }}</td>
                                     @else
                                         <td>{{ 'Grocery' }}</td>
                                     @endif
-                                    <td>{{ $item->title }}</td>
+                                    <td class="wrap">{{ @$item->category->name }}</td>
+                                    <td class="wrap">{{ @$item->title }}</td>
                                     @include('includes.image_html',['variable'=>$item->banner])
 
                                     <td>
