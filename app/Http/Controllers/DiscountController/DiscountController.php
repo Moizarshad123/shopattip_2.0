@@ -39,7 +39,7 @@ class DiscountController extends Controller
                 ->paginate($perPage);
             } else {
                 // $discount = Discount::paginate($perPage);
-                $discount = Discount::orderBy('id', 'DESC')->with('category','subCategory','subChildCategory')->paginate($perPage);
+                $discount = Discount::orderBy('id', 'DESC')->with('category','subCategory','subChildCategory')->where('deleted_at',null)->paginate($perPage);
                 // dd($discount);
 
             }
@@ -188,5 +188,21 @@ class DiscountController extends Controller
         }
         return response(view('403'), 403);
 
+    }
+
+    public function deleteAll(Request $request)
+    {
+
+        $date = date('Y-m-d H:i:s');
+        $ids = $request->ids;
+        $brands = Discount::whereIn('id',explode(",",$ids))->get();
+        if(sizeof($brands)){
+            foreach($brands as $brand){
+                $brands = Discount::where('id',$brand->id)->update(['deleted_at'=>$date]);
+            }
+
+            return response()->json(['success'=>"Discount Deleted successfully."]);
+        }
+        
     }
 }

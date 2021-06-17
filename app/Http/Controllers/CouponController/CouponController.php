@@ -33,7 +33,7 @@ class CouponController extends Controller
                 ->orderBy('id', 'DESC')
                 ->paginate($perPage);
             } else {
-                $coupon = Coupon::orderBy('id', 'DESC')->paginate($perPage);
+                $coupon = Coupon::orderBy('id', 'DESC')->where('deleted_at',null)->paginate($perPage);
             }
 
             return view('coupon.coupon.index', compact('coupon'));
@@ -160,5 +160,21 @@ class CouponController extends Controller
 
         }
       
+    }
+
+    public function deleteAll(Request $request)
+    {
+
+        $date = date('Y-m-d H:i:s');
+        $ids = $request->ids;
+        $brands = Coupon::whereIn('id',explode(",",$ids))->get();
+        if(sizeof($brands)){
+            foreach($brands as $brand){
+                $brands = Coupon::where('id',$brand->id)->update(['deleted_at'=>$date]);
+            }
+
+            return response()->json(['success'=>"Coupon Deleted successfully."]);
+        }
+        
     }
 }

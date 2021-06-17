@@ -34,10 +34,15 @@ return [
         'key' => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
     ],
+    // 'google' => [
+    //     'client_id' => env('GOOGLE_ID'),
+    //     'client_secret' => env('GOOGLE_SECRET'),
+    //     'redirect' => env('APP_URL').'/google/callback',
+    // ],
     'google' => [
-        'client_id' => env('GOOGLE_ID'),
-        'client_secret' => env('GOOGLE_SECRET'),
-        'redirect' => env('APP_URL').'/google/callback',
+        'client_id' => '304080545845-46kc9rnbgmitfsj2oj2j22v54n2c5q11.apps.googleusercontent.com',
+        'client_secret' => '9A6wx0r9o59rZsUmetYrLH7_',
+        'redirect' => 'http://localhost:8000/auth/google/callback',
     ],
     'facebook' => [
         'client_id' => env('FACEBOOK_ID'),

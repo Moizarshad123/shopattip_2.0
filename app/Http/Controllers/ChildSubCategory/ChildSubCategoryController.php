@@ -33,7 +33,7 @@ class ChildSubCategoryController extends Controller
                 ->orderBy('id', 'DESC')
                 ->paginate($perPage);
             } else {
-                $childsubcategory = ChildSubCategory::with('subCategory')->orderBy('id', 'DESC')->paginate($perPage);
+                $childsubcategory = ChildSubCategory::with('subCategory')->where('deleted_at',null)->orderBy('id', 'DESC')->paginate($perPage);
             }
                 // dd($childsubcategory);
             return view('childsubcategory.child-sub-category.index', compact('childsubcategory'));
@@ -156,5 +156,20 @@ class ChildSubCategoryController extends Controller
         $getSubCategories  = SubCategory::where('category_id',$id)->get();
         return response()->json($getSubCategories);
 
+    }
+    public function deleteAll(Request $request)
+    {
+
+        $date = date('Y-m-d H:i:s');
+        $ids = $request->ids;
+        $brands = ChildSubCategory::whereIn('id',explode(",",$ids))->get();
+        if(sizeof($brands)){
+            foreach($brands as $brand){
+                $brands = ChildSubCategory::where('id',$brand->id)->update(['deleted_at'=>$date]);
+            }
+
+            return response()->json(['success'=>"ChildSubCategory Deleted successfully."]);
+        }
+        
     }
 }

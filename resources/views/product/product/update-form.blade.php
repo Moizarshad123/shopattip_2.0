@@ -6,6 +6,9 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@yaireo/tagify@3.1.0/dist/tagify.css" />
 <link rel="stylesheet" href="{{ asset('vendor/css/forms/select/select2.min.css') }}">
 <style>
+        .table-sortable tbody tr {
+        cursor: move;
+    }
     .aiz-switch-success input:checked ~ span:after{
         background-color: #07ed19 !important;
     }
@@ -299,7 +302,7 @@
     <label for="front_image" class="col-md-4 control-label custom-file-label" id="imgLabel">{{ 'Front Image' }}<span class="required"> *</span></label>
   
     <div class="col-md-6">
-        <input class="form-control" name="front_image" type="file" id="img_file" value="{{ asset('website/productImages/product_'.$product->id.'_1.jpg') }}" required>
+        <input class="form-control" name="front_image" type="file" id="img_file" value="{{ asset('website/productImages/product_'.$product->id.'_1.jpg') }}" >
         {!! $errors->first('front_image', '<p class="help-block">:message</p>') !!}
     </div>
     <img id="img_url" src="{{ asset('website/productImages/product_'.$product->id.'_1.jpg') }}" alt="your image" style="display: block !important" />
@@ -311,7 +314,7 @@
   
 
     <div class="col-md-6">
-        <input class="form-control" multiple name="thumbnail_image[]" type="file" id="thumbnail_img" value="{{ $product->front_image?? ''}}" required>
+        <input class="form-control" multiple name="thumbnail_image[]" type="file" id="thumbnail_img" value="{{ $product->front_image?? ''}}" >
         {!! $errors->first('thumbnail_image', '<p class="help-block">:message</p>') !!}
     </div>
     {{-- <img id="thumbnail_img_url" src="" alt="your image" /> --}}
@@ -496,7 +499,7 @@
     </div>
 </div> --}}
 <div class="form-group {{ $errors->has('perchase_price') ? 'has-error' : ''}}">
-    <label for="perchase_price" class="col-md-4 control-label">{{ 'Perchase Price' }}<span class="required"> *</span></label>
+    <label for="perchase_price" class="col-md-4 control-label">{{ 'perchace  Price' }}<span class="required"> *</span></label>
     <div class="col-md-6">
         <input class="form-control" name="perchase_price" type="number" id="perchase_price" placeholder="0" value="{{ $product->purchase_price?? ''}}" required maxlength="10" oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);'>
         {!! $errors->first('perchase_price', '<p class="help-block">:message</p>') !!}
@@ -582,7 +585,86 @@
         {!! $errors->first('commission', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
+<div class="form-group {{$errors->has('Is Featured') ? 'has-error' : ''}}" >
+    <label for="is_featured" class="col-md-4 control-label">{{ 'Is Featured' }}</label>
+    <div class="col-md-6">
+        <input class="form-control" type="hidden" id="is_featured"  readonly>
+        {!! $errors->first('is_featured', '<p class="help-block">:message</p>') !!}
+    </div>
+    <div class="col-md-0">
+        <label class="aiz-switch aiz-switch-success mb-0">
+            <input  type="checkbox" id="is_featured_active" name="is_featured_active" value="1" <?php if(@$product->is_featured == 1 )  echo "checked";?>>
+            <span></span>
+        </label>
+    </div>
+</div>
 
+<div class="col-md-10">
+    <h4 style="font-weight: bold">Add specification</h4>
+    <hr id="line">
+    </div>
+    <div class="col-md-2">
+        @if(sizeof($productSpecification))
+        <label class="aiz-switch aiz-switch-success mb-0" style="margin-left: -10px;">
+            <input  type="checkbox" name="specification_active" id="specification_active" <?php if(@$product->is_specification == 'on' )  echo "checked";?> >
+            <span></span>
+        </label>
+        @else
+        <label class="aiz-switch aiz-switch-success mb-0" style="margin-left: -10px;">
+            <input  type="checkbox" name="specification_active" id="specification_active" >
+            <span></span>
+        </label>
+        @endif
+        
+    </div>
+    
+    <div class="row clearfix" id="specifcation_table">
+        
+        <div class="col-md-12 table-responsive">
+            <table class="table table-bordered table-hover table-sortable" id="tab_logic">
+                <thead>
+                    <tr >
+                        <th class="text-center">
+                            Component
+                        </th>
+                        <th class="text-center">
+                            Specification
+                        </th>
+                        <th class="text-center">
+                            Remove
+                        </th>
+    
+                    </tr>
+                </thead>
+                <tbody id="specification_table">
+                    @if(sizeof($productSpecification))
+                    @foreach ($productSpecification as $item)
+                    <tr id='addr0' data-id="0" >
+                        <td data-name="specification_name">
+                            <input type="text" name='specification_name[]' value="{{ $item->specification_title }}"  placeholder='Name' class="form-control"/>
+                        </td>
+                        <td data-name="specification">
+                            <input type="text" name='specification[]' value="{{ $item->specification_description }}" placeholder='Specification' class="form-control"/>
+                        </td>
+                        <td data-name="del">
+                            <button name="del0" class='btn btn-danger glyphicon glyphicon-remove row-remove' style="display: block;margin: auto;"><span aria-hidden="true"></span></button>
+                        </td>
+                    </tr>
+                    @endforeach
+                  
+                    @endif
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-10">
+        </div>
+        <div class="col-md-2" >
+            <a id="add_row" style="display: block;margin: auto;" class="btn btn-primary float-right">Add Row</a>
+        </div>
+        {{-- <a id="add_row" style="display: block;margin: auto;" class="btn btn-primary float-right">Add Row</a> --}}
+    </div>
+
+    
 <div class="form-group">
     <div class="col-md-offset-4 col-md-4">
         <input class="btn btn-primary" id="submitBtn" type="submit" value="{{ $submitButtonText?? 'Create' }}">
@@ -598,15 +680,25 @@
 <script src="{{ asset('vendor/js/forms/select/select2.full.min.js') }}"></script>
 <script src="{{ asset('js/script/forms/form-select2.js') }}"></script>
 <script src="{{asset('plugins/components/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js')}}"></script>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 
 <script>
+    
     var max = '1000000';
     var $wrap = $('#sku');
     $('#getit').click(function() {
         var num = +$wrap.val();
         $wrap.val('SAT'+Math.ceil(Math.random() * max));
     });
+    $('input[name="is_featured_active"]').on('change', function() {
+            if(!$('input[name="is_featured_active"]').is(':checked')){
+                $('#is_featured_active').val(0);
+            }
+            else{
+                $('#is_featured_active').val(1);
+            }
+
+        });
    $('#shipping_cost').keyup(function(){
         var sale_price = parseInt($('#sale_price').val());
         var perchase_price = parseInt($('#perchase_price').val());
@@ -783,6 +875,7 @@
 
     $(document).ready(function () {
         update_sku();
+       
         $("#category_id,#subcategory_id,#child_subcategory_id,#brand_id,#discount_type").select2();
 
         $(document).on('change','#product_type_id',function(){
@@ -1088,7 +1181,7 @@
        
 
         function tagifyFun(tagify){
-            const maxChars = 10; 
+            const maxChars = 15; 
             tagify.on('input', function(e){
                 console.log(e);
                 if( e.detail.value.length > maxChars )
@@ -1096,7 +1189,7 @@
             })
             tagify.on('add', function(e){
                 // remove last added tag if the total length exceeds
-                if( tagify.DOM.input.textContent > maxChars )
+                if( tagify.DOM.input.textContent.length > maxChars )
                     tagify.removeTag(); // removes the last added tag
             })
             function trimValue(e){
@@ -1138,7 +1231,69 @@
             }
             
         })
-      
+        $("#add_row").on("click", function() {
+       
+        var append = ` <tr id='addr0' data-id="0" >
+                <td data-name="specification_name">
+                    <input type="text" name='specification_name[]'  placeholder='Name' class="form-control"/>
+                </td>
+                <td data-name="specification">
+                    <input type="text" name='specification[]' placeholder='Specification' class="form-control"/>
+                </td>
+                <td data-name="del">
+                    <button name="del0" class='btn btn-danger glyphicon glyphicon-remove row-remove' style="display: block;margin: auto;"><span aria-hidden="true"></span></button>
+                </td>
+                </tr>`;
+        $('#specification_table').append(append);
+        
+        $('#specification_table').find("td button.row-remove").on("click", function() {
+            $(this).closest("tr").remove();
+            var rowCount = $("#tab_logic tr").length;
+            if (parseInt(rowCount) < 2){
+                $('#specifcation_table').hide();
+                $('#line').hide();
+                $("#specification_active").prop("checked", false);
+            }else{
+                $('#specifcation_table').show();
+                $('#line').show();
+                $("#specification_active").prop("checked", true);
+            }
+            });
+        });
+
+
+            // Sortable Code
+            var fixHelperModified = function(e, tr) {
+            var $originals = tr.children();
+            var $helper = tr.clone();
+
+            $helper.children().each(function(index) {
+                $(this).width($originals.eq(index).width())
+            });
+            
+            return $helper;
+            };
+
+            $(".table-sortable tbody").sortable({
+            helper: fixHelperModified      
+            }).disableSelection();
+
+            $(".table-sortable thead").disableSelection();
+
+            $("#add_row").trigger("click");
+
+            $('#specification_active').on('change', function() {
+            if(!$('#specification_active').is(':checked')){
+                
+                $('#specifcation_table').hide();
+                $('#line').hide();
+            }
+            else{
+                $('#specifcation_table').show();
+                $('#line').show();
+
+            }
+            });
 
         // $('#sku').keyup(function(){
         //     var sku = $(this).val();

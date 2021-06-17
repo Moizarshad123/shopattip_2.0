@@ -7,6 +7,9 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@yaireo/tagify@3.1.0/dist/tagify.css" />
 <link rel="stylesheet" href="{{ asset('vendor/css/forms/select/select2.min.css') }}">
 <style>
+    .table-sortable tbody tr {
+        cursor: move;
+    }
     .aiz-switch-success input:checked ~ span:after{
         background-color: #07ed19 !important;
     }
@@ -213,26 +216,26 @@
 @endpush
 
 <div class="form-group {{ $errors->has('product_type_id') ? 'has-error' : ''}}">
-    <label for="product_type_id" class="col-md-4 control-label">{{ 'Product Type' }}<span class="required"> *</span></label>
+    <label for="product_type_id" class="col-md-4 control-label">{{ 'Product Type' }}<span class="required "> *</span></label>
     <div class="col-md-6">
-        <b><input type="radio" name="product_type_id"  id="product_type_id" value="1" required> GENERAL</b> 
-        <b><input type="radio" name="product_type_id" id="product_type_id" value="2" style="margin-left: 51px;" required> GROCERY</b>
+        <b><input type="radio" name="product_type_id"  id="product_type_id" value="1"  required> GENERAL</b> 
+        <b><input type="radio" name="product_type_id" id="product_type_id" value="2" style="margin-left: 51px;" required > GROCERY</b>
         {!! $errors->first('product_type_id', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
 <div class="form-group {{ $errors->has('category_id') ? 'has-error' : ''}}">
-    <label for="category_id" class="col-md-4 control-label">{{ 'Category' }}<span class="required"> *</span></label>
+    <label for="category_id" class="col-md-4 control-label">{{ 'Category' }}<span class="required "> *</span></label>
     <div class="col-md-6">
-        <select  class="form-control" name="category_id" id="category_id"  required disabled='true' > 
+        <select  class="form-control" name="category_id" id="category_id"  required  disabled='true' > 
 
         </select>
         {!! $errors->first('category_id', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
 <div class="form-group {{ $errors->has('subcategory_id') ? 'has-error' : ''}}">
-    <label for="subcategory_id" class="col-md-4 control-label">{{ 'Subcategory' }}<span class="required"> *</span></label>
+    <label for="subcategory_id" class="col-md-4 control-label">{{ 'Subcategory' }}<span class=" required"> *</span></label>
     <div class="col-md-6">
-        <select  class="form-control" name="subcategory_id" id="subcategory_id" required disabled='true'> 
+        <select  class="form-control" name="subcategory_id" id="subcategory_id" required   disabled='true'> 
 
             
         </select>
@@ -240,9 +243,9 @@
     </div>
 </div>
 <div class="form-group {{ $errors->has('child_subcategory_id') ? 'has-error' : ''}}">
-    <label for="child_subcategory_id" class="col-md-4 control-label">{{ 'Child Subcategory' }}<span class="required"> *</span></label>
+    <label for="child_subcategory_id" class="col-md-4 control-label">{{ 'Child Subcategory' }}<span class=" required"> *</span></label>
     <div class="col-md-6">
-        <select  class="form-control" name="child_subcategory_id" id="child_subcategory_id" required disabled='true'> 
+        <select  class="form-control" name="child_subcategory_id" id="child_subcategory_id" required  disabled='true'> 
 
             
         </select>
@@ -250,30 +253,30 @@
     </div>
 </div>
 <div class="form-group {{ $errors->has('name') ? 'has-error' : ''}}">
-    <label for="name" class="col-md-4 control-label">{{ 'Name' }}<span class="required"> *</span></label>
+    <label for="name" class="col-md-4 control-label">{{ 'Name' }}<span class="required "> *</span></label>
     <div class="col-md-6">
-        <input class="form-control " name="name" type="text" id="name"  required maxlength="45" placeholder="Product name" />
+        <input class="form-control " name="name" type="text" id="name"  required  maxlength="45" placeholder="Product name" />
         {!! $errors->first('name', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
 <div class="form-group {{ $errors->has('sku') ? 'has-error' : ''}}">
-    <label for="sku" class="col-md-4 control-label">{{ 'SKU' }}<span class="required"> *</span></label>
+    <label for="sku" class="col-md-4 control-label">{{ 'SKU' }}<span class="required "> *</span></label>
     <div class="col-md-6">
-        <input class="form-control " name="sku" type="text" id="sku"  readonly required maxlength="10" placeholder="SKU" size="20" style="text-transform:uppercase"/>
+        <input class="form-control " name="sku" type="text" id="sku"  readonly required  maxlength="10" placeholder="SKU" size="20" style="text-transform:uppercase"/>
         {!! $errors->first('sku', '<p class="help-block">:message</p>') !!}
         <span id="sku-error"></span>
     </div>
     <div class="col-md-0">
         <label class="" style="margin-top: 7px;">
-            <input type="button" id="getit" class="button" value="Generate"  >
+            <input type="button" id="getit" class="button" value="Generate" style="border-radius: 15px;" >
             <span></span>
         </label>
     </div>
 </div>
 <div class="form-group {{ $errors->has('brand_id') ? 'has-error' : ''}}">
-    <label for="brand_id" class="col-md-4 control-label">{{ 'Brand' }}<span class="required"> *</span></label>
+    <label for="brand_id" class="col-md-4 control-label">{{ 'Brand' }}<span class="required "> *</span></label>
     <div class="col-md-6">
-        <select  class="form-control" name="brand_id" id="brand_id" required > 
+        <select  class="form-control" name="brand_id" id="brand_id" required  > 
             <option value="" >Select Brand</option>
             @foreach (@$brands as $brand)
             <option value="{{ @$brand->id }}"  >{{ @$brand->name }}</option>
@@ -284,33 +287,36 @@
     </div>
 </div>
 <div class="form-group {{ $errors->has('tags') ? 'has-error' : ''}}">
-    <label for="tags" class="col-md-4 control-label">{{ 'Tags' }}<span class="required"> *</span></label>
+    <label for="tags" class="col-md-4 control-label">{{ 'Tags' }}<span class="required "> *</span></label>
     <div class="col-md-6">
-        <input name="tags[]" type="text" id="tags" class="form-control"  placeholder="Type and hit enter to add a tag" maxlength="10" required />
+        <input name="tags[]" type="text" id="tags" class="form-control"  placeholder="Type and hit enter to add a tag" maxlength="10" required  />
         {!! $errors->first('tags', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
 <div class="form-group {{ $errors->has('description') ? 'has-error' : ''}}">
     <label for="description" class="col-md-4 control-label">{{ 'Description' }}</label>
     <div class="col-md-6">
-        <textarea class="form-control" rows="5" name="description" type="text" id="description" required maxlength="300" placeholder="Description"></textarea>
+        <textarea class="form-control" rows="5" name="description" type="text" id="description"   maxlength="300" placeholder="Description"></textarea>
         {!! $errors->first('description', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
+<div class="col-md-10">
 <h4 style="font-weight: bold">Add Images</h4>
 <hr>
+</div>
+
 <div class="form-group {{ $errors->has('front_image') ? 'has-error' : ''}}">
-    <label for="front_image" class="col-md-4 control-label">{{ 'Front Image' }}<span class="required"> *</span></label>
+    <label for="front_image" class="col-md-4 control-label">{{ 'Front Image' }}<span class=" required"> *</span></label>
     <div class="col-md-6">
-        <input class="form-control" name="front_image" type="file" id="img_file" onChange="img_pathUrl(this);"   required>
+        <input class="form-control" name="front_image" type="file" id="img_file" required onChange="img_pathUrl(this);"    >
         {!! $errors->first('front_image', '<p class="help-block">:message</p>') !!}
     </div>
     <img id="img_url" src="" alt="your image" />
 </div>
 <div class="form-group {{ $errors->has('thumbnail_image') ? 'has-error' : ''}}">
-    <label for="thumbnail_image" class="col-md-4 control-label">{{ 'Thumb-nail Image' }}<span class="required"> *</span></label>
+    <label for="thumbnail_image" class="col-md-4 control-label">{{ 'Thumb-nail Image' }}<span class=" required"> *</span></label>
     <div class="col-md-6" id="imageDiv">
-        <input class="form-control" multiple name="thumbnail_image[]" type="file" id="thumbnail_img"   required>
+        <input class="form-control" multiple name="thumbnail_image[]" type="file" id="thumbnail_img"  required  >
         {!! $errors->first('thumbnail_image', '<p class="help-block">:message</p>') !!}
     </div>
     {{-- <img id="thumbnail_img_url" src="" alt="your image" /> --}}
@@ -404,26 +410,29 @@
 <a href="javascript:void(0)" data-name="active" style="float: right;font-size: 30px;" id="addRows">
     <i class="fa fa-plus-circle"></i>
 </a> --}}
+<div class="col-md-10">
 <h4 style="font-weight: bold">Add Variation</h4>
 <hr>
+</div>
+
 <div class="form-group {{ $errors->has('size') ? 'has-error' : ''}}">
-    <label for="size" class="col-md-4 control-label">{{ 'Size' }}<span class="required"> *</span></label>
+    <label for="size" class="col-md-4 control-label">{{ 'Size' }}<span class="required "> *</span></label>
     <div class="col-md-6">
-        <input  name="size[]" type="text" id="size" class="form-control"  placeholder="Type and hit enter to add size"  required />
+        <input  name="size[]" type="text" id="size" class="form-control" required  placeholder="Type and hit enter to add size"    />
         {!! $errors->first('size', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
 <div class="form-group {{ $errors->has('fabric') ? 'has-error' : ''}}">
-    <label for="fabric" class="col-md-4 control-label">{{ 'Fabric' }}<span class="required"> *</span></label>
+    <label for="fabric" class="col-md-4 control-label">{{ 'Fabric' }}<span class=" required"> *</span></label>
     <div class="col-md-6">
-        <input  name="fabric[]" type="text" id="fabric" class="form-control" placeholder="Type and hit enter to add fabric"  required  />
+        <input  name="fabric[]" type="text" id="fabric" class="form-control" placeholder="Type and hit enter to add fabric"  required   />
         {!! $errors->first('fabric', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
 <div class="form-group {{ $errors->has('colors') ? 'has-error' : ''}}">
-    <label for="colors" class="col-md-4 control-label">{{ 'Colors' }}<span class="required"> *</span></label>
+    <label for="colors" class="col-md-4 control-label">{{ 'Colors' }}<span class=" required"> *</span></label>
     <div class="col-md-6">
-        <select class="color-choose color_table" data-live-search="true" data-selected-text-format="count" required name="colors[]" id="colors" multiple disabled >
+        <select class="color-choose color_table" data-live-search="true" data-selected-text-format="count" required  name="colors[]" id="colors" multiple disabled >
             @foreach (\App\ProductColor::orderBy('name', 'asc')->where('active',1)->get() as $key => $color)
                 <option  value="{{ $color->color_code }}">  {{ ' '.$color->name }}</option>
             @endforeach
@@ -500,16 +509,16 @@ margin-right: 120px !important;">
     </div>
 </div> --}}
 <div class="form-group {{ $errors->has('perchase_price') ? 'has-error' : ''}}">
-    <label for="perchase_price" class="col-md-4 control-label">{{ 'Perchase Price' }}<span class="required"> *</span></label>
+    <label for="perchase_price" class="col-md-4 control-label">{{ 'Perchace  Price' }}<span class="required "> *</span></label>
     <div class="col-md-6">
-        <input class="form-control" name="perchase_price" type="number" id="perchase_price" placeholder=""   required maxlength="10" oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);'>
+        <input class="form-control" name="perchase_price" type="number" id="perchase_price" placeholder=""  required   maxlength="10" oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);'>
         {!! $errors->first('perchase_price', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
 <div class="form-group {{ $errors->has('sale_price') ? 'has-error' : ''}}">
-    <label for="sale_price" class="col-md-4 control-label">{{ 'Sale Price' }}<span class="required"> *</span></label>
+    <label for="sale_price" class="col-md-4 control-label">{{ 'Sale Price' }}<span class="required "> *</span></label>
     <div class="col-md-6">
-        <input class="form-control sale_price" name="sale_price"  type="number" id="sale_price" placeholder=""   required maxlength="10" oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);'>
+        <input class="form-control sale_price" name="sale_price"  type="number" id="sale_price" placeholder="" required    maxlength="10" oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);'>
         {!! $errors->first('sale_price', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -588,6 +597,72 @@ margin-right: 120px !important;">
         {!! $errors->first('commission', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
+<div class="form-group {{$errors->has('Is Featured') ? 'has-error' : ''}}" >
+    <label for="is_featured" class="col-md-4 control-label">{{ 'Is Featured' }}</label>
+    <div class="col-md-6">
+        <input class="form-control" type="hidden" id="is_featured"  readonly>
+        {!! $errors->first('is_featured', '<p class="help-block">:message</p>') !!}
+    </div>
+    <div class="col-md-0">
+        <label class="aiz-switch aiz-switch-success mb-0">
+            <input  type="checkbox" id="is_featured_active" name="is_featured_active" >
+            <span></span>
+        </label>
+    </div>
+</div>
+
+<div class="col-md-10">
+<h4 style="font-weight: bold">Add specification</h4>
+<hr id="line">
+</div>
+<div class="col-md-2">
+    <label class="aiz-switch aiz-switch-success mb-0" style="margin-left: -10px;">
+        <input  type="checkbox" name="specification_active" id="specification_active" >
+        <span></span>
+    </label>
+    
+</div>
+
+<div class="row clearfix" id="specifcation_table">
+    
+    <div class="col-md-12 table-responsive">
+        <table class="table table-bordered table-hover table-sortable" id="tab_logic">
+            <thead>
+                <tr >
+                    <th class="text-center">
+                        Component
+                    </th>
+                    <th class="text-center">
+                        Specification
+                    </th>
+                    <th class="text-center">
+                        Remove
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody id="specification_table">
+                <tr id='addr0' data-id="0" class="hidden">
+                    <td data-name="specification_name">
+                        <input type="text" name='specification_name[]'  placeholder='Name' class="form-control"/>
+                    </td>
+                    <td data-name="specification">
+                        <input type="text" name='specification[]' placeholder='Specification' class="form-control"/>
+                    </td>
+                    <td data-name="del">
+                        <button name="del0" class='btn btn-danger glyphicon glyphicon-remove row-remove' style="display: block;margin: auto;"><span aria-hidden="true"></span></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-10">
+    </div>
+    <div class="col-md-2" >
+        <a id="add_row" style="display: block;margin: auto;" class="btn btn-primary float-right">Add Row</a>
+    </div>
+    {{-- <a id="add_row" style="display: block;margin: auto;" class="btn btn-primary float-right">Add Row</a> --}}
+</div>
 
 <div class="form-group">
     <div class="col-md-offset-4 col-md-4">
@@ -610,6 +685,7 @@ margin-right: 120px !important;">
 <script src="https://cdn.jsdelivr.net/npm/a-color-picker@1.1.8/dist/acolorpicker.js"></script>
 {{-- <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> --}}
 <script src="{{asset('plugins/components/toast-master/js/jquery.toast.js')}}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 <script>
 
     var max = '1000000';
@@ -831,8 +907,8 @@ margin-right: 120px !important;">
    
 
     $(document).ready(function () {
-
-      
+        $('#specifcation_table').hide();
+        $('#line').hide();
 
         $('#img_file').change(function () {
             var ext = this.value.match(/\.(.+)$/)[1];
@@ -856,7 +932,7 @@ margin-right: 120px !important;">
         });
 
         // $("div").delegate("#submitBtn", "click", function(){
-        //     $("tags").attr("required");
+        //     $("tags").attr(" ");
         // });
         
         // $('#submitBtn').click(function(){
@@ -1069,6 +1145,18 @@ margin-right: 120px !important;">
 
         });
 
+        $('input[name="is_featured_active"]').on('change', function() {
+            if(!$('input[name="is_featured_active"]').is(':checked')){
+                $('#is_featured_active').val(0);
+            }
+            else{
+                $('#is_featured_active').val(1);
+            }
+
+        });
+
+        
+
         $('#colors').on('change', function() {
             update_sku();
         });
@@ -1179,6 +1267,7 @@ margin-right: 120px !important;">
             }
 
         });
+
         var size = document.querySelector('#size');
         $('#size').keyup(function(){
             $('#size').removeClass('form-control');
@@ -1186,6 +1275,7 @@ margin-right: 120px !important;">
             tagify = new Tagify(size);
             tagifyFun(tagify)
         });
+
         var fabric = document.querySelector('#fabric');
         $('#fabric').keyup(function(){
             $('#fabric').removeClass('form-control');
@@ -1193,6 +1283,7 @@ margin-right: 120px !important;">
             tagify = new Tagify(fabric);
             tagifyFun(tagify)
         });
+
         $('#tags').keyup(function(){
             $('#tags').removeClass('form-control');
             var tags = document.querySelector('#tags');
@@ -1201,15 +1292,16 @@ margin-right: 120px !important;">
         });
 
         function tagifyFun(tagify){
-            const maxChars = 10; 
+            const maxChars = 15; 
             tagify.on('input', function(e){
-                console.log(e);
+                // console.log(e);
                 if( e.detail.value.length > maxChars )
                     trimValue(e);
             })
             tagify.on('add', function(e){
                 // remove last added tag if the total length exceeds
-                if( tagify.DOM.input.textContent > maxChars )
+                console.log(tagify.DOM.input.textContent);
+                if( tagify.DOM.input.textContent.length > maxChars )
                     tagify.removeTag(); // removes the last added tag
             })
             function trimValue(e){
@@ -1218,10 +1310,10 @@ margin-right: 120px !important;">
                 // trim the value
                 let newValue = tagify.DOM.originalInput.value.slice(0, maxChars - e.detail.length);
                 // parse the new mixed value after trimming any excess characters
+                console.log(newValue);
                 tagify.parseMixTags(newValue)
             }
         }
-      
        
         $('#submitBtn').click(function(){
             // e.preventDefault();
@@ -1251,7 +1343,71 @@ margin-right: 120px !important;">
                 $('#choice_form').submit();
             }
             
-        })
+        });
+
+        $("#add_row").on("click", function() {
+       
+            var append = ` <tr id='addr0' data-id="0" >
+                    <td data-name="specification_name">
+                        <input type="text" name='specification_name[]'  placeholder='Name' class="form-control"/>
+                    </td>
+                    <td data-name="specification">
+                        <input type="text" name='specification[]' placeholder='Specification' class="form-control"/>
+                    </td>
+                    <td data-name="del">
+                        <button name="del0" class='btn btn-danger glyphicon glyphicon-remove row-remove' style="display: block;margin: auto;"><span aria-hidden="true"></span></button>
+                    </td>
+                </tr>`;
+            $('#specification_table').append(append);
+            
+            $('#specification_table').find("td button.row-remove").on("click", function() {
+                $(this).closest("tr").remove();
+                var rowCount = $("#tab_logic tr").length;
+                if (parseInt(rowCount) < 3){
+                    $('#specifcation_table').hide();
+                    $('#line').hide();
+                    $("#specification_active").prop("checked", false);
+                }else{
+                    $('#specifcation_table').show();
+                    $('#line').show();
+                    $("#specification_active").prop("checked", true);
+                }
+            });
+        });
+
+
+    // Sortable Code
+    var fixHelperModified = function(e, tr) {
+        var $originals = tr.children();
+        var $helper = tr.clone();
+    
+        $helper.children().each(function(index) {
+            $(this).width($originals.eq(index).width())
+        });
+        
+        return $helper;
+    };
+  
+    $(".table-sortable tbody").sortable({
+        helper: fixHelperModified      
+    }).disableSelection();
+
+    $(".table-sortable thead").disableSelection();
+
+    $("#add_row").trigger("click");
+    
+    $('#specification_active').on('change', function() {
+        if(!$('#specification_active').is(':checked')){
+            
+            $('#specifcation_table').hide();
+            $('#line').hide();
+        }
+        else{
+            $('#specifcation_table').show();
+            $('#line').show();
+
+        }
+    });
 
         // var tags = document.querySelector('#tags');
         // var size = document.querySelector('#size');
@@ -1266,7 +1422,7 @@ margin-right: 120px !important;">
         //         classname: "tags-look",
         //         enabled: 0,            
         //         closeOnSelect: true,   
-        //         required:true
+        //          :true
         //     }
             
         // });

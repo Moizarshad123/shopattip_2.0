@@ -29,7 +29,7 @@ class SubCategoryController extends Controller
                 ->orderBy('id', 'DESC')
                 ->paginate($perPage);
             } else {
-                $subcategory = SubCategory::with('category')->orderBy('id', 'DESC')->paginate($perPage);
+                $subcategory = SubCategory::with('category')->where('deleted_at',null)->orderBy('id', 'DESC')->paginate($perPage);
             }
 
             return view('subcategory.sub-category.index', compact('subcategory'));
@@ -139,5 +139,21 @@ class SubCategoryController extends Controller
     {
         $categories = Category::where('category_type_id',$category_type_id)->get();
         echo $categories ;
+    }
+
+    public function deleteAll(Request $request)
+    {
+
+        $date = date('Y-m-d H:i:s');
+        $ids = $request->ids;
+        $brands = SubCategory::whereIn('id',explode(",",$ids))->get();
+        if(sizeof($brands)){
+            foreach($brands as $brand){
+                $brands = SubCategory::where('id',$brand->id)->update(['deleted_at'=>$date]);
+            }
+
+            return response()->json(['success'=>"Products Deleted successfully."]);
+        }
+        
     }
 }

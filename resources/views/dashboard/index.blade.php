@@ -489,5 +489,19 @@
 
 @push('js')
     <script src="{{asset('js/db1.js')}}"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js" ></script>
+    <script>
+        @if(\Session::has('message'))
+               $.toast({
+                   heading: 'Success!',
+                   position: 'top-center',
+                   text: '{{session()->get('message')}}',
+                   loaderBg: '#ff6849',
+                   icon: 'success',
+                   hideAfter: 3000,
+                   stack: 6
+               });
+       @endif
+         
+    </script>
 @endpush

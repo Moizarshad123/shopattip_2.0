@@ -170,6 +170,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         Cartalyst\Stripe\Laravel\StripeServiceProvider::class,
         Stevebauman\Location\LocationServiceProvider::class,
+        Laravel\Socialite\SocialiteServiceProvider::class,
         
 
     ],
@@ -225,6 +226,7 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
         'Stripe' => Cartalyst\Stripe\Laravel\Facades\Stripe::class,
         'Location' => Stevebauman\Location\Facades\Location::class,
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
     ],
 
     'debug_blacklist' => [

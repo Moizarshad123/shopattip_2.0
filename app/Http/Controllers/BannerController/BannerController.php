@@ -23,7 +23,7 @@ class BannerController extends Controller
         $model = str_slug('banner','-');
         if(auth()->user()->permissions()->where('name','=','view-'.$model)->first()!= null) {
             $keyword = $request->get('search');
-            $banner = Banner::get();
+            $banner = Banner::where('deleted_at',null)->get();
             $perPage = count($banner);
 
             if (!empty($keyword)) {
@@ -33,7 +33,7 @@ class BannerController extends Controller
                 ->orderBy('id', 'DESC')
                 ->paginate($perPage);
             } else {
-                $banner = Banner::with('category')->orderBy('id', 'DESC')->paginate($perPage);
+                $banner = Banner::with('category')->where('deleted_at',null)->orderBy('id', 'DESC')->paginate($perPage);
                 // dd($banner);
             }
 
@@ -157,5 +157,23 @@ class BannerController extends Controller
     {
         $categories = Category::where('category_type_id',$brand_type_id)->get();
         echo $categories;
+    }
+
+
+
+    public function deleteAll(Request $request)
+    {
+
+        $date = date('Y-m-d H:i:s');
+        $ids = $request->ids;
+        $banners = Banner::whereIn('id',explode(",",$ids))->get();
+        if(sizeof($banners)){
+            foreach($banners as $banner){
+                $banner = Banner::where('id',$banner->id)->update(['deleted_at'=>$date]);
+            }
+
+            return response()->json(['success'=>"Banner Deleted successfully."]);
+        }
+        
     }
 }

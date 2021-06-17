@@ -23,7 +23,7 @@ class BrandController extends Controller
         $model = str_slug('brand','-');
         if(auth()->user()->permissions()->where('name','=','view-'.$model)->first()!= null) {
             $keyword = $request->get('search');
-            $brand = Brand::get();
+            $brand = Brand::where('deleted_at',null)->get();
             $perPage = count($brand);
 
             if (!empty($keyword)) {
@@ -32,7 +32,7 @@ class BrandController extends Controller
                 ->orderBy('id', 'DESC')
                 ->paginate($perPage);
             } else {
-                $brand = Brand::orderBy('id', 'DESC')->paginate($perPage);
+                $brand = Brand::orderBy('id', 'DESC')->where('deleted_at',null)->paginate($perPage);
             }
 
             return view('brand.brand.index', compact('brand'));
@@ -133,6 +133,22 @@ class BrandController extends Controller
         }
         return response(view('403'), 403);
 
+    }
+
+    public function deleteAll(Request $request)
+    {
+
+        $date = date('Y-m-d H:i:s');
+        $ids = $request->ids;
+        $brands = Brand::whereIn('id',explode(",",$ids))->get();
+        if(sizeof($brands)){
+            foreach($brands as $brand){
+                $brands = Brand::where('id',$brand->id)->update(['deleted_at'=>$date]);
+            }
+
+            return response()->json(['success'=>"Brand Deleted successfully."]);
+        }
+        
     }
 
    

@@ -387,5 +387,23 @@ Route::get('admin/vendor-status-change', 'VendorController@vendorStatusChange');
 
 
 
+Route::delete('deleteAllBranner', 'BannerController\\BannerController@deleteAll');
+Route::delete('deleteAllBrands', 'BrandController\\BrandController@deleteAll');
+Route::delete('deleteAllCategory', 'Category\\CategoryController@deleteAll');
+Route::delete('deleteAllSubCategory', 'SubCategoryController\\SubCategoryController@deleteAll');
+Route::delete('deleteAllChildCategory', 'ChildSubCategory\\ChildSubCategoryController@deleteAll');
+Route::delete('deleteAllCoupon', 'CouponController\\CouponController@deleteAll');
+Route::delete('deleteAllDiscount', 'DiscountController\\DiscountController@deleteAll');
+Route::delete('deleteAllProducts', 'ProductController\\ProductController@deleteAll');
+Route::delete('deleteAllSlider', 'Slider\\SliderController@deleteAll');
 
-// 
+Route::get('auth/google', 'GoogleController@redirectToGoogle');
+Route::get('auth/google/callback', 'GoogleController@handleGoogleCallback');
+
+Route::get('category/category-banner/{id}','PagesController@categoryBanner');
+ 
+Route::resource('slider/slider', 'Slider\\SliderController');
+
+// CART ROUTES
+Route::get('product/product-add-to-cart/{id}','PagesController@addToCart');
+Route::get('product/product-remove-from-cart/{id}','PagesController@removeCart');

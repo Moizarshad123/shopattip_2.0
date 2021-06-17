@@ -367,6 +367,43 @@ opacity: 1;
                       
                             </tbody>
                         </table>
+                        <h2>Product Specification</h2>
+                        <table class="table table-bordered " >
+                            <thead>
+                                <tr >
+                                    <th class="text-center">
+                                        <b><label for="" class="control-label">Specification Title</label></b>
+                                    </th>
+                                    {{-- <td class="text-center">
+                                        <label for="" class="control-label">Variant Price</label>
+                                    </td> --}}
+                    
+                                    <th class="text-center">
+                                        <b><label for="" class="control-label">Specification Description</label></b>
+                                    </th>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                    @foreach ($product['productSpecification'] as $item)
+                                    <b>{{  $item->specification_title??'null' }}</b><br><hr>
+                                      
+                                    @endforeach
+                                    </td>
+
+                                    <td>
+                                        @foreach ($product['productSpecification'] as $item)
+                                       <b>{{  $item->specification_description??'null' }}</b><br> <hr>
+                                          
+                                        @endforeach
+                                    </td>
+                                  
+                                </tr>
+                      
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

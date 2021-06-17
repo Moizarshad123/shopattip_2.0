@@ -35,7 +35,7 @@ class CategoryController extends Controller
                 ->orderBy('id', 'DESC')
                 ->paginate($perPage);
             } else {
-                $category = Category::orderBy('id', 'DESC')->paginate($perPage);
+                $category = Category::orderBy('id', 'DESC')->where('deleted_at',null)->paginate($perPage);
             }
 
             return view('category.category.index', compact('category'));
@@ -173,5 +173,21 @@ class CategoryController extends Controller
         }
         return response(view('403'), 403);
 
+    }
+
+    public function deleteAll(Request $request)
+    {
+
+        $date = date('Y-m-d H:i:s');
+        $ids = $request->ids;
+        $brands = Category::whereIn('id',explode(",",$ids))->get();
+        if(sizeof($brands)){
+            foreach($brands as $brand){
+                $brands = Category::where('id',$brand->id)->update(['deleted_at'=>$date]);
+            }
+
+            return response()->json(['success'=>"Category Deleted successfully."]);
+        }
+        
     }
 }
