@@ -148,7 +148,7 @@
                                 <ul class="nav navbar-nav navbar-right">
                                     <li class="dropdown">
                                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <img src="{{ asset('assets/frontend/img/shop.png') }}" alt=""><span class="badge">@if(session('cart')){{ $total_qty }}@else {{ 0 }} @endif</span><span class="caret"></span></a>
-                                      <ul class="dropdown-menu dropdown-cart" role="menu">
+                                      <ul class="dropdown-menu dropdown-cart" role="menu" style="background:black">
                                         @if(session('cart'))
                                         @foreach(session('cart') as $id => $details)
                                           <li>
@@ -186,11 +186,8 @@
 
         <div class="header-bottom">
             <div class="headimage">
-
-
                 <img src="{{ asset('assets/frontend/img/headimage.jpg') }}" style="width: 100%;" alt=""
                     class="lazyloaded" data-ll-status="loaded">
-
             </div>
             <div class="container-fluid">
                 <div class="row">
@@ -209,23 +206,19 @@
                               
                                 <ul class="first">
                                 @if(sizeof($allcategories))
-                                @foreach ($allcategories as $category)
+                                @foreach ($allcategories as $key => $category)
                                     <li class="level-1">
-                                        <a href="">{{ $category->name }}</a>
+                                        <a href="{{ $category->id }}">{{ $category->name }}</a>
                                         <ul class="second">
-                                            @foreach ($subcategories as $subcategory)
-                                            @if(@$category->id == @$subcategory->category_id)
-                                            <li><a href="">{{  @$subcategory->name }}</a></li>
+                                        @foreach ($category['subCategory'] as $key => $subcategory)
+                                            <li><a href="{{ $subcategory->id }}" data-id="{{  @$subcategory->id }}" class="sub_cat">{{  @$subcategory->name }}</a>
                                               <ul class="third">
-                                                @foreach ($childSubcategories as $childSubcategory)
-                                                @if($subcategory->id == $childSubcategory->sub_category_id)
-                                                <li><a href="">{{ $childSubcategory->name }}</a></li>
-                                                @endif
+                                                @foreach ($subcategory['childSubcategory'] as $key => $childSubcategory)
+                                                <li><a href="{{ $childSubcategory->id }}">{{ $childSubcategory->name }}</a></li>
                                                 @endforeach
                                               </ul>
                                             </li>
-                                            @endif
-                                          @endforeach
+                                        @endforeach
                                         </ul>
                                     </li>
                                     @endforeach
@@ -417,9 +410,12 @@
                                           </li>
                                         </ul>
                                     </li>  --}}
-                                      <li class="show-more" value="1"><i class="fa fa-plus" aria-hidden="true" style="margin-right: 14px;"></i>Other</a>
-                                      </li>
-                                      <div class="bwp-image sale" style="margin-left: -3px;">
+                                    <li class="show-more" value="1"><a href=javascript:void(0)><i class="fa fa-plus" aria-hidden="true"> </i>   Other</a>
+                                    </li>
+                                    {{-- <li class="level-1 show-more" value="1"><a href=javascript:void(0)><i id="plus_minus" class="fa fa-plus" aria-hidden="true" ></i>  Other</a></li> --}}
+                                      {{-- <li class="level-1 show-more" value="1"><i class="fa fa-plus" aria-hidden="true" ></i>Other</a>
+                                      </li> --}}
+                                      <div class="bwp-image sale" >
                                         <a href="#"> <img src="{{ asset('assets/frontend/img/Mask Group 6.png') }}">
                                             <img src="../wp-content/uploads/2020/02/banner6-8.jpg" alt="">
                                         </a>
@@ -717,21 +713,28 @@
 
 
     <script>
+        if ($('.level-1').length > 8) {
+            $('.show-more').show();
+
+        }else{
+            $('.show-more').hide();
+
+        }
         //this will execute on page load(to be more specific when document ready event occurs)
         if ($('.level-1').length > 8) {
-            $('.level-1:gt(7)').hide();
+            $('.level-1:gt(8)').hide();
             $('.show-more').show();
         }
         
         $('.show-more').on('click', function() {
             //toggle elements with class .ty-compact-list that their index is bigger than 2
-            $('.level-1:gt(7)').toggle();
+            $('.level-1:gt(8)').toggle();
             if($('.show-more').val()==1) {
-                $(this).html('<i class="fa fa-minus" aria-hidden="true" style="margin-right: 14px;"></i>Close');
+                $(this).html('<a href=javascript:void(0)><i class="fa fa-minus" aria-hidden="true"> </i>   Close</a>');
                 $('.show-more').val(0);
             }
             else {
-                $(this).html('<i class="fa fa-plus" aria-hidden="true" style="margin-right: 14px;"></i>Other');
+                $(this).html('<a href=javascript:void(0)><i class="fa fa-plus" aria-hidden="true"> </i>   Other</a>');
                 $('.show-more').val(1);
             }
         }
@@ -779,9 +782,31 @@
                         });
                     }
                 }
-            }
 
-        );
+            //     $('.sub_cat').hover(function() {
+            //     _this = $(this);
+            //     var li = '';
+            //     var subcategory_id = _this.data('id'); 
+            //     console.log(subcategory_id);
+            //     $.ajax({
+            //         type: "GET",
+            //         dataType: "json",
+            //         url: "{{url('home/get-child-category')}}/"+subcategory_id,
+            //         success: function(data){
+            //         console.log(data);
+            //             $.each(data,function(index,row){
+            //                 li +=`<li><a href="">`+row.name+`</a></li>`; 
+            //             });
+            //             $(".third").empty();
+            //             $(".third").append(li);
+            //         }
+            //     });
+            // });
+            
+            // $('.sub_cate').mouseout(function(){
+            //     $(".third").empty();
+            // });
+        });
     </script>
 
     @yield('externalJsLinks')

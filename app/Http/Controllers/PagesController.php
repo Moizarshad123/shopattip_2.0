@@ -30,10 +30,10 @@ class PagesController extends Controller
         
         $models = scandir(public_path()."/models");
 		$sliders            = Slider::where('deleted_at',null)->get();
-        $allcategories      = Category::with('subCategory')->where('status',1)->where('deleted_at',null)->get();
+        $allcategories      = Category::with('subCategory','subCategory.childSubcategory')->where('status',1)->where('deleted_at',null)->get();
         $subCategory      = SubCategory::where('status',1)->where('deleted_at',null)->get();
-        $childcategories      = ChildSubCategory::where('status',1)->where('deleted_at',null)->get();
-        
+        $childcategories      = ChildSubCategory::with('subCategory','subCategory.category')->where('status',1)->where('deleted_at',null)->get();
+        // dd($allcategories);
 
 
         // $allcategories      = DB::select("SELECT categories.name AS category_name, categories.id 
@@ -116,6 +116,13 @@ class PagesController extends Controller
             return 0;
 
         }
+    }
+
+    public function getChildCategory( $id = null)
+    {
+        $childcategories      = ChildSubCategory::where('sub_category_id',$id)->where('status',1)->where('deleted_at',null)->get();
+        echo $childcategories;
+
     }
 
     public function categoryBanner($id = null)

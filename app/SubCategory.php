@@ -23,7 +23,7 @@ class SubCategory extends Model
 
     public function childSubcategory(){
 
-        return $this->hasMany(Category::class,'sub_category_id');
+        return $this->hasMany(ChildSubCategory::class,'sub_category_id');
     }
     
 }

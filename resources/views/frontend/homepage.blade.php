@@ -10,7 +10,7 @@
     <br>
 
     <!-- heading -->
-    <section class="categorie-section" style="margin-top: 130px;">
+    <section class="categorie-section" style="margin-top: 60px;">
         <div class="categorie-container categorie-column-gap-default">
             <div class="categorie-row">
                 <div class="categorie-column categorie-col-100 categorie-inner-column">
@@ -224,6 +224,7 @@
     </section>
 
     <!-- ads -->
+    <H1>HELLO</H1>
     <section class="ads-section">
         <div class="ads-container">
             <div class="ads-row">

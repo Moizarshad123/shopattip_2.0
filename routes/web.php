@@ -407,3 +407,4 @@ Route::resource('slider/slider', 'Slider\\SliderController');
 // CART ROUTES
 Route::get('product/product-add-to-cart/{id}','PagesController@addToCart');
 Route::get('product/product-remove-from-cart/{id}','PagesController@removeCart');
+Route::get('home/get-child-category/{id}','PagesController@getChildCategory');
