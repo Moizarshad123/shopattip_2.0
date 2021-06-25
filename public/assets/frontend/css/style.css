@@ -415,7 +415,7 @@ span.icon-search {
     width: 32px;
     height: 32px;
     top: calc(50% - 16px);
-    background: url(file:///C:/Users/HP/Desktop/CHANGE%20MENU/assets/img/free-shipping.svg) no-repeat;
+    /* background: url(file:///C:/Users/HP/Desktop/CHANGE%20MENU/assets/img/free-shipping.svg) no-repeat; */
     background-size: contain;
 }
 .wpbingoLogo a img {
@@ -426,7 +426,9 @@ img {
     vertical-align: top;
     max-width: 100%;
     height: auto;
+    
 }
+
 .menu-container-hm {
     width: 100%;
     margin: 0 auto;
@@ -533,18 +535,18 @@ span.pwb-dropdown-toggle.dropdown-toggle {
     white-space: normal;
     color: #666;
     position: relative;
-    padding: 10px 20px;
+    padding: 6px 20px;
     display: inline-block;
   }
   
   @media (max-width: 1400px){
   .first li a{
-    padding: 10px 20px;
+    padding: 6px 20px;
     }
   }
   @media (max-width: 1500px){
     .first li a{
-      padding: 10px 20px;
+      padding: 6px 20px;
       }
     }
   .first li a::before{
@@ -574,7 +576,7 @@ span.pwb-dropdown-toggle.dropdown-toggle {
     position: absolute;
     width: 200px;
     padding: 10px 0px;
-    height: 473px;
+    height: 413px;
     border: 1px solid #ccc;
     margin-left: 193px;
     top: 73px;
@@ -1298,3 +1300,7 @@ a.footer-icon {
     width: 33px;
     height: 20px;
 }
+
+
+/* cart itme css by saqlain */
+

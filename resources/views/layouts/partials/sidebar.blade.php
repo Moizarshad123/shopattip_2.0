@@ -13,8 +13,8 @@
         <div class="user-profile">
             <div class="dropdown user-pro-body ">
                 <div class="profile-image">
-                  
-                    <img src="{{asset('assets/images/malte.png')}}" alt="user-img" class="img-circle">
+                  @php $user = auth()->user(); @endphp
+                    <img src="{{asset('uploads/'.$user->profile->pic)}}" alt="user-img" class="img-circle">
     
                     <a href="javascript:void(0);" class="dropdown-toggle u-dropdown text-blue" data-toggle="dropdown"
                         role="button" aria-haspopup="true" aria-expanded="false">
@@ -23,10 +23,10 @@
                         </span>
                     </a>
                     <ul class="dropdown-menu animated flipInY">
-                        <li><a href="{{url('profile')}}"><i class="fa fa-user"></i> Profile</a></li>
+                        {{-- <li><a href="{{url('profile')}}"><i class="fa fa-user"></i> Profile</a></li> --}}
                         {{--<li><a href="javascript:void(0);"><i class="fa fa-inbox"></i> Inbox</a></li>--}}
                         <li role="separator" class="divider"></li>
-                        <li><a href="{{'account-settings'}}"><i class="fa fa-cog"></i> Account Settings</a></li>
+                        <li><a href="{{url('account-settings')}}"><i class="fa fa-cog"></i> Account Settings</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href=""><i class="fa fa-power-off"></i> Logout</a></li>
                     </ul>
@@ -49,7 +49,7 @@
                 <li><a class="waves-effect" href="{{asset('role-management')}}">
                         <i class=" icon-layers fa-fw"></i><span class="hide-menu"> Roles </span></a>
                 </li>
-                <li class="two-column">
+                {{-- <li class="two-column">
                     <a class="waves-effect" href="javascript:void(0);" aria-expanded="false"><i
                             class="icon-user fa-fw"></i> <span class="hide-menu"> Users</span></a>
                     <ul aria-expanded="false" class="collapse">
@@ -58,7 +58,7 @@
                         <li><a href="{{asset('user/deleted')}}">Deleted Users</a></li>
 
                     </ul>
-                </li>
+                </li> --}}
                 {{-- <li><a class="waves-effect" href="{{asset('role-management')}}">
                     <i class=" icon-layers fa-fw"></i><span class="hide-menu"> Category </span></a>
                 </li> --}}

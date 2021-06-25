@@ -67,8 +67,38 @@
         </div>
     </section>
 
+
+    <section class="categorie-section" style="margin-bottom: 3px;">
+        <div class="categorie-container categorie-column-gap-default">
+            <div class="categorie-row">
+                <!--swiper slider-->
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                        <!--slide 1-------------------------------------->
+                        <div class="col-md-6">
+                            <div class="bwp-image"> <a href="#"> <img
+                                src="{{ asset('assets/frontend/img/Mask Group 2.png') }}"
+                                        alt="" class="lazyloaded"
+                                        data-ll-status="loaded"></a>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="bwp-image"> <a href="#"> <img
+                                src="{{ asset('assets/frontend/img/Mask Group 2.png') }}"
+                                        alt="" class="lazyloaded"
+                                        data-ll-status="loaded"></a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!--swiper  slider end-->
+            </div>
+        </div>
+    </section>
     <!-- ads -->
-    <section class="ads-section">
+    {{-- <section class="ads-section">
         <div class="ads-container">
             <div class="ads-row">
                 <div class="ads-column ads-col-50 ads-inner-column ">
@@ -80,7 +110,7 @@
                                         <div class="bg-banner">
                                             <div class="ads-banner-wrapper ads-banners">
                                                 <div class="bwp-image"> <a href="#"> <img
-                                                            src="{{ asset('assets/frontend/img/sliders/bag10.png') }}"
+                                                    src="{{ asset('assets/frontend/img/Mask Group 2.png') }}"
                                                             alt="" class="lazyloaded"
                                                             data-ll-status="loaded"><noscript><img
                                                                 src="../wp-content/uploads/2020/02/Banner-1.jpg"
@@ -121,7 +151,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> --}}
 
 
     <!-- categories section 2-->
@@ -224,9 +254,10 @@
     </section>
 
     <!-- ads -->
-    <H1>HELLO</H1>
-    <section class="ads-section">
+    
+    {{-- <section class="ads-section">
         <div class="ads-container">
+            
             <div class="ads-row">
                 <div class="ads-column ads-col-50 ads-inner-column ">
                     <div class="ads-element-populated">
@@ -241,7 +272,8 @@
                                                             alt="" class="lazyloaded"
                                                             data-ll-status="loaded"><noscript><img
                                                                 src="../wp-content/uploads/2020/02/Banner-1.jpg"
-                                                                alt=""></noscript></a></div>
+                                                                alt=""></noscript></a>
+                                                </div>
                                                 <div class="banner-wrapper-infor"> <a class="button" href="#"> </a>
                                                 </div>
                                             </div>
@@ -276,6 +308,37 @@
                         </div>
                     </div>
                 </div>
+                
+            </div>
+        </div>
+    </section> --}}
+
+    <section class="categorie-section" style="margin-bottom: 3px;">
+        <div class="categorie-container categorie-column-gap-default">
+            <div class="categorie-row">
+                <!--swiper slider-->
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                        <!--slide 1-------------------------------------->
+                        <div class="col-md-6">
+                            <div class="bwp-image"> <a href="#"> <img
+                                src="{{ asset('assets/frontend/img/Mask Group 1.png') }}"
+                                        alt="" class="lazyloaded"
+                                        data-ll-status="loaded"></a>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="bwp-image"> <a href="#"> <img
+                                src="{{ asset('assets/frontend/img/Mask Group 1.png') }}"
+                                        alt="" class="lazyloaded"
+                                        data-ll-status="loaded"></a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!--swiper  slider end-->
             </div>
         </div>
     </section>

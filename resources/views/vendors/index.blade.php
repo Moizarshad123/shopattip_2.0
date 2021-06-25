@@ -115,6 +115,7 @@
 <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
     <script src="{{asset('plugins/components/toast-master/js/jquery.toast.js')}}"></script>
     <script src="{{asset('plugins/components/datatables/jquery.dataTables.min.js')}}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-confirmation/1.0.5/bootstrap-confirmation.min.js"></script>
 
     <!-- start - This is for export functionality only -->
     <!-- end - This is for export functionality only -->

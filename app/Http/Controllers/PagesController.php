@@ -27,6 +27,7 @@ class PagesController extends Controller
 {
     public function HomePage()
     {
+        // dd(request()->ip);
         
         $models = scandir(public_path()."/models");
 		$sliders            = Slider::where('deleted_at',null)->get();
@@ -48,10 +49,10 @@ class PagesController extends Controller
 
         // dd($allcategories);
        
-		$newArrivals        = Product::where('product_type_id',1)->orderBy('id','DESC')->skip(0)->take(12)->get();
+		$newArrivals        = Product::where('product_type_id',1)->where('stock_status','instock')->orderBy('id','DESC')->skip(0)->take(12)->get();
 		// $latesProducts      = Product::where('product_type_id',1)->where('created_at', '>', Carbon::now()->startOfWeek())->skip(0)->take(12)->get();
-		$latesProducts      = Product::where('product_type_id',1)->orderBy('id','ASC')->skip(0)->take(12)->get();
-		$featureProducts    = Product::where('product_type_id',1)->where('is_featured',1)->orderBy('id','DESC')->skip(0)->take(12)->get();
+		$latesProducts      = Product::where('product_type_id',1)->where('stock_status','instock')->orderBy('id','ASC')->skip(0)->take(12)->get();
+		$featureProducts    = Product::where('product_type_id',1)->where('stock_status','instock')->where('is_featured',1)->orderBy('id','DESC')->skip(0)->take(12)->get();
 
         return view('frontend.homepage',compact('allcategories','sliders','newArrivals','latesProducts','featureProducts'));
     }
@@ -130,4 +131,22 @@ class PagesController extends Controller
         $banner = Category::where('id', $id)->first();
         echo $banner->banner;
     }
+
+    public function getProduct(Request $request){
+
+        $search = $request->search;
+  
+        if($search == ''){
+           $employees = Product::orderby('name','asc')->select('id','name')->limit(10)->get();
+        }else{
+           $employees = Product::orderby('name','asc')->select('id','name')->where('name', 'like', '%' .$search . '%')->limit(10)->get();
+        }
+  
+        $response = array();
+        foreach($employees as $employee){
+           $response[] = array("value"=>$employee->id,"label"=>$employee->name);
+        }
+  
+        return response()->json($response);
+     }
 }

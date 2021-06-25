@@ -68,7 +68,7 @@
                                         <div class="col-sm-10">
                                             <input id="name" name="name" type="text"
                                                    placeholder="Name" class="form-control required"
-                                                   value="{{$user->name}}"/>
+                                                   value="{{$user->name}}"  maxlength="20"/>
 
                                             {!! $errors->first('name', '<span class="help-block">:message</span>') !!}
                                         </div>
@@ -78,7 +78,7 @@
                                         <label for="email" class="col-sm-2 control-label">Email *</label>
                                         <div class="col-sm-10">
                                             <input id="email" name="email" placeholder="E-mail" type="text"
-                                                   class="form-control required email" value="{{$user->email}}"/>
+                                                   class="form-control required email" value="{{$user->email}}"  maxlength="40" readonly/>
                                             {!! $errors->first('email', '<span class="help-block">:message</span>') !!}
                                         </div>
                                     </div>
@@ -88,7 +88,7 @@
                                         <label for="password" class="col-sm-2 control-label">Password *</label>
                                         <div class="col-sm-10">
                                             <input id="password" name="password" type="password" placeholder="Password"
-                                                   class="form-control required" value="{!! old('password') !!}"/>
+                                                   class="form-control required" value="{!! old('password') !!}" maxlength="20" onselectstart="return false" onpaste="return false;" onCopy="return false" onCut="return false" onDrag="return false" onDrop="return false" autocomplete=off/>
                                             {!! $errors->first('password', '<span class="help-block">:message</span>') !!}
                                         </div>
                                     </div>
@@ -99,7 +99,7 @@
                                         <div class="col-sm-10">
                                             <input id="password_confirmation" name="password_confirmation"
                                                    type="password"
-                                                   placeholder="Confirm Password " class="form-control required"/>
+                                                   placeholder="Confirm Password " class="form-control required" maxlength="20" onselectstart="return false" onpaste="return false;" onCopy="return false" onCut="return false" onDrag="return false" onDrop="return false" autocomplete=off/>
                                             {!! $errors->first('password_confirmation', '<span class="help-block">:message</span>') !!}
                                         </div>
                                     </div>
@@ -125,7 +125,7 @@
                                                 <div class="fileinput-new thumbnail"
                                                      style="width: 200px; height: 200px;">
                                                     @if($user->profile->pic != null)
-                                                        <img src="{{asset('storage/uploads/users/'.$user->profile->pic)}}" alt="profile pic">
+                                                        <img src="{{asset('uploads/'.$user->profile->pic)}}" alt="profile pic">
                                                     @else
                                                         <img src="http://placehold.it/200x200" alt="profile pic">
                                                     @endif
@@ -136,7 +136,7 @@
                                                 <span class="btn btn-default btn-file">
                                                     <span class="fileinput-new">Select image</span>
                                                     <span class="fileinput-exists">Change</span>
-                                                    <input id="pic" name="pic_file" type="file" class="form-control"/>
+                                                    <input id="pic" name="pic_file" type="file" class="form-control" accept="image/png, image/jpeg, image/jpg" />
                                                 </span>
                                                     <a href="#" class="btn btn-danger fileinput-exists"
                                                        data-dismiss="fileinput">Remove</a>
@@ -153,7 +153,7 @@
                                         </label>
                                         <div class="col-sm-10">
                         <textarea name="bio" id="bio" class="form-control resize_vertical"
-                                  rows="4">{{$user->profile->bio}}</textarea>
+                                  rows="4" maxlength="300">{{$user->profile->bio}}</textarea>
                                         </div>
                                         {!! $errors->first('bio', '<span class="help-block">:message</span>') !!}
                                     </div>
@@ -186,7 +186,7 @@
                                         <div class="col-sm-10">
                                             <input id="countries" name="country" type="text"
                                                    class="form-control"
-                                                   value="{{$user->profile->country}}"/>
+                                                   value="{{$user->profile->country}}" maxlength="56" onkeypress="return /[a-z]/i.test(event.key)"/>
                                             <span class="help-block">{{ $errors->first('country', ':message') }}</span>
 
                                         </div>
@@ -197,7 +197,7 @@
                                         <div class="col-sm-10">
                                             <input id="state" name="state" type="text"
                                                    class="form-control"
-                                                   value="{{$user->profile->state}}"/>
+                                                   value="{{$user->profile->state}}" maxlength="40" onkeypress="return /[a-z]/i.test(event.key)"/>
                                             <span class="help-block">{{ $errors->first('state', ':message') }}</span>
                                         </div>
                                     </div>
@@ -206,7 +206,7 @@
                                         <label for="city" class="col-sm-2 control-label">City</label>
                                         <div class="col-sm-10">
                                             <input id="city" name="city" type="text" class="form-control"
-                                                   value="{{$user->profile->city}}"/>
+                                                   value="{{$user->profile->city}}" maxlength="40" onkeypress="return /[a-z]/i.test(event.key)"/>
                                             <span class="help-block">{{ $errors->first('city', ':message') }}</span>
 
                                         </div>
@@ -216,7 +216,7 @@
                                         <label for="address" class="col-sm-2 control-label">Address</label>
                                         <div class="col-sm-10">
                                             <input id="address" name="address" type="text" class="form-control"
-                                                   value="{{$user->profile->address}}"/>
+                                                   value="{{$user->profile->address}}" maxlength="70"/>
                                             <span class="help-block">{{ $errors->first('address', ':message') }}</span>
 
                                         </div>
@@ -226,7 +226,7 @@
                                         <label for="postal" class="col-sm-2 control-label">Postal/zip</label>
                                         <div class="col-sm-10">
                                             <input id="postal" name="postal" type="text" class="form-control"
-                                                   value="{{$user->profile->postal}}"/>
+                                                   value="{{$user->profile->postal}}" maxlength="6" onkeypress="return /[0-9]/i.test(event.key)"/>
                                             <span class="help-block">{{ $errors->first('postal', ':message') }}</span>
 
                                         </div>
@@ -292,6 +292,29 @@
             keepOpen:false,
             useCurrent: false,
             maxDate: moment().add(1,'h').toDate()
+        });
+
+        $('#pic').change(function () {
+            var ext = this.value.match(/\.(.+)$/)[1];
+            switch (ext) {
+                case 'jpg':
+                case 'png':
+
+                    break;
+                default:
+                    $.toast({
+                    heading: 'Error!',
+                    position: 'top-center',
+                    text: 'Image Should be png/jpg',
+                    loaderBg: '#ff6849',
+                    icon: 'error',
+                    hideAfter: 2000,
+                    stack: 6
+                });
+
+                    // alert('This is not an allowed file type.');
+                    this.value = '';
+            }
         });
     </script>
 @endpush

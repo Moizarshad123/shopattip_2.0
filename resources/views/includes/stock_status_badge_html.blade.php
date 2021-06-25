@@ -1,0 +1,1 @@
+<td class="tooltip" id="stock_stats_hover">{!! $variable == 'outofstock' ? "<span class='badge badge-danger'>outofstock</span>" : ($variable=='instock' ? "<span class='badge badge-success'>Instock</span>": "")  !!}</td>

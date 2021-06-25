@@ -37,8 +37,8 @@ class CategoryController extends Controller
             } else {
                 $category = Category::orderBy('id', 'DESC')->where('deleted_at',null)->paginate($perPage);
             }
-
-            return view('category.category.index', compact('category'));
+            $user = auth()->user();
+            return view('category.category.index', compact('category','user'));
         }
         return response(view('403'), 403);
 

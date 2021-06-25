@@ -86,8 +86,7 @@ class ProductController extends Controller
     }
 
     public function store(Request $request){
-
-       
+      
         date_default_timezone_set("Asia/Karachi");
        
         $model = str_slug('product','-');
@@ -134,7 +133,7 @@ class ProductController extends Controller
         $product->brand_id              = $request->brand_id;
         $product->description           = @$request->description;
         $product->is_featured           = @$request->is_featured_active;
-        $product->is_specification      = @$request->specification_active;
+        
         $product->date                  = date('Y-m-d H:i:s');
         $product->sale_price            = @$request->commission+intval($request->sale_price);
         // $product->dollor                = @$request->dollor;
@@ -146,6 +145,16 @@ class ProductController extends Controller
         // $product->discount_type         = @$request->discount_type;
         $product->shipping_cost         = @$request->shipping_cost;
         $product->commission            = @$request->commission;
+        if($request->has('specification_active')){
+            $product->is_specification      = @$request->specification_active;
+
+        }else{
+            $product->is_specification      = 'null';
+
+        }
+        if($request->has('stock_active')){
+            $product->stock_status      = @$request->stock;
+        }
 
         $tags                    = array();
         if($request->tags[0] != null){
@@ -174,7 +183,7 @@ class ProductController extends Controller
         $product->num_of_imgs           = count($request->thumbnail_image) + 1;
         $product->url_name              = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->name));
         if( $request->has('colors')){
-            if($request->has('colors_active') && $request->has('colors') && count($request->colors) > 0){
+            if($request->has('colors') && count($request->colors) > 0){
                 $color_codes = implode(', ', $request->colors);
                 $result_color_ids = \App\ProductColor::select('id')->whereIn('color_code', $request->colors)->get();
 
@@ -211,7 +220,7 @@ class ProductController extends Controller
                 $product_stock             = new ProductVariation;
                 $product_stock->product_id = @$product->id;
                
-                if($request->has('colors_active') && $request->has('colors') && count($request->colors) > 0){
+                if( $request->has('colors') && count($request->colors) > 0){
                         $color_name = \App\ProductColor::where('color_code', $request->colors[$i])->first()->name;
                       
                         array_push($str, $color_name);
@@ -219,26 +228,34 @@ class ProductController extends Controller
                 }
                
                 $product_stock->color = @$str[$i];
-                $product_stock->stock = @$request->qty[$i];
+                // $product_stock->stock = @$request->qty[$i];
                 $product_stock->save();
    
            }
         }
 
-        $specification = count($request->specification);
-        if( $specification > 0){
-            for($i = 1; $i < $specification; $i++){
-                $specifications                            = new  productSpecification;
-                $specifications->product_id                = $product->id;
-                $specifications->specification_title       = $request->specification_name[$i];
-                $specifications->specification_description = $request->specification[$i];
-                $specifications->save();
-
+        if($request->has('specification')){
+            if($request->specification[1] != null){
+                $specification = count($request->specification);
+                if( $specification > 0){
+                    for($i = 1; $i < $specification; $i++){
+                        $specifications                            = new  productSpecification;
+                        $specifications->product_id                = $product->id;
+                        $specifications->specification_title       = $request->specification_name[$i];
+                        $specifications->specification_description = $request->specification[$i];
+                        $specifications->save();
+        
+                    }
+                }
             }
+           
         }
+        
 
         $logo =  "product_".$product->id."_1.".$request->front_image->extension();
-        $request->front_image->move(public_path('website/productImages'), $logo);
+        $logo = substr($logo, 0, strrpos($logo, '.'));
+
+        $request->front_image->move(public_path('website/productImages'), $logo.'.jpg');
         $this->addImages($request->thumbnail_image,$product->id);
         return redirect('product/product')->with('message', 'Product added!');
         }
@@ -251,7 +268,8 @@ class ProductController extends Controller
         {
             $pro_num++;
             $product_image =  "product_".$product_id."_".$pro_num.".".$imgArray[$i]->extension();
-            $imgArray[$i]->move(public_path('website/productImages'), $product_image);
+            $product_image = substr($product_image, 0, strrpos($product_image, '.'));
+            $imgArray[$i]->move(public_path('website/productImages'), $product_image.'.jpg');
    
         }
         return true;
@@ -392,23 +410,13 @@ class ProductController extends Controller
             }
             else
             {
-                // $vendor_type_id = $user->vendor['vendor_type_id'];
-                // $Categories         = Category::select('id','name','url_name','category_type_id','level_name')
-                //                                 ->where('status',1)
-                //                                 ->where('category_type_id',$category_type_id)->get();
-                // $subCategories      = SubCategory::select('id','name','url_name','category_id')->where('status',1)->get();
-                // $childSubCategories = ChildSubCategory::select('id','name','url_name','sub_category_id')->where('status',1)->get();
-               
-                // $vendor_type_id = $user->vendor['vendor_type_id'];
+
                 $vendor_type_id = $user_id;
-                // $Categories     = Category::select('id','name','url_name','category_type_id')->where('status',1)->where('category_type_id',$vendor_type_id)->get();
-                // $brands         = Brand::orderBy('id','desc')->where('brand_type_id',$vendor_type_id)->get();
                 $Categories         = Category::select('id','name','url_name','category_type_id')->where('status',1)->get();
                 $subCategories      = SubCategory::select('id','name','url_name','category_id')->where('status',1)->get();
                 $childSubCategories = ChildSubCategory::select('id','name','url_name','sub_category_id')->where('status',1)->get();
                
                 $brands     = Brand::orderBy('id','desc')->get();
-    
                 
             }
             $tag     = json_decode($product->tags);
@@ -424,14 +432,12 @@ class ProductController extends Controller
     }
 
     public function update(Request $request, $id){
-    
         // dd($request);
         $model = str_slug('product','-');
         if(auth()->user()->permissions()->where('name','=','edit-'.$model)->first()!= null) {
             $this->validate($request, [
 
 		]);
-
 
             $user_id    = auth()->user()->id;
             $user       = User::findorfail($user_id);
@@ -478,36 +484,60 @@ class ProductController extends Controller
             //  $product->discount_type            = @$request->discount_type;
              $product->shipping_cost            = @$request->shipping_cost;
              $product->commission               = @$request->commission;
+             if($request->has('specification_active')){
+                 if($request->specification){
+                    $product->is_specification      = @$request->specification_active;
+                 }else{
+                    $product->is_specification      = null;
+                 }
+                
+    
+            }else{
+                $product->is_specification      = null;
+    
+            }
+            if($request->has('stock_active')){
+                $product->stock_status      = @$request->stock;
+            }else{
+                $product->stock_status      = null;
+
+            }
              $tags                              = array();
 
              if($request->tags[0] != null){
                  foreach (json_decode($request->tags[0]) as $key => $tag) {
                      array_push($tags, $tag->value);
                  }
+                 $product->tags                 = implode(',', $tags);
+             }else{
+                $product->tags                 = null;
              }
-             $product->tags                 = implode(',', $tags);
 
              $sizes                         = array();
              if($request->size[0] != null){
                  foreach (json_decode($request->size[0]) as $key => $size) {
                      array_push($sizes, $size->value);
                  }
+                 $product->size                 = implode(',', $sizes);
+             }else{
+                $product->size                 = null;
              }
-             $product->size                 = implode(',', $sizes);
      
              $fabrics                       = array();
              if($request->fabric[0] != null){
                  foreach (json_decode($request->fabric[0]) as $key => $fabric) {
                      array_push($fabrics, $fabric->value);
                  }
+                 $product->fabric               = implode(',', $fabrics);
+             }else{
+                $product->fabric               = null;
              }
-             $product->fabric               = implode(',', $fabrics);
              if($request->hasFile('thumbnail_image')){
                 $product->num_of_imgs          = count($request->thumbnail_image) + 1;
              }
              $product->url_name             = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->name));
              if( @$request->has('colors')){
-                if($request->has('colors_active') && $request->has('colors') && count($request->colors) > 0){
+                if( $request->has('colors') && count($request->colors) > 0){
                     $color_codes            = implode(', ', $request->colors);
                     $result_color_ids       = \App\ProductColor::select('id')->whereIn('color_code', $request->colors)->get();
         
@@ -522,6 +552,8 @@ class ProductController extends Controller
                     $colors = array();
                     $product->colors = json_encode($colors);
                 }
+            }else{
+                $product->colors = null;
             }
             // $stock = 0;
             // if(sizeof($request->qty)){
@@ -541,30 +573,43 @@ class ProductController extends Controller
                 
                     $product_stock              = new ProductVariation;
                     $product_stock->product_id  = $product->id;
-                    if($request->has('colors_active') && $request->has('colors') && count(@$request->colors) > 0){
+                    if( $request->has('colors') && count(@$request->colors) > 0){
                         $color_name             = \App\ProductColor::where('color_code', @$request->colors[$i])->first()->name;
                         array_push($str, $color_name);
                     }
                         $product_stock->color   = @$str[$i];
-                        $product_stock->stock   = @$request->qty[$i];
+                        // $product_stock->stock   = @$request->qty[$i];
                         $product_stock->save();
                 }
              }
-
-             $specification = count($request->specification);
-             $product_specification     = productSpecification::where('product_id',$id)->delete();
-                if( $specification > 0){
-                    for($i = 0; $i < $specification; $i++){
-                        $specifications                            = new  productSpecification;
-                        $specifications->product_id                = $product->id;
-                        $specifications->specification_title       = $request->specification_name[$i];
-                        $specifications->specification_description = $request->specification[$i];
-                        $specifications->save();
-                    }
+             if($request->specification_active){
+                if($request->specification){
+                   
+                   $specification = count($request->specification);
+                   $product_specification     = productSpecification::where('product_id',$id)->delete();
+                      if( $specification > 0){
+                          for($i = 0; $i < $specification; $i++){
+                              $specifications                            = new  productSpecification;
+                              $specifications->product_id                = $product->id;
+                              $specifications->specification_title       = $request->specification_name[$i];
+                              $specifications->specification_description = $request->specification[$i];
+                              $specifications->save();
+                          }
+                      }
+                }else{
+            
+                  
+                   $product_specification     = productSpecification::where('product_id',$id)->delete();
                 }
+             }else{
+                $product_specification     = productSpecification::where('product_id',$id)->delete();
+             }
+            
+            
             if($request->hasFile('front_image')){
                 $logo =  "product_".$product->id."_1.".$request->front_image->extension();
-                $request->front_image->move(public_path('website/productImages'), $logo);
+                $logo = substr($logo, 0, strrpos($logo, '.'));
+                $request->front_image->move(public_path('website/productImages'), $logo.'.jpg');
             }
             if($request->hasFile('thumbnail_image')){
                 $this->addImages($request->thumbnail_image,$product->id);
@@ -691,6 +736,25 @@ class ProductController extends Controller
             return response()->json(['success'=>"Product Deleted successfully."]);
         }
         
+    }
+
+    public function stockStatus(Request $request)
+    {
+
+        if($request->product_id){
+            $product = Product::find($request->product_id);
+            if($request->status == 0){
+                Product::where('id',$request->product_id)->update(['stock_status'=>'outofstock']);
+                return response()->json(['message'=>'Status change successfully.']);
+            }else if($request->status == 1){
+                Product::where('id',$request->product_id)->update(['stock_status'=>'instock']);
+                return response()->json(['message'=>'Status change successfully.']);
+            }else{
+                return response()->json(['message'=>'error']);
+            }
+        }else{
+            return response()->json(['message'=>'0']);
+        }
     }
     
 

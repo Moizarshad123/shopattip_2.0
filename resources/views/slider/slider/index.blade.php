@@ -2,9 +2,16 @@
 
 @push('css')
     <link href="{{asset('plugins/components/datatables/jquery.dataTables.min.css')}}" rel="stylesheet" type="text/css"/>
-    <link href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css" rel="stylesheet"
-          type="text/css"/>
-          <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css" rel="stylesheet" type="text/css"/>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <style>
+            .wrap{
+                word-break: break-all; 
+            }
+                #myTable_filter input{
+                border-color: #6f6f6f !important;
+            }
+    </style>
 @endpush
 
 @section('content')
@@ -45,8 +52,12 @@
                                     </label>
                                 </td>
                                     <td>{{ $loop->iteration ?? $item->id }}</td>
-                                    <td>{{ $item->slider_type }}</td>
-                                    <td>{{ $item->title }}</td>
+                                    @if($item->slider_type  == 1)
+                                    <td>General</td>
+                                    @elseif($item->slider_type == 2)
+                                    <td>Grocery</td>
+                                    @endif
+                                    <td class="wrap">{{ $item->title }}</td>
                                     @include('includes.image_html',['variable'=>$item->slider_image])
                                     <td>
                                         @can('view-'.str_slug('Slider'))
@@ -97,8 +108,9 @@
 
 @push('js')
     <script src="{{asset('plugins/components/toast-master/js/jquery.toast.js')}}"></script>
-
     <script src="{{asset('plugins/components/datatables/jquery.dataTables.min.js')}}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-confirmation/1.0.5/bootstrap-confirmation.min.js"></script>
+
     <!-- start - This is for export functionality only -->
     <!-- end - This is for export functionality only -->
     <script>

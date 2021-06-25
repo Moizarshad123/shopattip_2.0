@@ -112,7 +112,6 @@
 
 @push('js')
     <script src="{{asset('plugins/components/toast-master/js/jquery.toast.js')}}"></script>
-
     <script src="{{asset('plugins/components/datatables/jquery.dataTables.min.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-confirmation/1.0.5/bootstrap-confirmation.min.js"></script>
 
@@ -191,6 +190,7 @@
                                 if (data['success']) {
                                     $(".sub_chk:checked").each(function() {
                                         $(this).parents("tr").remove();
+                                        location.reload();
                                     });
                                     alert(data['success']);
                                 } else if (data['error']) {

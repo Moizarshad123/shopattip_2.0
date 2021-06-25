@@ -10,6 +10,7 @@ use Illuminate\Cache\RetrievesMultipleKeys;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use File;
+use Storage;
 
 class UsersController extends Controller
 {
@@ -51,11 +52,13 @@ class UsersController extends Controller
         $user->save();
 
         if ($file = $request->file('pic_file')) {
-            $extension = $file->extension()?: 'png';
-            $destinationPath = storage_path('/app/public/uploads/users/');
-            $safeName = str_random(10) . '.' . $extension;
-            $file->move($destinationPath, $safeName);
-            $request['pic'] = $safeName;
+            // $extension = $file->extension()?: 'png';
+            // $destinationPath = storage_path('/app/public/storage/uploads/users/');
+            // $safeName = str_random(10) . '.' . $extension;
+            // $file->move($destinationPath, $safeName);
+            // $request['pic'] = $safeName;
+
+            $request['pic'] = Storage::disk('uploads')->put('users',$request->pic_file);
         }else{
             $request['pic'] = 'no_avatar.jpg';
         }
@@ -133,14 +136,15 @@ class UsersController extends Controller
 
 
         if ($file = $request->file('pic_file')) {
-            $extension = $file->extension()?: 'png';
-            $destinationPath = storage_path('/app/public/uploads/users/');
-            $safeName = str_random(10) . '.' . $extension;
-            $file->move($destinationPath, $safeName);
-            //delete old pic if exists
-            if (File::exists($destinationPath . $user->pic)) {
-                File::delete($destinationPath . $user->pic);
-            }
+            // $extension = $file->extension()?: 'png';
+            // $destinationPath = storage_path('/app/public/storage/uploads/users/');
+            // $safeName = str_random(10) . '.' . $extension;
+            // $file->move($destinationPath, $safeName);
+            // //delete old pic if exists
+            // if (File::exists($destinationPath . $user->pic)) {
+            //     File::delete($destinationPath . $user->pic);
+            // }
+            $safeName = Storage::disk('uploads')->put('users',$request->pic_file);
             //save new file path into db
             $profile->pic = $safeName;
         }
@@ -220,15 +224,17 @@ class UsersController extends Controller
 
 
         if ($file = $request->file('pic_file')) {
-            $extension = $file->extension()?: 'png';
-            $destinationPath = storage_path('/app/public/uploads/users/');
-            $safeName = str_random(10) . '.' . $extension;
-            $file->move($destinationPath, $safeName);
-            //delete old pic if exists
-            if (File::exists($destinationPath . $user->pic)) {
-                File::delete($destinationPath . $user->pic);
-            }
-            //save new file path into db
+            // $extension = $file->extension()?: 'png';
+            // $destinationPath = storage_path('/app/public/storage/uploads/users/');
+            // $safeName = str_random(10) . '.' . $extension;
+            // $file->move($destinationPath, $safeName);
+            // //delete old pic if exists
+            // if (File::exists($destinationPath . $user->pic)) {
+            //     File::delete($destinationPath . $user->pic);
+            // }
+            // //save new file path into db
+            $safeName = Storage::disk('uploads')->put('users',$request->pic_file);
+            
             $profile->pic = $safeName;
         }
 

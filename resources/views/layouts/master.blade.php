@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     {{-- <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/images/cushliving.png')}}"> --}}
-    <title>CRUD | Dashboard</title>
+    <title>SHOPAATIP | Dashboard</title>
     <!-- ===== Bootstrap CSS ===== -->
     <link href="{{asset('bootstrap/dist/css/bootstrap.min.css')}}" rel="stylesheet">
     <!-- ===== Plugin CSS ===== -->

@@ -384,6 +384,8 @@ Route::get('getsubcategoryforchildsubcat/{id}','ChildSubCategory\\ChildSubCatego
 Route::get('admin/reviews', 'ProductController\\ProductController@customerReviews');
 Route::get('admin/vendors', 'VendorController@vendorsList');
 Route::get('admin/vendor-status-change', 'VendorController@vendorStatusChange');
+Route::post('admin/product-stock-status', 'ProductController\\ProductController@stockStatus');
+
 
 
 
@@ -408,3 +410,5 @@ Route::resource('slider/slider', 'Slider\\SliderController');
 Route::get('product/product-add-to-cart/{id}','PagesController@addToCart');
 Route::get('product/product-remove-from-cart/{id}','PagesController@removeCart');
 Route::get('home/get-child-category/{id}','PagesController@getChildCategory');
+
+Route::post('/product/getProduct/','PagesController@getProduct')->name('product.getProduct');

@@ -154,27 +154,23 @@
         .aiz-switch-dark input:checked ~ span:after {
         background-color: var(--dark);
         }
+        /*tagify tag input*/
 
-
-
-
-/*tagify tag input*/
-
-.aiz-tag-input {
-height: auto;
-padding: 0.465rem 1rem 0.2rem;
-}
-.aiz-tag-input .tagify__tag,
-.aiz-tag-input .tagify__input {
-margin: 0px 5px 5px 0px;
-}
-.aiz-tag-input .tagify__tag__removeBtn {
-font: 12px Serif;
-line-height: 1.5;
-}
-.aiz-tag-input .tagify__tag__removeBtn:hover + div > span {
-opacity: 1;
-}
+        .aiz-tag-input {
+        height: auto;
+        padding: 0.465rem 1rem 0.2rem;
+        }
+        .aiz-tag-input .tagify__tag,
+        .aiz-tag-input .tagify__input {
+        margin: 0px 5px 5px 0px;
+        }
+        .aiz-tag-input .tagify__tag__removeBtn {
+        font: 12px Serif;
+        line-height: 1.5;
+        }
+        .aiz-tag-input .tagify__tag__removeBtn:hover + div > span {
+        opacity: 1;
+        }
 </style>
 @endpush
 @section('content')
@@ -194,8 +190,8 @@ opacity: 1;
                         <table class="table table">
                             <tbody>
                             <tr>
-                                <th>ID</th>
-                                <td>{{ $product->id }}</td>
+                                <th><h3>Stock</h3></th>
+                                <td><h3><i>{{ @$product->stock_status }}</i></h3></td>
                             </tr>
                             <tr>
                                 <th> Product Type </th>
@@ -265,11 +261,11 @@ opacity: 1;
                                 <td style="word-break: break-all;"> <input type="text" id="fabric" value="{{ $product->fabric??'null' }} " readonly></td>
                             </tr>
 
-                            <tr>
+                            {{-- <tr>
                                 <th> Stock </th>
                                 <td>{{ $product->current_stock??'0' }} </td>
                             </tr>
-                          
+                           --}}
 
                             <tr>
                                 
@@ -330,19 +326,20 @@ opacity: 1;
                             </tr>
                             </tbody>
                         </table>
-                        <h2>Product Variaction</h2>
+                        @if(sizeof($product['productVariaction']))
+                        <h2 style="font-weight: bold;">Product Variaction</h2>
                         <table class="table table-bordered " >
                             <thead>
                                 <tr >
                                     <th class="text-center">
-                                        <b><label for="" class="control-label">Color</label></b>
+                                        <b><label for="" class="control-label"><h4 style="font-weight: bold;">Color</h4></label></b>
                                     </th>
                                     {{-- <td class="text-center">
                                         <label for="" class="control-label">Variant Price</label>
                                     </td> --}}
                     
                                     <th class="text-center">
-                                        <b><label for="" class="control-label">Quantity</label></b>
+                                        <b><label for="" class="control-label"><h4 style="font-weight: bold;">Stock</h4></label></b>
                                     </th>
                                     
                                 </tr>
@@ -358,7 +355,7 @@ opacity: 1;
 
                                     <td>
                                         @foreach ($product['productVariaction'] as $item)
-                                       <b>{{  $item->stock??'null' }}</b><br> <hr>
+                                       <b>{{  $product->stock_status??'null' }}</b><br> <hr>
                                           
                                         @endforeach
                                     </td>
@@ -367,19 +364,21 @@ opacity: 1;
                       
                             </tbody>
                         </table>
-                        <h2>Product Specification</h2>
+                        @endif
+                        @if(sizeof($product['productSpecification']))
+                        <h2 style="font-weight: bold;">Product Specification</h2>
                         <table class="table table-bordered " >
                             <thead>
                                 <tr >
                                     <th class="text-center">
-                                        <b><label for="" class="control-label">Specification Title</label></b>
+                                        <b><label for="" class="control-label"><h4 style="font-weight: bold;">Specification Title</h4></label></b>
                                     </th>
                                     {{-- <td class="text-center">
                                         <label for="" class="control-label">Variant Price</label>
                                     </td> --}}
                     
                                     <th class="text-center">
-                                        <b><label for="" class="control-label">Specification Description</label></b>
+                                        <b><label for="" class="control-label"><h4 style="font-weight: bold;">Specification Description</h4></label></b>
                                     </th>
                                     
                                 </tr>
@@ -404,6 +403,7 @@ opacity: 1;
                       
                             </tbody>
                         </table>
+                        @endif
                     </div>
                 </div>
             </div>

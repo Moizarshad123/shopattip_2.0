@@ -2,8 +2,11 @@
 
 @push('css')
     <link href="{{asset('plugins/components/datatables/jquery.dataTables.min.css')}}" rel="stylesheet" type="text/css"/>
-    <link href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css" rel="stylesheet"
-          type="text/css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css" rel="stylesheet" type="text/css"/>
+
           <meta name="csrf-token" content="{{ csrf_token() }}">
           <style>
             .wrap{
@@ -11,7 +14,31 @@
             }
             #myTable_filter input{
             border-color: #6f6f6f !important;
-        }
+            }
+            .stock_stats_hover {
+                    /* position: relative;
+                    display: inline-block; */
+                    cursor: pointer;
+            }
+
+            .stock_stats_hover .tooltiptext {
+                visibility: hidden;
+                width: 120px;
+                background-color: black;
+                color: #fff;
+                text-align: center;
+                border-radius: 6px;
+                padding: 5px 0;
+
+                /* Position the tooltip */
+                position: absolute;
+                z-index: 1;
+            }
+
+            .stock_stats_hover:hover .tooltiptext {
+            
+                visibility: visible;
+            }
         </style>
 @endpush
 
@@ -37,27 +64,27 @@
 
                     </div>
                     <hr>
+                 
                     <div class="table-responsive">
                         <table class="table table-borderless data-checkbox" id="myTable">
                             <thead>
                             <tr>
-                                <th class="bs-checkbox " style="width: 36px; "  data-field="0"><div class="th-inner "><label><input id="master" type="checkbox"><span></span></label></div></th>
+                                <th class="bs-checkbox " style="width: 36px;"  data-field="0"><div class="th-inner "><label><input id="master" type="checkbox"><span></span></label></div></th>
                                 <th>#</th>
                                 <th>Product Type</th>
                                 <th>Category</th>
                                 <th>Subcategory</th>
                                 <th>Child Subcategory</th>
-
+                                <th>Status</th>
                                 <th>Actions</th>
                             </tr>
                             </thead>
                             <tbody>
-                                {{-- @dd($product) --}}
+
                             @foreach($product as $item)
 
-                                {{-- @dd($item->subCategory[0]->name) --}}
-                                <tr class="optionOne">
-                                    <td class="bs-checkbox " style="width: 36px; "><label>
+                                <tr class="optionOnes">
+                                    <td class="bs-checkbox optionOne" style="width: 36px; "><label>
                                         <input style="margin-left: 5px;" data-index="0" class="sub_chk" data-id="{{$item->id}}" type="checkbox">
                                         <span></span>
                                         </label>
@@ -72,7 +99,8 @@
                                     <td class="wrap">{{$item->category[0]->name??''}}</td>
                                     <td class="wrap">{{ $item->subCategory[0]->name??'' }}</td>
                                     <td class="wrap">{{ $item->subChildCategory[0]->name??'' }}</td>
-
+                                    {{-- <td  class="stock_stats_hover" data-id={{ $item->id }}>{!! $item->stock_status == 'outofstock' ? "<span class='badge badge-danger'>outofstock</span>" : ($item->stock_status=='instock' ? "<span class='badge badge-success'>Instock</span>": "")  !!}   <span  class="tooltiptext">Double Click To Change Status</span></td> --}}
+                                    <td><input data-id="{{$item->id}}" class="toggle-class" type="checkbox" data-onstyle="success" data-offstyle="danger" data-toggle="toggle" data-on="INSTOCK" data-off="OUTOFSTOCK" {{ $item->stock_status == 'instock' ? 'checked' : '' }}></td>
                                     <td>
                                         @can('view-'.str_slug('Product'))
                                             <a href="{{ url('/product/product/' . $item->id) }}"
@@ -121,13 +149,75 @@
 @endsection
 
 @push('js')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-confirmation/1.0.5/bootstrap-confirmation.min.js"></script>
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
     <script src="{{asset('plugins/components/toast-master/js/jquery.toast.js')}}"></script>
 
     <script src="{{asset('plugins/components/datatables/jquery.dataTables.min.js')}}"></script>
+
     <!-- start - This is for export functionality only -->
     <!-- end - This is for export functionality only -->
     <script>
         $(document).ready(function () {
+
+            $('.toggle-class').change(function(){
+                var status = $(this).prop('checked') == true ? 1 : 0; 
+                var product_id = $(this).data('id'); 
+                console.log(status);
+                console.log(product_id);
+
+                $.ajax({
+                type:"POST",
+                url:"{{ url('admin/product-stock-status') }}",
+                data: {'status': status, 'product_id': product_id ,  _token:'{{ csrf_token() }}'},
+                beforeSend: function(){
+
+                },
+                success: function(data){
+                    console.log(data['message']);
+                    if(data['message'] == 'error'){
+                        swal({
+                            title: "Something Went Wrong!",
+                            text: "",
+                            type: "error",
+                            showCancelButton: false,
+                            dangerMode: false,
+                            // cancelButtonClass: '#DD6B55',
+                            // confirmButtonColor: '#dc3545',
+                            confirmButtonText: 'Reload Page!',
+                        });
+
+                    }else if(data['message'] == '0'){
+                        swal({
+                            title: "Something Went Wrong!",
+                            text: "",
+                            type: "error",
+                            showCancelButton: false,
+                            dangerMode: false,
+                            // cancelButtonClass: '#DD6B55',
+                            // confirmButtonColor: '#dc3545',
+                            confirmButtonText: 'Reload Page!',
+                        });
+
+                    }else{
+                        swal({
+                            title: "Status Change Successfuly!",
+                            text: "",
+                            type: "success",
+                            showCancelButton: false,
+                            dangerMode: false,
+                        // cancelButtonClass: '#DD6B55',
+                        // confirmButtonColor: '#dc3545',
+                        // confirmButtonText: 'Status Change Successfuly!',
+                
+                        });
+                  
+                    }
+              
+                }
+                });
+            });
+           
 
             $('#delete_all').hide();
 
@@ -146,17 +236,15 @@
             $('.sub_chk').on('click', function(e) {
                 // get all checked items
                 var checked = $('.optionOne').find(':checked');
-                console.log(checked.length);
+                console.log('length',checked.length);
                 if(checked.length < 1){
                     $('#delete_all').hide();
                 }
                 $.each(checked, function() {
                     if(checked.length > 0){
-                        console.log('yes');
                         $('#delete_all').show();
+                        console.log('yes')
                     }else if(checked.length < 1){
-                        console.log('no');
-
                         $('#delete_all').hide();
                     }
                 

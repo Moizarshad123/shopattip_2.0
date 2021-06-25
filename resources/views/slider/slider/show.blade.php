@@ -22,7 +22,11 @@
                             </tr>
                             <tr>
                                 <th> Slider Type </th>
-                                <td> {{ $slider->slider_type }} </td>
+                                @if($slider->slider_type  == 1)
+                                <td>General</td>
+                                @elseif($slider->slider_type == 2)
+                                <td>Grocery</td>
+                                @endif
                             </tr>
                             <tr>
                                 <th> Title </th>

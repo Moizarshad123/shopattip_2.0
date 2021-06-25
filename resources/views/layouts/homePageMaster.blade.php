@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Bootstrap Example</title>
+    <title>SHOPAATIP</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -13,9 +13,9 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro:400,600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="fonts/icomoon/style.css">
+    {{-- <link rel="stylesheet" href="fonts/icomoon/style.css"> --}}
     <!-- footer -->
-
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
 
     <link rel="stylesheet" href="{{ asset('assets/frontend/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/frontend/css/swiper.min.css') }}">
@@ -25,9 +25,10 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.js"></script>
 
-    <title>Shop At Tip</title>
-    <link rel="stylesheet" href="fonts/icomoon/style.css">
+  
+    {{-- <link rel="stylesheet" href="fonts/icomoon/style.css"> --}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    
     @yield('customStyle')
 <style>
     ul.dropdown-cart{
@@ -68,6 +69,9 @@
     }
     ul.dropdown-cart li .item-right button{
         margin-top:14px;
+    }
+    a.sub_cat{
+        
     }
 </style>
 
@@ -121,11 +125,13 @@
                                     @endif
                                 </ul> <input type="hidden" name="product_cat" class="product-cat" value="">
                             </div>
-                            <div class="search-box"> <input type="text" class="input-search s"
-                                    placeholder="I’m searching for...">
-                                <ul class="result-search-products"></ul> <button id="searchsubmit2" class="btn"
-                                    type="submit"> <span class="icon-search"> <i class="fa fa-search"></i></button>
-                            </div> <input type="hidden" name="post_type" value="product">
+                            <div class="search-box"> 
+                                <input type="text" name="searching_item" id="searching_product" class="input-search s" placeholder="I’m searching for...">
+                                <ul class="result-search-products"></ul> 
+                                {{-- <input type="humber" name="employeeid" id="employeeid"> --}}
+                                <button id="searchsubmit2" class="btn" type="submit"> <span class="icon-search"> <i class="fa fa-search"></i></button>
+                            </div> 
+                            <input type="hidden" name="post_type" value="product">
                         </form>
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-6 header-page-link">
@@ -169,6 +175,8 @@
                                             </span>
                                           </li>
                                         @endforeach
+                                        @else
+                                        <h5>Cart has no Item</h5>
                                         @endif
                                           <li class="divider"></li>
                                           <li><a class="text-center" href="">View Cart</a></li>
@@ -208,13 +216,13 @@
                                 @if(sizeof($allcategories))
                                 @foreach ($allcategories as $key => $category)
                                     <li class="level-1">
-                                        <a href="{{ $category->id }}">{{ $category->name }}</a>
+                                        <a style="word-break: break-all; " href="{{ $category->id }}">{{ $category->name }}</a>
                                         <ul class="second">
                                         @foreach ($category['subCategory'] as $key => $subcategory)
-                                            <li><a href="{{ $subcategory->id }}" data-id="{{  @$subcategory->id }}" class="sub_cat">{{  @$subcategory->name }}</a>
+                                            <li ><a style="word-break: break-all !important;" href="{{ $subcategory->id }}" data-id="{{  @$subcategory->id }}" class="sub_cat" >{{  @$subcategory->name }}</a>
                                               <ul class="third">
                                                 @foreach ($subcategory['childSubcategory'] as $key => $childSubcategory)
-                                                <li><a href="{{ $childSubcategory->id }}">{{ $childSubcategory->name }}</a></li>
+                                                <li><a style="word-break: break-all; " href="{{ $childSubcategory->id }}">{{ $childSubcategory->name }}</a></li>
                                                 @endforeach
                                               </ul>
                                             </li>
@@ -415,9 +423,9 @@
                                     {{-- <li class="level-1 show-more" value="1"><a href=javascript:void(0)><i id="plus_minus" class="fa fa-plus" aria-hidden="true" ></i>  Other</a></li> --}}
                                       {{-- <li class="level-1 show-more" value="1"><i class="fa fa-plus" aria-hidden="true" ></i>Other</a>
                                       </li> --}}
-                                      <div class="bwp-image sale" >
+                                      <div class="bwp-image sale" style="margin-left: 2px;margin-top: 8px;" >
                                         <a href="#"> <img src="{{ asset('assets/frontend/img/Mask Group 6.png') }}">
-                                            <img src="../wp-content/uploads/2020/02/banner6-8.jpg" alt="">
+                                           
                                         </a>
                                     </div>
                                   </ul>
@@ -709,6 +717,7 @@
     </section>
     <script type="text/javascript" src="{{ asset('assets/frontend/js/swiper.min.js') }}"></script>
     <script src="{{ asset('assets/frontend/js/script.js') }}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 
 
 
@@ -782,6 +791,39 @@
                         });
                     }
                 }
+
+                
+                var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                $( "#searching_product" ).autocomplete({
+                    source: function( request, response ) {
+                    // Fetch data
+                    $.ajax({
+                        url:"{{route('product.getProduct')}}",
+                        type: 'post',
+                        dataType: "json",
+                        data: {
+                        _token: CSRF_TOKEN,
+                        search: request.term
+                        },
+                        success: function( data ) {
+                        response( data );
+                        }
+                    });
+                    },
+                    select: function (event, ui) {
+                    // Set selection
+                    $('#searching_product').val(ui.item.label); // display the selected text
+                    $('#employeeid').val(ui.item.value); // save selected id to input
+                    return false;
+                    }
+                });
+
+                $('#searchsubmit2').click(function(e){
+                    e.preventDefault();
+                    var value = $( "#searching_product" ).val();
+                    console.log(value);
+                    
+                })
 
             //     $('.sub_cat').hover(function() {
             //     _this = $(this);
