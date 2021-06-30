@@ -178,6 +178,31 @@
         <!-- .row -->
         <div class="row">
             <div class="col-sm-12">
+                <?php
+                $uri            = Route::currentRouteName();
+                $ruta_explode   = explode('.',$uri);
+                $last_array     = $ruta_explode[0];
+            ?>
+    
+                <ol class="breadcrumb" style="background-color: #fffefe;">
+                    <?php $val_url = ''?>
+                    <li><a href="{{asset('/dashboard')}}"><i class="entypo-folder"></i> DASHBOARD</a></li>
+                    @if(isset($ruta_explode) && count($ruta_explode)>0)
+                        @foreach ($ruta_explode as $val)
+                        <?php $val_url .= $val ?>
+                        <li>
+                            @if($last_array == $val_url)
+                            <a href="{{ asset('product/'.$val_url) }}">
+                                {{ ucfirst($val) }}
+                            </a>
+                            @else
+                                {{ ucfirst($val) }}
+                            @endif
+                        </li>
+                        <?php $val_url .= '/'?>
+                        @endforeach
+                    @endif
+                </ol>
                 <div class="white-box">
                     <h3 class="box-title pull-left">Product {{ $product->id }}</h3>
                     @can('view-'.str_slug('Product'))
@@ -190,7 +215,7 @@
                         <table class="table table">
                             <tbody>
                             <tr>
-                                <th><h3>Stock</h3></th>
+                                <th><h3>Stock Status</h3></th>
                                 <td><h3><i>{{ @$product->stock_status }}</i></h3></td>
                             </tr>
                             <tr>
@@ -200,6 +225,10 @@
                                     @elseif($product->product_type_id == 2)
                                     <td>Grocery</td>
                                     @endif
+                            </tr>
+                            <tr>
+                                <th> Current Stock </th>
+                                <td style="word-break: break-all;"> {{ $product->current_stock??'0' }} </td>
                             </tr>
                             <tr>
                                 <th> Category </th>
@@ -237,7 +266,7 @@
                             </tr>
                             <tr>
                                 <th> Front Image </th>
-                                <td><img id="img_url" src="{{ asset('website/productImages/product_'.$product->id.'_1.jpg') }}" alt="your image" />                                </td>
+                                <td><img id="img_url" src="{{ asset('website/productImages/product_'.$product->id.'_1.jpg') }}" alt="your image" /> </td>
                             </tr>
                             <tr>
                                 <th> Thumb-nail Image </th>
@@ -326,6 +355,7 @@
                             </tr>
                             </tbody>
                         </table>
+                      
                         @if(sizeof($product['productVariaction']))
                         <h2 style="font-weight: bold;">Product Variaction</h2>
                         <table class="table table-bordered " >
@@ -348,14 +378,14 @@
                                 <tr>
                                     <td>
                                     @foreach ($product['productVariaction'] as $item)
-                                    <b>{{  $item->color??'null' }}</b><br><hr>
+                                    <b style="color: {{ @$item->color_code }}">{{  $item->color??'null' }}</b><br><hr>
                                       
                                     @endforeach
                                     </td>
 
                                     <td>
                                         @foreach ($product['productVariaction'] as $item)
-                                       <b>{{  $product->stock_status??'null' }}</b><br> <hr>
+                                       <b >{{  $product->stock_status??'null' }}</b><br> <hr>
                                           
                                         @endforeach
                                     </td>
@@ -422,15 +452,8 @@
 
 <script>
 
-
-
-
-
         
     $(document).ready(function () {
-
-
-
 
         var input = document.querySelector('#tags');
         var tagify = new Tagify(input);

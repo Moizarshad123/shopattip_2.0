@@ -65,4 +65,8 @@ class User extends Authenticatable
     public function blogs(){
         return $this->hasMany(Blog::class);
     }
+
+    public function verifyUser(){
+        return $this->hasOne('App\VerifyUser');
+    }
 }

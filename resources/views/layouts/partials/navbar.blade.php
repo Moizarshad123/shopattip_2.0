@@ -1,28 +1,60 @@
+
 <nav class="navbar navbar-default navbar-static-top m-b-0" >
+    <div class="col-md-0">
+        <div class="top-left-part" style="margin-top:0px" >
+            @if(auth()->check())
+            <a class="logo" href="{{'/'}}">
+                <b>
+                    <img class="img-fluid" src="{{ asset('images/logo3.png') }}" alt="">
+    
+                </b>
+    
+               
+            </a>
+            
+            @else
+            <a class="logo" href="{{'/'}}">
+                <b>
+                    <img class="img-fluid" src="{{ asset('images/logo3.png') }}" alt="">
+                    
+    
+                </b>
+               
+            </a>
+            @endif
+    
+        </div>
+    </div>
+   <div class="col-md-9">
     <div class="navbar-header">
         <a class="navbar-toggle font-20 hidden-sm hidden-md hidden-lg " href="javascript:void(0)" data-toggle="collapse"
             data-target=".navbar-collapse">
             <i class="fa fa-bars"></i>
         </a>
       
-        <div class="top-left-part" style="padding-left: 80px;">
+        {{-- <div class="top-left-part" style="margin-top:6px" >
             @if(auth()->check())
-            <a class="logo" href="{{'/dashboard'}}">
+            <a class="logo" href="{{'/'}}">
                 <b>
-                    {{-- <img height="45px" width="" src="{{asset('assets/images/cushliving.png')}}" alt="home" /> --}}
+                    <img class="img-fluid" src="{{ asset('images/logo3.png') }}" alt="">
+
                 </b>
+
                
             </a>
+            
             @else
             <a class="logo" href="{{'/'}}">
                 <b>
-                    {{-- <img src="{{asset('assets/images/cushliving.png')}}" alt="home" /> --}}
+                    <img class="img-fluid" src="{{ asset('images/logo3.png') }}" alt="">
+                    
+
                 </b>
                
             </a>
             @endif
 
-        </div>
+        </div> --}}
 
         <ul class="nav navbar-top-links navbar-left hidden-xs">
             @if(session()->get('theme-layout') != 'fix-header' && auth()->check())
@@ -42,9 +74,10 @@
    
         <ul class="nav navbar-top-links navbar-right pull-right">
             @if(auth()->check())
+            
 
-            <a style="margin-right: 20px; background-color:#676662 !important;border:none" class="btn btn-primary m-t-10" href="{{route('logout')}}"><b>Logout</b></a>
-          {{--   <li class="dropdown">
+            {{-- <a style="margin-right: 20px; background-color:#676662 !important;border:none" class="btn btn-primary m-t-10" href="{{route('logout')}}"><b>Logout</b></a> --}}
+            {{-- <li class="dropdown">
                 <a class="dropdown-toggle waves-effect waves-light font-20" data-toggle="dropdown"
                     href="javascript:void(0);">
                     <i class="icon-speech"></i>
@@ -192,12 +225,42 @@
                         </a>
                     </li>
                 </ul>
-            </li>
-            <li class="right-side-toggle">
-                <a class="right-side-toggler waves-effect waves-light b-r-0 font-20" href="javascript:void(0)">
-                    <i class="icon-settings"></i>
-                </a>
             </li> --}}
+            <li class="right-side-toggle" style="margin-top:0px">
+                {{-- <a class="right-side-toggler waves-effect waves-light b-r-0 font-20" href="javascript:void(0)"> --}}
+                    {{-- <i class="icon-settings"></i> --}}
+                    @php $user = auth()->user(); @endphp
+                    @if($user)
+                    <div class="col-md-5" style="margin-top:10px">
+                        <h5><b>{{auth()->user()->name}}</b></h5>
+
+                    </div>
+                    <div class="col-md-6">
+                        
+                        <a href="javascript:void(0);" class="dropdown-toggle u-dropdown text-blue" data-toggle="dropdown"
+                            role="button" aria-haspopup="true" aria-expanded="false">
+                            <span class="badge badge-danger">
+                                <i class="fa fa-angle-down"></i>
+                            </span>
+                        </a>
+                        @if(@$user->profile->pic)
+                        <img src="{{asset('uploads/'.$user->profile->pic)}}" alt="user-img" class="img-circle">
+                        @else
+                        <img src="{{asset('assets/images/malte.png')}}" alt="user-img" class="img-circle">
+
+                        @endif
+                        <ul class="dropdown-menu animated flipInY">
+                            {{-- <li><a href="{{url('profile')}}"><i class="fa fa-user"></i> Profile</a></li> --}}
+                            {{--<li><a href="javascript:void(0);"><i class="fa fa-inbox"></i> Inbox</a></li>--}}
+                            <li role="separator" class="divider"></li>
+                            <li><a href="{{url('account-settings')}}"><i class="fa fa-user"></i> Profie</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="{{ url('/logout') }}"><i class="fa fa-power-off"></i> Logout</a></li>
+                        </ul>
+                    </div>
+                    @endif
+                {{-- </a> --}}
+            </li> 
             @else
             <li class="">
                 <a class="waves-effect waves-light b-r-0 font-20" href="{{'/login'}}">
@@ -208,6 +271,8 @@
 
         </ul>
     </div>
+   </div>
+   
 </nav>
 
 

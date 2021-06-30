@@ -39,11 +39,33 @@
             
                 visibility: visible;
             }
+            /* .toggle.btn.btn-success{
+                width: 94px !important;
+            }
+            .toggle.btn.btn-danger.off{
+                width: 110px !important;
+            } */
+            .zoom {
+                transition: transform 1s;
+            }
+
+            .add{
+                filter: blur(4px);
+            }
+
+            .zoom:hover {
+                transform: scale(1.5);
+                /* filter: blur(4px); */
+                z-index: 999;
+                width: 200px;
+                height: 200px;
+                margin: 0 auto;
+            }
         </style>
 @endpush
 
 @section('content')
-    <div class="container-fluid">
+    <div class="container-fluid" id="body">
         <!-- .row -->
         @if ($message = Session::get('flash_message'))
         <div class="alert alert-success alert-block">
@@ -53,6 +75,31 @@
         @endif
         <div class="row">
             <div class="col-sm-12">
+                <?php
+                $uri            = Route::currentRouteName();
+                $ruta_explode   = explode('.',$uri);
+                $last_array     = $ruta_explode[0];
+            ?>
+    
+                <ol class="breadcrumb" style="background-color: #fffefe;">
+                    <?php $val_url = ''?>
+                    <li><a href="{{asset('/dashboard')}}"><i class="entypo-folder"></i> DASHBOARD</a></li>
+                    @if(isset($ruta_explode) && count($ruta_explode)>0)
+                        @foreach ($ruta_explode as $val)
+                        <?php $val_url .= $val ?>
+                        <li>
+                            @if($last_array == $val_url)
+                            <a href="{{ asset('product/'.$val_url) }}">
+                                {{ ucfirst($val) }}
+                            </a>
+                            @else
+                                {{ ucfirst($val) }}
+                            @endif
+                        </li>
+                        <?php $val_url .= '/'?>
+                        @endforeach
+                    @endif
+                </ol>
                 <div class="white-box">
                     <h3 class="box-title pull-left">Products</h3>
                     @can('add-'.str_slug('Product'))
@@ -74,7 +121,7 @@
                                 <th>Product Type</th>
                                 <th>Category</th>
                                 <th>Subcategory</th>
-                                <th>Child Subcategory</th>
+                                <th>Logo</th>
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
@@ -98,9 +145,10 @@
                        
                                     <td class="wrap">{{$item->category[0]->name??''}}</td>
                                     <td class="wrap">{{ $item->subCategory[0]->name??'' }}</td>
-                                    <td class="wrap">{{ $item->subChildCategory[0]->name??'' }}</td>
+                                    <td ><span class="zoom"><img  class="zoom" id="img_url" src="{{ asset('website/productImages/product_'.$item->id.'_1.jpg') }}" alt="your image" style="width: 80px;height:80px;" /></span> </td>
+                                    {{-- <td class="wrap">{{ $item->subChildCategory[0]->name??'' }}</td> --}}
                                     {{-- <td  class="stock_stats_hover" data-id={{ $item->id }}>{!! $item->stock_status == 'outofstock' ? "<span class='badge badge-danger'>outofstock</span>" : ($item->stock_status=='instock' ? "<span class='badge badge-success'>Instock</span>": "")  !!}   <span  class="tooltiptext">Double Click To Change Status</span></td> --}}
-                                    <td><input data-id="{{$item->id}}" class="toggle-class" type="checkbox" data-onstyle="success" data-offstyle="danger" data-toggle="toggle" data-on="INSTOCK" data-off="OUTOFSTOCK" {{ $item->stock_status == 'instock' ? 'checked' : '' }}></td>
+                                    <td ><input  data-id="{{$item->id}}" class="toggle-class" type="checkbox" data-onstyle="success" data-offstyle="danger" data-toggle="toggle" data-on="INSTOCK" data-off="OUTOFSTOCK" {{ $item->stock_status == 'instock' ? 'checked' : '' }}></td>
                                     <td>
                                         @can('view-'.str_slug('Product'))
                                             <a href="{{ url('/product/product/' . $item->id) }}"
@@ -109,6 +157,7 @@
                                                     <i class="fa fa-eye" aria-hidden="true"></i> View
                                                 </button>
                                             </a>
+                                            <br>
                                         @endcan
 
                                         @can('edit-'.str_slug('Product'))
@@ -159,7 +208,9 @@
     <!-- end - This is for export functionality only -->
     <script>
         $(document).ready(function () {
-
+            // $('.zoom').hover(function(){
+            //     $('#body').addClass('add');
+            // });
             $('.toggle-class').change(function(){
                 var status = $(this).prop('checked') == true ? 1 : 0; 
                 var product_id = $(this).data('id'); 

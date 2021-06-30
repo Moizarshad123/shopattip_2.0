@@ -67,7 +67,6 @@
         </div>
     </section>
 
-
     <section class="categorie-section" style="margin-bottom: 3px;">
         <div class="categorie-container categorie-column-gap-default">
             <div class="categorie-row">
@@ -152,7 +151,6 @@
             </div>
         </div>
     </section> --}}
-
 
     <!-- categories section 2-->
     <!-- heading -->
@@ -342,7 +340,6 @@
             </div>
         </div>
     </section>
-
 
     <!-- categories section 2-->
     <!-- heading -->

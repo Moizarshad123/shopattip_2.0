@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use DB;
 use Exception;
 use App\User;
+use App\Profile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
@@ -34,7 +35,7 @@ class GoogleController extends Controller
             if($finduser){
                 
                 Auth::login($finduser);
-                return redirect('/dashboard')->with('message', 'Please update Password');
+                return redirect('/dashboard')->with('message', 'Welcome to dashboard');
                 // return Redirect::route('/dashboard')->withInput()->with('message', 'Please update Password');
      
             }else{
@@ -43,6 +44,10 @@ class GoogleController extends Controller
                     'email' => $user->email,
                     'google_id'=> $user->id,
                     'password' => Hash::make('123456dummy')
+                ]);
+
+                Profile::create([
+                    'user_id' => $newUser->id,
                 ]);
                 $values = array('role_id' => 2,'user_id' => $newUser->id);
                 DB::table('role_user')->insert($values);

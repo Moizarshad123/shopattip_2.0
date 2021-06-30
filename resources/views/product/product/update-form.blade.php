@@ -633,8 +633,6 @@
     </div>
 </div>
 
-
-
 <div class=" white-box" style="box-shadow: 0px 3px 1px 2px #ccc;">
     <div class="col-md-10">
         <h4 style="font-weight: bold">Manage Stock</h4>
@@ -647,9 +645,26 @@
         </label>
 
     </div>
-
+    @if($product->stock_status != null )
+    <div class="form-group {{$errors->has('stock_quantity') ? 'has-error' : ''}}" id="stock-qty-input" >
+        <label for="stock_quantity" class="col-md-4 control-label">{{ 'Stock Quantity' }}</label>
+        <div class="col-md-6">
+            <input class="form-control" name="stock_quantity" type="number" id="stock_quantity" value="{{ $product->current_stock??'0' }}" maxlength="5" oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);' required>
+            {!! $errors->first('stock_quantity', '<p class="help-block">:message</p>') !!}
+        </div>
+    </div>
+    @else 
+    <div class="form-group {{$errors->has('stock_quantity') ? 'has-error' : ''}}" id="stock-qty-input" style="display: none">
+        <label for="stock_quantity" class="col-md-4 control-label">{{ 'Stock Quantity' }}</label>
+        <div class="col-md-6">
+            <input class="form-control" name="stock_quantity" type="number" id="stock_quantity" value="{{ $product->current_stock??'0' }}" maxlength="5" oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);' required>
+            {!! $errors->first('stock_quantity', '<p class="help-block">:message</p>') !!}
+        </div>
+    </div>
+    @endif
 
     @if($product->stock_status != null )
+    
     <div class="form-group {{ $errors->has('stock') ? 'has-error' : ''}}" id="stock-input" >
         <label for="stock" class="col-md-4 control-label">{{ 'Stock' }}<span class="required "> *</span></label>
         <div class="col-md-6">
@@ -1131,10 +1146,12 @@
                 if (!$('input[name="stock_active"]').is(':checked')) {
                     $('#stock_active').val(0);
                     $('#stock-input').hide();
+                    $('#stock-qty-input').hide();
                     $('#stock').removeAttr('required',"false");
 
                 } else {
                     $('#stock_active').val(1);
+                    $('#stock-qty-input').show();
                     $('#stock-input').show();
                     $('#stock').attr("required", "true");
                     

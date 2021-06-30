@@ -145,6 +145,7 @@ class ProductController extends Controller
         // $product->discount_type         = @$request->discount_type;
         $product->shipping_cost         = @$request->shipping_cost;
         $product->commission            = @$request->commission;
+
         if($request->has('specification_active')){
             $product->is_specification      = @$request->specification_active;
 
@@ -154,9 +155,10 @@ class ProductController extends Controller
         }
         if($request->has('stock_active')){
             $product->stock_status      = @$request->stock;
+            $product->current_stock     = @$request->stock_quantity;
         }
 
-        $tags                    = array();
+        $tags                           = array();
         if($request->tags[0] != null){
             foreach (json_decode($request->tags[0]) as $key => $tag) {
                 array_push($tags, $tag->value);
@@ -164,7 +166,7 @@ class ProductController extends Controller
         }
         $product->tags                  = implode(',', $tags);
 
-        $sizes                    = array();
+        $sizes                          = array();
         if($request->size[0] != null){
             foreach (json_decode($request->size[0]) as $key => $size) {
                 array_push($sizes, $size->value);
@@ -172,13 +174,13 @@ class ProductController extends Controller
         }
         $product->size                  = implode(',', $sizes);
 
-        $fabrics                    = array();
+        $fabrics                        = array();
         if($request->fabric[0] != null){
             foreach (json_decode($request->fabric[0]) as $key => $fabric) {
                 array_push($fabrics, $fabric->value);
             }
         }
-        $product->fabric                  = implode(',', $fabrics);
+        $product->fabric                = implode(',', $fabrics);
        
         $product->num_of_imgs           = count($request->thumbnail_image) + 1;
         $product->url_name              = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->name));
@@ -213,6 +215,7 @@ class ProductController extends Controller
         $product->save();
   
         $str   = array();
+        $code  = array();
 
         if( @$request->has('colors')){
          
@@ -222,13 +225,13 @@ class ProductController extends Controller
                
                 if( $request->has('colors') && count($request->colors) > 0){
                         $color_name = \App\ProductColor::where('color_code', $request->colors[$i])->first()->name;
-                      
+                        $color_code = \App\ProductColor::where('color_code', @$request->colors[$i])->first()->color_code;
                         array_push($str, $color_name);
-                   
+                        array_push($code, $color_code);
                 }
                
-                $product_stock->color = @$str[$i];
-                // $product_stock->stock = @$request->qty[$i];
+                $product_stock->color           = @$str[$i];
+                $product_stock->color_code      = @$code[$i];
                 $product_stock->save();
    
            }
@@ -432,17 +435,16 @@ class ProductController extends Controller
     }
 
     public function update(Request $request, $id){
-        // dd($request);
         $model = str_slug('product','-');
         if(auth()->user()->permissions()->where('name','=','edit-'.$model)->first()!= null) {
             $this->validate($request, [
 
 		]);
 
-            $user_id    = auth()->user()->id;
-            $user       = User::findorfail($user_id);
-            $product    = Product::findOrFail($id);
-             if( $user_id == 1)
+            $user_id        = auth()->user()->id;
+            $user           = User::findorfail($user_id);
+            $product        = Product::findOrFail($id);
+             if( $user_id   == 1)
              {
                  $added_by_id               = $user_id;
                  $added_by_type             = "admin";
@@ -473,7 +475,7 @@ class ProductController extends Controller
              $product->is_featured              = @$request->is_featured_active;
              $product->is_specification         = @$request->specification_active;
             //  $product->current_stock            = @$request->qty;
-             $product->date                      = date('Y-m-d H:i:s');
+             $product->date                     = date('Y-m-d H:i:s');
              $product->sale_price               = @$request->commission+intval($request->sale_price);
             //  $product->dollor                   = $request->dollor;
             //  $product->riyal                    = $request->riyal;
@@ -484,62 +486,60 @@ class ProductController extends Controller
             //  $product->discount_type            = @$request->discount_type;
              $product->shipping_cost            = @$request->shipping_cost;
              $product->commission               = @$request->commission;
+
              if($request->has('specification_active')){
                  if($request->specification){
                     $product->is_specification      = @$request->specification_active;
                  }else{
                     $product->is_specification      = null;
                  }
-                
     
             }else{
                 $product->is_specification      = null;
-    
             }
             if($request->has('stock_active')){
-                $product->stock_status      = @$request->stock;
+                $product->stock_status          = @$request->stock;
             }else{
-                $product->stock_status      = null;
-
+                $product->stock_status          = null;
             }
-             $tags                              = array();
 
+             $tags                              = array();
              if($request->tags[0] != null){
                  foreach (json_decode($request->tags[0]) as $key => $tag) {
                      array_push($tags, $tag->value);
                  }
                  $product->tags                 = implode(',', $tags);
              }else{
-                $product->tags                 = null;
+                $product->tags                  = null;
              }
 
-             $sizes                         = array();
+             $sizes                             = array();
              if($request->size[0] != null){
                  foreach (json_decode($request->size[0]) as $key => $size) {
                      array_push($sizes, $size->value);
                  }
                  $product->size                 = implode(',', $sizes);
              }else{
-                $product->size                 = null;
+                $product->size                  = null;
              }
      
-             $fabrics                       = array();
+             $fabrics                           = array();
              if($request->fabric[0] != null){
                  foreach (json_decode($request->fabric[0]) as $key => $fabric) {
                      array_push($fabrics, $fabric->value);
                  }
                  $product->fabric               = implode(',', $fabrics);
              }else{
-                $product->fabric               = null;
+                $product->fabric                = null;
              }
              if($request->hasFile('thumbnail_image')){
-                $product->num_of_imgs          = count($request->thumbnail_image) + 1;
+                $product->num_of_imgs           = count($request->thumbnail_image) + 1;
              }
-             $product->url_name             = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->name));
+             $product->url_name                 = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->name));
              if( @$request->has('colors')){
                 if( $request->has('colors') && count($request->colors) > 0){
-                    $color_codes            = implode(', ', $request->colors);
-                    $result_color_ids       = \App\ProductColor::select('id')->whereIn('color_code', $request->colors)->get();
+                    $color_codes                = implode(', ', $request->colors);
+                    $result_color_ids           = \App\ProductColor::select('id')->whereIn('color_code', $request->colors)->get();
         
                     $color_ids =[];
                     foreach ($result_color_ids as $key => $value)
@@ -566,6 +566,7 @@ class ProductController extends Controller
              $product->save();
      
              $str   = array();
+             $code  = array();
 
              $product_stock     = ProductVariation::where('product_id',$id)->delete();
              if( @$request->has('colors')){
@@ -575,18 +576,21 @@ class ProductController extends Controller
                     $product_stock->product_id  = $product->id;
                     if( $request->has('colors') && count(@$request->colors) > 0){
                         $color_name             = \App\ProductColor::where('color_code', @$request->colors[$i])->first()->name;
+                        $color_code             = \App\ProductColor::where('color_code', @$request->colors[$i])->first()->color_code;
                         array_push($str, $color_name);
+                        array_push($code, $color_code);
                     }
-                        $product_stock->color   = @$str[$i];
-                        // $product_stock->stock   = @$request->qty[$i];
+                        $product_stock->color           = @$str[$i];
+                        $product_stock->color_code      = @$code[$i];
                         $product_stock->save();
                 }
              }
+
              if($request->specification_active){
                 if($request->specification){
                    
-                   $specification = count($request->specification);
-                   $product_specification     = productSpecification::where('product_id',$id)->delete();
+                   $specification               = count($request->specification);
+                   $product_specification       = productSpecification::where('product_id',$id)->delete();
                       if( $specification > 0){
                           for($i = 0; $i < $specification; $i++){
                               $specifications                            = new  productSpecification;
@@ -598,11 +602,10 @@ class ProductController extends Controller
                       }
                 }else{
             
-                  
                    $product_specification     = productSpecification::where('product_id',$id)->delete();
                 }
              }else{
-                $product_specification     = productSpecification::where('product_id',$id)->delete();
+                $product_specification          = productSpecification::where('product_id',$id)->delete();
              }
             
             
@@ -717,13 +720,11 @@ class ProductController extends Controller
        return view('product.product.test');
     }
 
-    public function customerReviews(Type $var = null)
-    {
+    public function customerReviews(Type $var = null){
         return view('reviews/index');
     }
 
-    public function deleteAll(Request $request)
-    {
+    public function deleteAll(Request $request){
 
         $date = date('Y-m-d H:i:s');
         $ids = $request->ids;
@@ -738,8 +739,7 @@ class ProductController extends Controller
         
     }
 
-    public function stockStatus(Request $request)
-    {
+    public function stockStatus(Request $request){
 
         if($request->product_id){
             $product = Product::find($request->product_id);

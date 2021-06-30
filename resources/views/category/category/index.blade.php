@@ -7,12 +7,24 @@
           <meta name="csrf-token" content="{{ csrf_token() }}">
 <style>
     
-.wrap{
-    word-break: break-all; 
-    
-}
-#myTable_filter input{
+        .wrap{
+            word-break: break-all; 
+            
+        }
+        #myTable_filter input{
             border-color: #6f6f6f !important;
+        }
+
+        .zoom {
+                transition: transform 1s;
+        }
+
+        .zoom:hover {
+            transform: scale(2);
+            /* filter: blur(4px); */
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
         }
 </style>
 @endpush
@@ -28,6 +40,33 @@
         <!-- .row -->
         <div class="row">
             <div class="col-sm-12">
+                <?php
+                $uri            = Route::currentRouteName();
+                $ruta_explode   = explode('.',$uri);
+                $last_array     = $ruta_explode[0];
+            ?>
+    
+                <ol class="breadcrumb" style="background-color: #fffefe;">
+                    <?php $val_url = ''?>
+                    <li><a href="{{asset('/dashboard')}}"><i class="entypo-folder"></i> DASHBOARD</a></li>
+                    @if(isset($ruta_explode) && count($ruta_explode)>0)
+                        @foreach ($ruta_explode as $val)
+                        <?php $val_url .= $val ?>
+                        <li>
+                            @if($last_array == $val_url)
+                            <a href="{{ asset('category/'.$val_url) }}">
+                                {{ ucfirst($val) }}
+                            </a>
+                            @else
+                                {{ ucfirst($val) }}
+                            @endif
+                        </li>
+                        <?php $val_url .= '/'?>
+                        @endforeach
+                    @endif
+                </ol>
+
+                
                 <div class="white-box">
                     <h3 class="box-title pull-left">Categories</h3>
                     @can('add-'.str_slug('Category'))

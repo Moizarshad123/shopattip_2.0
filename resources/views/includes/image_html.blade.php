@@ -1,1 +1,1 @@
-<td><img src="{{asset('website')}}/{{$variable}}" style="width: 100px;height: 100px"></td>
+<td><img class="zoom" src="{{asset('website')}}/{{$variable}}" style="width: 100px;height: 100px"></td>

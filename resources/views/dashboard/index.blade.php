@@ -10,6 +10,33 @@
 
 @section('content')
     @if(auth()->user()->hasRole('admin') || auth()->user()->hasRole('developer'))
+    <?php
+        $uri            = Route::current()->getName();
+        $ruta_explode   = explode('/',$uri);
+        $last_array     = last($ruta_explode);
+    ?>
+
+    <ol class="breadcrumb" style="background-color: #d6d2d2;">
+        <?php $val_url = ''?>
+        <li><a href="{{asset('/dashboard')}}"><i class="entypo-folder"></i> DASHBOARD</a></li>
+        @if(isset($ruta_explode) && count($ruta_explode)>0)
+            @foreach ($ruta_explode as $val)
+            <?php $val_url .= $val ?>
+              <li>
+                @if($last_array!=$val)
+                <a href="{{ asset($val_url) }}">
+                    {{ ucfirst($val) }}
+                </a>
+                @else
+                    {{ ucfirst($val) }}
+                @endif
+              </li>
+            <?php $val_url .= '/'?>
+            @endforeach
+        @endif
+    </ol>
+
+    
         {{-- <div class="row m-0">
 
             <div class="col-md-3 col-sm-6 info-box">

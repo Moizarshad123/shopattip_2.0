@@ -21,8 +21,7 @@
     <link rel="stylesheet" href="{{ asset('assets/frontend/css/swiper.min.css') }}">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.js"></script>
 
   
@@ -73,6 +72,7 @@
     a.sub_cat{
         
     }
+   
 </style>
 
 </head>
@@ -149,12 +149,13 @@
                                 @foreach((array) session('cart') as $id => $details)
                                 <?php $total += $details['price'] * $details['quantity'] ?>
                                 <?php $total_qty ++ ?>
+                              
                                 @endforeach
                                 {{-- <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><img src="{{ asset('assets/frontend/img/shop.png') }}" alt=""></a><span class="badge">3</span> --}}
                                 <ul class="nav navbar-nav navbar-right">
-                                    <li class="dropdown">
+                                    <li class="dropdown" style="margin-top: -17px; !important">
                                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <img src="{{ asset('assets/frontend/img/shop.png') }}" alt=""><span class="badge">@if(session('cart')){{ $total_qty }}@else {{ 0 }} @endif</span><span class="caret"></span></a>
-                                      <ul class="dropdown-menu dropdown-cart" role="menu" style="background:black">
+                                      <ul class="dropdown-menu dropdown-cart" role="menu" style="background:white">
                                         @if(session('cart'))
                                         @foreach(session('cart') as $id => $details)
                                           <li>
@@ -162,11 +163,11 @@
                                                 <span class="item-left">
                                                     <img src="{{ asset('website/productImages/product_'.$details['id'].'_1.jpg') }}" style="width: 50px;height:50px;" alt="" />
                                                     <span class="item-info">
-                                                        <span>ID:{{$details['id'] }}</span>
-                                                        <span>{{ $details['name'] }}</span>
-                                                        <span>Rs.{{ $details['price'] }}</span>
-                                                        <span>Quantity:{{ $details['quantity'] }}</span>
-                                                        <span>Total:{{$details['quantity']* $details['price']}}</span>
+                                                        {{-- <span>ID:{{$details['id'] }}</span> --}}
+                                                        <span style="color: black">{{ $details['name'] }}</span>
+                                                        <span style="color: black">Rs.{{ $details['price'] }}</span>
+                                                        <span style="color: black">Quantity:{{ $details['quantity'] }}</span>
+                                                        <span style="color: black">Total:{{$details['quantity']* $details['price']}}</span>
                                                     </span>
                                                 </span>
                                                 <span class="item-right">
@@ -176,9 +177,16 @@
                                           </li>
                                         @endforeach
                                         @else
-                                        <h5>Cart has no Item</h5>
+                                        <h5 style="text-align: center">Cart has no Item</h5>
                                         @endif
                                           <li class="divider"></li>
+                                          <div class="col-md-6" style="font-weight: bold;">
+                                            Subtotal:
+                                          </div>
+                                          <div class="col-md-6" style="text-align: right;font-weight: bold;">
+                                            {{$total}}
+                                          </div>
+                                          {{-- <span class="text-center">Subtotal:{{$total}}</span> --}}
                                           <li><a class="text-center" href="">View Cart</a></li>
                                       </ul>
                                     </li>
@@ -216,13 +224,13 @@
                                 @if(sizeof($allcategories))
                                 @foreach ($allcategories as $key => $category)
                                     <li class="level-1">
-                                        <a style="word-break: break-all; " href="{{ $category->id }}">{{ $category->name }}</a>
+                                        <a style="word-break: break-all; " href="">{{ $category->name }}</a>
                                         <ul class="second">
                                         @foreach ($category['subCategory'] as $key => $subcategory)
-                                            <li ><a style="word-break: break-all !important;" href="{{ $subcategory->id }}" data-id="{{  @$subcategory->id }}" class="sub_cat" >{{  @$subcategory->name }}</a>
+                                            <li ><a style="word-break: break-all !important;" href="" data-id="{{  @$subcategory->id }}" class="sub_cat" >{{  @$subcategory->name }}</a>
                                               <ul class="third">
                                                 @foreach ($subcategory['childSubcategory'] as $key => $childSubcategory)
-                                                <li><a style="word-break: break-all; " href="{{ $childSubcategory->id }}">{{ $childSubcategory->name }}</a></li>
+                                                <li><a style="word-break: break-all; " href="">{{ $childSubcategory->name }}</a></li>
                                                 @endforeach
                                               </ul>
                                             </li>
@@ -423,7 +431,7 @@
                                     {{-- <li class="level-1 show-more" value="1"><a href=javascript:void(0)><i id="plus_minus" class="fa fa-plus" aria-hidden="true" ></i>  Other</a></li> --}}
                                       {{-- <li class="level-1 show-more" value="1"><i class="fa fa-plus" aria-hidden="true" ></i>Other</a>
                                       </li> --}}
-                                      <div class="bwp-image sale" style="margin-left: 2px;margin-top: 8px;" >
+                                      <div class="bwp-image sale" style="margin-left: 2px;margin-top: 8px;margin-bottom: -9px;" >
                                         <a href="#"> <img src="{{ asset('assets/frontend/img/Mask Group 6.png') }}">
                                            
                                         </a>

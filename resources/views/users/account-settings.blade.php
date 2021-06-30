@@ -46,6 +46,31 @@
         <!-- .row -->
         <div class="row">
             <div class="col-sm-12">
+                <?php
+                $uri            = Route::currentRouteName();
+                $ruta_explode   = explode('.',$uri);
+                $last_array     = $ruta_explode[0];
+            ?>
+    
+                <ol class="breadcrumb" style="background-color: #fffefe;">
+                    <?php $val_url = ''?>
+                    <li><a href="{{asset('/dashboard')}}"><i class="entypo-folder"></i> DASHBOARD</a></li>
+                    @if(isset($ruta_explode) && count($ruta_explode)>0)
+                        @foreach ($ruta_explode as $val)
+                        <?php $val_url .= $val ?>
+                        <li>
+                            @if($last_array == $val_url)
+                            <a href="{{ asset($val_url) }}">
+                                {{ ucfirst($val) }}
+                            </a>
+                            @else
+                                {{ ucfirst($val) }}
+                            @endif
+                        </li>
+                        <?php $val_url .= '/'?>
+                        @endforeach
+                    @endif
+                </ol>
                 <div class="white-box">
                     <h3 class="box-title pull-left">Account Settings</h3>
                     <div class="clearfix"></div>
@@ -68,7 +93,7 @@
                                         <div class="col-sm-10">
                                             <input id="name" name="name" type="text"
                                                    placeholder="Name" class="form-control required"
-                                                   value="{{$user->name}}"  maxlength="20"/>
+                                                   value="{{@$user->name}}"  maxlength="20"/>
 
                                             {!! $errors->first('name', '<span class="help-block">:message</span>') !!}
                                         </div>
@@ -78,7 +103,7 @@
                                         <label for="email" class="col-sm-2 control-label">Email *</label>
                                         <div class="col-sm-10">
                                             <input id="email" name="email" placeholder="E-mail" type="text"
-                                                   class="form-control required email" value="{{$user->email}}"  maxlength="40" readonly/>
+                                                   class="form-control required email" value="{{@$user->email}}"  maxlength="40" readonly/>
                                             {!! $errors->first('email', '<span class="help-block">:message</span>') !!}
                                         </div>
                                     </div>
@@ -104,18 +129,18 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="tab-pane" id="tab2" disabled="disabled">
+                                {{-- <div class="tab-pane" id="tab2" disabled="disabled">
                                     <h2 class="hidden">&nbsp;</h2>
                                     <div class="form-group  {{ $errors->first('dob', 'has-error') }}">
                                         <label for="dob" class="col-sm-2 control-label">Date of Birth</label>
                                         <div class="col-sm-10">
-                                            <input autocomplete="off" value="{{$user->profile->dob ?: null}}" id="dob" name="dob" type="text"  class="form-control"
+                                            <input autocomplete="off" value="{{@$user->profile->dob ?: null}}" id="dob" name="dob" type="text"  class="form-control"
                                                    data-date-format="YYYY-MM-DD"
                                                    placeholder="yyyy-mm-dd"/>
                                             <span class="help-block">{{ $errors->first('dob', ':message') }}</span>
 
                                         </div>
-                                    </div>
+                                    </div> --}}
 
 
                                     <div class="form-group {{ $errors->first('pic_file', 'has-error') }}">
@@ -124,8 +149,8 @@
                                             <div class="fileinput fileinput-new" data-provides="fileinput">
                                                 <div class="fileinput-new thumbnail"
                                                      style="width: 200px; height: 200px;">
-                                                    @if($user->profile->pic != null)
-                                                        <img src="{{asset('uploads/'.$user->profile->pic)}}" alt="profile pic">
+                                                    @if(@$user->profile->pic != null)
+                                                        <img src="{{asset('uploads/'.@$user->profile->pic)}}" alt="profile pic">
                                                     @else
                                                         <img src="http://placehold.it/200x200" alt="profile pic">
                                                     @endif
@@ -153,7 +178,7 @@
                                         </label>
                                         <div class="col-sm-10">
                         <textarea name="bio" id="bio" class="form-control resize_vertical"
-                                  rows="4" maxlength="300">{{$user->profile->bio}}</textarea>
+                                  rows="4" maxlength="300">{{@$user->profile->bio}}</textarea>
                                         </div>
                                         {!! $errors->first('bio', '<span class="help-block">:message</span>') !!}
                                     </div>
@@ -165,14 +190,14 @@
                                             <select class="form-control" title="Select Gender..." name="gender">
                                                 <option value="">Select</option>
                                                 <option value="male"
-                                                        @if($user->profile->gender === 'male') selected="selected" @endif >Male
+                                                        @if(@$user->profile->gender === 'male') selected="selected" @endif >Male
                                                 </option>
                                                 <option value="female"
-                                                        @if($user->profile->gender === 'female') selected="selected" @endif >
+                                                        @if(@$user->profile->gender === 'female') selected="selected" @endif >
                                                     Female
                                                 </option>
                                                 <option value="other"
-                                                        @if($user->profile->gender === 'other') selected="selected" @endif >Other
+                                                        @if(@$user->profile->gender === 'other') selected="selected" @endif >Other
                                                 </option>
 
                                             </select>
@@ -186,7 +211,7 @@
                                         <div class="col-sm-10">
                                             <input id="countries" name="country" type="text"
                                                    class="form-control"
-                                                   value="{{$user->profile->country}}" maxlength="56" onkeypress="return /[a-z]/i.test(event.key)"/>
+                                                   value="{{@$user->profile->country}}" maxlength="56" onkeypress="return /[a-z]/i.test(event.key)"/>
                                             <span class="help-block">{{ $errors->first('country', ':message') }}</span>
 
                                         </div>
@@ -197,7 +222,7 @@
                                         <div class="col-sm-10">
                                             <input id="state" name="state" type="text"
                                                    class="form-control"
-                                                   value="{{$user->profile->state}}" maxlength="40" onkeypress="return /[a-z]/i.test(event.key)"/>
+                                                   value="{{@$user->profile->state}}" maxlength="40" onkeypress="return /[a-z]/i.test(event.key)"/>
                                             <span class="help-block">{{ $errors->first('state', ':message') }}</span>
                                         </div>
                                     </div>
@@ -206,7 +231,7 @@
                                         <label for="city" class="col-sm-2 control-label">City</label>
                                         <div class="col-sm-10">
                                             <input id="city" name="city" type="text" class="form-control"
-                                                   value="{{$user->profile->city}}" maxlength="40" onkeypress="return /[a-z]/i.test(event.key)"/>
+                                                   value="{{@$user->profile->city}}" maxlength="40" onkeypress="return /[a-z]/i.test(event.key)"/>
                                             <span class="help-block">{{ $errors->first('city', ':message') }}</span>
 
                                         </div>
@@ -216,7 +241,7 @@
                                         <label for="address" class="col-sm-2 control-label">Address</label>
                                         <div class="col-sm-10">
                                             <input id="address" name="address" type="text" class="form-control"
-                                                   value="{{$user->profile->address}}" maxlength="70"/>
+                                                   value="{{@$user->profile->address}}" maxlength="70"/>
                                             <span class="help-block">{{ $errors->first('address', ':message') }}</span>
 
                                         </div>
@@ -226,7 +251,7 @@
                                         <label for="postal" class="col-sm-2 control-label">Postal/zip</label>
                                         <div class="col-sm-10">
                                             <input id="postal" name="postal" type="text" class="form-control"
-                                                   value="{{$user->profile->postal}}" maxlength="6" onkeypress="return /[0-9]/i.test(event.key)"/>
+                                                   value="{{@$user->profile->postal}}" maxlength="6" onkeypress="return /[0-9]/i.test(event.key)"/>
                                             <span class="help-block">{{ $errors->first('postal', ':message') }}</span>
 
                                         </div>

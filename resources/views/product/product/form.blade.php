@@ -216,7 +216,7 @@
 @endpush
 
 
-<div class=" white-box " style="box-shadow: 0px 3px 1px 2px #ccc;">
+<div class="white-box" style="box-shadow: 0px 3px 1px 2px #ccc;">
     <div class="form-group {{ $errors->has('product_type_id') ? 'has-error' : ''}}">
         <label for="product_type_id" class="col-md-4 control-label">{{ 'Product Type' }}<span class="required "> *</span></label>
         <div class="col-md-6">
@@ -304,7 +304,7 @@
     </div>
 </div>
 
-<div class=" white-box " style="box-shadow: 0px 3px 1px 2px #ccc;">
+<div class="white-box" style="box-shadow: 0px 3px 1px 2px #ccc;">
     <div class="col-md-10">
     <h4 style="font-weight: bold">Add Images</h4>
     <hr>
@@ -417,7 +417,7 @@
     </a> --}}
 </div>
 
-<div class=" white-box " style="box-shadow: 0px 3px 1px 2px #ccc;">
+<div class="white-box" style="box-shadow: 0px 3px 1px 2px #ccc;">
     <div class="col-md-12">
     <h4 style="font-weight: bold">Add Variation</h4>
 
@@ -650,7 +650,7 @@
     </div>
 </div>
 
-<div class=" white-box" style="box-shadow: 0px 3px 1px 2px #ccc;">
+<div class="white-box" style="box-shadow: 0px 3px 1px 2px #ccc;">
     <div class="col-md-10">
         <h4 style="font-weight: bold">Manage Stock</h4>
      
@@ -662,13 +662,13 @@
         </label>
 
     </div>
-    {{-- <div class="form-group {{$errors->has('stock_quantity') ? 'has-error' : ''}}" id="stock-input" style="display: none">
+    <div class="form-group {{$errors->has('stock_quantity') ? 'has-error' : ''}}" id="stock-qty-input" style="display: none">
         <label for="stock_quantity" class="col-md-4 control-label">{{ 'Stock Quantity' }}</label>
         <div class="col-md-6">
-            <input class="form-control" name="stock_quantity" type="number" id="stock_quantity" required>
+            <input class="form-control" name="stock_quantity" type="number" id="stock_quantity" maxlength="5" oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);' required>
             {!! $errors->first('stock_quantity', '<p class="help-block">:message</p>') !!}
         </div>
-    </div> --}}
+    </div>
 
 
 
@@ -687,7 +687,7 @@
     <br><br>
 </div>
 
-<div class=" white-box " style="box-shadow: 0px 3px 1px 2px #ccc;">
+<div class="white-box" style="box-shadow: 0px 3px 1px 2px #ccc;">
     <div class="col-md-10">
     <h4 style="font-weight: bold">Add specification</h4>
 
@@ -748,7 +748,6 @@
         <input class="btn btn-primary" id="submitBtn" type="submit" value="{{ $submitButtonText?? 'Create' }}">
     </div>
 </div>
-
       
 <p id="feedback"></p>
 @push('js')
@@ -916,7 +915,6 @@
 
    });
 
-
     function img_pathUrl(input){
         $('#img_file').change(function () {
             var ext = this.value.match(/\.(.+)$/)[1];
@@ -997,7 +995,6 @@
     $('#shipping_type_flat_rate').click(function(){
         $('#flat_shipping_cost').show();
     });
-   
 
     $(document).ready(function () {
         $('#specifcation_table').hide();
@@ -1618,15 +1615,14 @@
             if (!$('input[name="stock_active"]').is(':checked')) {
                 $('#stock_active').val(0);
                 $('#stock-input').hide();
+                $('#stock-qty-input').hide();
                 $('#stock').removeAttr('required',"false");
             } else {
                 $('#stock_active').val(1);
                 $('#stock-input').show();
+                $('#stock-qty-input').show();
                 $('#stock').attr("required", "true");
-
-
             }
-
         });
           
     

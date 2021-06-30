@@ -123,6 +123,15 @@ private static $installed = array (
         0 => '*',
       ),
     ),
+    'davejamesmiller/laravel-breadcrumbs' => 
+    array (
+      'pretty_version' => '5.3.2',
+      'version' => '5.3.2.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '99f92a706faefb5e1816caa96e877a0184509e5b',
+    ),
     'doctrine/inflector' => 
     array (
       'pretty_version' => '2.0.3',

@@ -27,14 +27,12 @@ class PagesController extends Controller
 {
     public function HomePage()
     {
-        // dd(request()->ip);
         
         $models = scandir(public_path()."/models");
 		$sliders            = Slider::where('deleted_at',null)->get();
         $allcategories      = Category::with('subCategory','subCategory.childSubcategory')->where('status',1)->where('deleted_at',null)->get();
-        $subCategory      = SubCategory::where('status',1)->where('deleted_at',null)->get();
-        $childcategories      = ChildSubCategory::with('subCategory','subCategory.category')->where('status',1)->where('deleted_at',null)->get();
-        // dd($allcategories);
+        $subCategory        = SubCategory::where('status',1)->where('deleted_at',null)->get();
+        $childcategories    = ChildSubCategory::with('subCategory','subCategory.category')->where('status',1)->where('deleted_at',null)->get();
 
 
         // $allcategories      = DB::select("SELECT categories.name AS category_name, categories.id 
@@ -50,8 +48,8 @@ class PagesController extends Controller
         // dd($allcategories);
        
 		$newArrivals        = Product::where('product_type_id',1)->where('stock_status','instock')->orderBy('id','DESC')->skip(0)->take(12)->get();
-		// $latesProducts      = Product::where('product_type_id',1)->where('created_at', '>', Carbon::now()->startOfWeek())->skip(0)->take(12)->get();
-		$latesProducts      = Product::where('product_type_id',1)->where('stock_status','instock')->orderBy('id','ASC')->skip(0)->take(12)->get();
+		$latesProducts      = Product::where('product_type_id',1)->where('created_at', '>', Carbon::now()->startOfWeek())->skip(0)->take(12)->get();
+		// $latesProducts      = Product::where('product_type_id',1)->where('stock_status','instock')->orderBy('id','ASC')->skip(0)->take(12)->get();
 		$featureProducts    = Product::where('product_type_id',1)->where('stock_status','instock')->where('is_featured',1)->orderBy('id','DESC')->skip(0)->take(12)->get();
 
         return view('frontend.homepage',compact('allcategories','sliders','newArrivals','latesProducts','featureProducts'));

@@ -18,6 +18,7 @@ class CategoryController extends Controller
 
     public function index(Request $request)
     {
+        $breadcrumb = 'Category';
         $model = str_slug('category','-');
         if(auth()->user()->permissions()->where('name','=','view-'.$model)->first()!= null) {
             $keyword = $request->get('search');
@@ -38,7 +39,7 @@ class CategoryController extends Controller
                 $category = Category::orderBy('id', 'DESC')->where('deleted_at',null)->paginate($perPage);
             }
             $user = auth()->user();
-            return view('category.category.index', compact('category','user'));
+            return view('category.category.index', compact('category','user','breadcrumb'));
         }
         return response(view('403'), 403);
 

@@ -5590,12 +5590,16 @@ ul.list-icons li i {
 .logo i {
     color: #fff
 }
+img.img-circle{
+    width: 50px;
+    height: 50px;
+}
 
 .top-left-part {
     width: 265px;
     float: left;
     padding-bottom: 5px;
-    background: rgba(0, 0, 0, .1)
+    background: #fff;
 }
 
 .top-left-part a {
@@ -5607,11 +5611,21 @@ ul.list-icons li i {
 
 .navbar-header {
     width: 100%;
-    background: #676662 !important;
+    /* background: #fff !important; */
     /* background: -moz-linear-gradient(left, #0078bc 1%, #00beda 100%);
     background: -webkit-linear-gradient(left, #0078bc 1%, #00beda 100%);
     background: linear-gradient(to right, #0078bc 1%, #00beda 100%); */
     border: 0
+}
+
+.navbar-header {
+    width: 102%;
+    margin-left: 16px;
+    margin-top: 10px;
+    border-radius: 10px;
+    background: #fff !important;
+    /* position: fixed;
+    width: 74%; */
 }
 
 .navbar-default {
@@ -5625,7 +5639,7 @@ ul.list-icons li i {
 .navbar-top-links .badge {
     position: absolute;
     right: 9px;
-    top: 11px
+    /* top: 11px */
 }
 
 .navbar-top-links>li {

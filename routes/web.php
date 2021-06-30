@@ -39,9 +39,9 @@ Route::get('/', 'PagesController@HomePage');
 Route::group(['middleware' => ['auth', 'roles'],'roles' => ['admin','user','vendor']], function () {
 // Route::group(['middleware' => ['auth', 'roles'],'roles' => ['admin','user']], function () {
 
-    Route::get('/dashboard', function () {
+    Route::get('/dashboard', ['as'=>'dashboard', function () {
         return view('dashboard.index');
-    });
+    }]);
     Route::get('account-settings', 'UsersController@getSettings');
     Route::post('account-settings', 'UsersController@saveSettings');
     
