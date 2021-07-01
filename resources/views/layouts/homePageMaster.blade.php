@@ -153,8 +153,8 @@
                                 @endforeach
                                 {{-- <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><img src="{{ asset('assets/frontend/img/shop.png') }}" alt=""></a><span class="badge">3</span> --}}
                                 <ul class="nav navbar-nav navbar-right">
-                                    <li class="dropdown" style="margin-top: -17px; !important">
-                                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <img src="{{ asset('assets/frontend/img/shop.png') }}" alt=""><span class="badge">@if(session('cart')){{ $total_qty }}@else {{ 0 }} @endif</span><span class="caret"></span></a>
+                                    <li class="dropdown" style="margin-top: -32px; !important">
+                                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="badge">@if(session('cart')){{ $total_qty }}@else {{ 0 }} @endif</span><span class="caret"></span> <img src="{{ asset('assets/frontend/img/shop.png') }}" alt=""></a>
                                       <ul class="dropdown-menu dropdown-cart" role="menu" style="background:white">
                                         @if(session('cart'))
                                         @foreach(session('cart') as $id => $details)
@@ -553,8 +553,6 @@
                                                 </div>
                                             </div>
 
-
-
                                             <div>
 
                                             </div>
@@ -689,7 +687,7 @@
                 <div class="col-lg-2 col-xs-12 links" style="margin-right: 30px;">
                     <h4 class="mt-lg-0 mt-sm-3">QUICK LINKS</h4>
                     <ul class="m-0 p-0">
-                        <li><a href="#">Login</a></li>
+                        <li><a href="{{ url('login') }}">Login</a></li>
                         <li><a href="#">Shop</a></li>
                         <li><a href="#">FAQ</a></li>
                         <li><a href="#">Contact Us</a></li>

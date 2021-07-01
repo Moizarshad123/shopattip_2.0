@@ -1055,6 +1055,7 @@
     $('#shipping_type_free').click(function(){
         $('#flat_shipping_cost').hide();
     });
+    
     $('#shipping_type_flat_rate').click(function(){
         $('#flat_shipping_cost').show();
     });

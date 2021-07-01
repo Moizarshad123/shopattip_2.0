@@ -8,6 +8,31 @@
         <!-- .row -->
         <div class="row">
             <div class="col-sm-12">
+                <?php
+                $uri            = Request::path();
+                $ruta_explode   = explode('/',$uri);
+                $last_array     = last($ruta_explode);
+            ?>
+  
+                <ol class="breadcrumb" style="background-color: #fffefe;">
+                    <?php $val_url = ''?>
+                    <li><a href="{{asset('/dashboard')}}"><i class="entypo-folder"></i> DASHBOARD</a></li>
+                    @if(isset($ruta_explode) && count($ruta_explode)>0)
+                        @foreach ($ruta_explode as $val)
+                        <?php $val_url .= $val ?>
+                        <li>
+                            @if($last_array != $val_url)
+                            <a href="{{ asset('role/create') }}">
+                                {{ ucfirst($val) }}
+                            </a>
+                            @else
+                                {{ ucfirst($val) }}
+                            @endif
+                        </li>
+                        <?php $val_url .= '/'?>
+                        @endforeach
+                    @endif
+                </ol>
                 <div class="white-box">
                     <h3 class="box-title pull-left">Create Role</h3>
                     <a class="btn btn-success pull-right" href="{{url('role-management')}}"><i class="icon-eye"></i>

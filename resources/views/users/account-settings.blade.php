@@ -46,12 +46,12 @@
         <!-- .row -->
         <div class="row">
             <div class="col-sm-12">
-                <?php
-                $uri            = Route::currentRouteName();
-                $ruta_explode   = explode('.',$uri);
-                $last_array     = $ruta_explode[0];
+            <?php
+                $uri            = Request::path();
+                $ruta_explode   = explode('/',$uri);
+                $last_array     = last($ruta_explode);
             ?>
-    
+  
                 <ol class="breadcrumb" style="background-color: #fffefe;">
                     <?php $val_url = ''?>
                     <li><a href="{{asset('/dashboard')}}"><i class="entypo-folder"></i> DASHBOARD</a></li>
@@ -59,7 +59,7 @@
                         @foreach ($ruta_explode as $val)
                         <?php $val_url .= $val ?>
                         <li>
-                            @if($last_array == $val_url)
+                            @if($last_array != $val_url)
                             <a href="{{ asset($val_url) }}">
                                 {{ ucfirst($val) }}
                             </a>
