@@ -13,15 +13,14 @@
             }
             .zoom {
                 transition: transform 1s;
-        }
-
-        .zoom:hover {
-            transform: scale(2);
-            /* filter: blur(4px); */
-            width: 200px;
-            height: 200px;
-            margin: 0 auto;
-        }
+            }
+            .zoom:hover {
+                transform: scale(2);
+                /* filter: blur(4px); */
+                width: 200px;
+                height: 200px;
+                margin: 0 auto;
+            }
     </style>
 @endpush
 

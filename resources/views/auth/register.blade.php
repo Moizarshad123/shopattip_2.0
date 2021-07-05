@@ -1,10 +1,20 @@
 @extends('layouts.app')
-
+@push('css')
+    <style>
+        #name_error_msg{
+            color: rgb(173, 4, 4);
+            font-size: 10px;
+        }
+        form .error {
+        color: #ff0000;
+        }
+    </style>
+@endpush
 @section('content')
 <section id="wrapper" class="login-register">
     <div class="login-box">
         <div class="white-box">
-            <form class="form-horizontal form-material" id="loginform" method="POST" action="{{ route('register') }}">
+            <form class="form-horizontal form-material" id="loginform" method="POST" action="{{ route('register') }}" name="registration">
                 {{csrf_field()}}
                 <h3 class="box-title m-b-20">Sign Up</h3>
                 <div class="form-group ">
@@ -16,6 +26,7 @@
                                         <strong>{{ $errors->first('name') }}</strong>
                                     </span>
                         @endif
+                        <span id="name_error_msg"></span>
                     </div>
                 </div>
                 <div class="form-group ">
@@ -43,7 +54,7 @@
                 </div>
                 <div class="form-group">
                     <div class="col-xs-12">
-                        <input id="password-confirm" type="password" class="form-control" name="password_confirmation" placeholder="Confirm Password" required>
+                        <input id="password_confirm" type="password" class="form-control" name="password_confirmation" placeholder="Confirm Password" required>
                     </div>
                 </div>
                 <div class="form-group">
@@ -78,4 +89,88 @@
 </section>
 
 @endsection
+
+@push('js')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            var name = $('#name').val();
+            var email = $('#email').val();
+            var password = $('#password').val();
+            var confirmpassword = $('#password-confirm').val();
+
+            var _name = 0;
+            var _email = 0;
+            var _password = 0;
+            var _confirampassword = 0;
+
+
+           // this function is to accept only email
+    jQuery.validator.addMethod("accept", function(value, element, param) {
+        return value.match(new RegExp("^" + param + "$"));
+    },'please enter a valid email');
+
+            $("form[name='registration']").validate({
+                
+                // Specify validation rules
+                rules: {
+                // The key name on the left side is the name attribute
+                // of an input field. Validation rules are defined
+                // on the right side
+                name: {
+                    required: true,
+                    minlength: 5,
+                    maxlength: 15
+                },
+                // lastname: "required",
+                email: {
+                    required: true,
+                    // Specify that email should be validated
+                    // by the built-in "email" rule
+                    email: true,
+                    maxlength: 40,
+                    accept:"[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}" 
+                },
+                password: {
+                    required: true,
+                    minlength: 5
+                },
+                password_confirmation: {
+                    required: true,
+                    minlength: 5,
+                    equalTo: "#password"
+                }
+                },
+                // Specify validation error messages
+                messages: {
+                name:{
+                    required:  "Please enter your firstname",
+                    minlength: "Your name must be at least 5 characters long",
+                    maxlength: " Your name must be less then 15 charachers"
+                },
+                // lastname: "Please enter your lastname",
+                password: {
+                    required: "Please provide a password",
+                    minlength: "Your password must be at least 5 characters long"
+                },
+                password_confirmation: {
+                    required: "Please provide a confirm password",
+                    minlength: "Your confirm password must be same to the password"
+                },
+                email: {
+                    required: "Please enter a valid email address",
+                    accept:"Please provide valid email"
+                },
+                },
+                // Make sure the form is submitted to the destination defined
+                // in the "action" attribute of the form when valid
+                submitHandler: function(form) {
+                form.submit();
+                }
+            });
+
+        });
+    </script> 
+@endpush
+
 
