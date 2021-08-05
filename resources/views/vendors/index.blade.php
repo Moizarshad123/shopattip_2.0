@@ -62,7 +62,7 @@
 
                     <hr>
                     <div class="table-responsive">
-                        <table class="table" id="myTable">
+                        <table class="table table-striped" id="myTable">
                             <thead>
                             <tr>
                                 <th>ID</th>

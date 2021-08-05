@@ -26,6 +26,18 @@
                 height: 200px;
                 margin: 0 auto;
             }
+
+            table {
+                border-collapse: collapse;
+                border-spacing: 0;
+                width: 50%;
+                border: 1px solid #ddd;
+            }
+            th, td {
+                text-align: left;
+                padding: 8px;
+            }
+            tr:nth-child(even){background-color: #f2f2f2}
     </style>
 @endpush
 
@@ -80,8 +92,8 @@
                     </div>
                     <hr>
                     
-                    <div class="table-responsive">
-                        <table class="table table-borderless data-checkbox" id="myTable">
+                    <div class="table-responsive" style="overflow-x:auto;">
+                        <table class="table table-borderless data-checkbox table-striped" id="myTable">
                             <thead>
                             <tr>
                                 <th class="bs-checkbox " style="width: 36px; "  data-field="0"><div class="th-inner "><label><input id="master" type="checkbox"><span></span></label></div></th>

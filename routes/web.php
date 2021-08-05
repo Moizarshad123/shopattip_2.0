@@ -42,7 +42,7 @@ Route::group(['middleware' => ['auth', 'roles'],'roles' => ['admin','user','vend
     Route::get('/dashboard', ['as'=>'dashboard', function () {
         return view('dashboard.index');
     }]);
-    Route::get('account-settings', 'UsersController@getSetrole-managementtings');
+    Route::get('account-settings', 'UsersController@getSettings');
     Route::post('account-settings', 'UsersController@saveSettings');
     
 });

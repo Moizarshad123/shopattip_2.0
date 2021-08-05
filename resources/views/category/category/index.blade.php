@@ -79,7 +79,7 @@
                     </div>
                     <hr>
                     <div class="table-responsive">
-                        <table class="table table-borderless data-checkbox" id="myTable">
+                        <table class="table table-borderless data-checkbox table-striped" id="myTable">
                             <thead>
                             <tr>
                                 <th class="bs-checkbox " style="width: 36px; "  data-field="0"><div class="th-inner "><label><input id="master" type="checkbox"><span></span></label></div></th>
